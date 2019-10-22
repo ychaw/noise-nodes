@@ -1,0 +1,19 @@
+:root {
+  --primary-shade0: #254B60;
+  --primary-shade1: #5D7E8F;
+  --primary-shade2: #3A6074;
+  --primary-shade3: #123649;
+  --primary-shade4: #042130;
+
+  --secondary1-shade0: #2D3368;
+  --secondary1-shade1: #6A6F9C;
+  --secondary1-shade2: #454A7E;
+  --secondary1-shade3: #191E50;
+  --secondary1-shade4: #090D34;
+
+  --secondary2-shade0: #256B45;
+  --secondary2-shade1: #659F80;
+  --secondary2-shade2: #3D815D;
+  --secondary2-shade3: #11512F;
+  --secondary2-shade4: #02351A;
+}
