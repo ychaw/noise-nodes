@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
+import './style/colors.css';
 import './App.css';
-import BaseNode from './BaseNode';
+import BaseNode from './modules/BaseNode';
 
 function App() {
   return (
