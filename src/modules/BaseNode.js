@@ -1,4 +1,7 @@
 import React from 'react';
+import Connector from './Connector';
+import '../style/colors.css';
+import '../style/BaseNode.css';
 
 class BaseNode extends React.Component {
 
@@ -29,11 +32,11 @@ class BaseNode extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='BaseNode'>
         <h1>This is a Node!</h1>
         <p>It's type is {this.state.type}.</p>
-        <p>It's inputs are {this.state.inputs}.</p>
-        <p>It's outputs are {this.state.outputs}.</p>
+        <p>It's inputs are {this.state.inputs}.</p><Connector type='input'/>
+        <p>It's outputs are {this.state.outputs}.</p><Connector type='output'/>
       </div>
     );
   }
