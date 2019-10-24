@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './style/colors.css';
 import './App.css';
+import Header from './components/layout/Header';
 import BaseNode from './modules/BaseNode';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <BaseNode/>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Header />
+        <BaseNode />
+      </div>
+    );
+  }
 }
 
 export default App;
