@@ -1,6 +1,5 @@
 import React from 'react';
 import Connector from './Connector';
-import '../style/colors.css';
 import '../style/BaseNode.css';
 
 class BaseNode extends React.Component {
@@ -12,14 +11,6 @@ class BaseNode extends React.Component {
       this.state = {
         type: "base",
       }
-  }
-
-  connectTo(targetNode) {
-    return;
-  }
-
-  disconnectFrom(targetNode) {
-    return;
   }
 
   updateGraph() {

@@ -1,5 +1,4 @@
 import React from 'react';
-import '../style/colors.css';
 import '../style/Connector.css';
 
 class Connector extends React.Component {
@@ -8,6 +7,7 @@ class Connector extends React.Component {
     this.state = {
       type: this.props.type,
       isConnected: false,
+      connectedTo: undefined,
     }
   }
 
@@ -17,8 +17,16 @@ class Connector extends React.Component {
     }));
   }
 
+  connectTo(targetNode) {
+    return;
+  }
+
+  disconnectFrom(targetNode) {
+    return;
+  }
+
   render() {
-    return <button id='connector-button' onClick={this.handleClick}>{this.state.isConnected ? "I'm connected." : "Connect me!"}</button>
+    return <button id='connector-button' onClick={this.handleClick}>{this.state.type}</button>
   }
 }
 
