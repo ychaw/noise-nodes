@@ -10,18 +10,18 @@ function Header() {
 }
 
 const headerStyle = {
-    display: 'block',
+    display: 'flex',
     background: '#123649',
     border: '1px solid black'
 }
 
 const titleStyle = {
-    display: 'inline',
+    padding: '10px',
     background: '#042130',
     color: 'white'
 }
 const aboutStyle = {
-    display: 'inline',
+    padding: '20px',
     background: '#042130',
     color: 'white'
  }
