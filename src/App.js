@@ -10,6 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.id = "App";
+    this.audioContext = new AudioContext();
     this.state = {
       firstSelected: undefined,
       secondSelected: undefined,
@@ -43,7 +44,8 @@ class App extends Component {
         <Header />
         <span>Selected: {this.state.firstSelected + ' ' + this.state.secondSelected}</span>
         <Workspace>
-          <BaseNode changeConnection={this.changeConnection}/>
+          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection}/>
+          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection}/>
         </Workspace>
         <Footer />
       </div>
