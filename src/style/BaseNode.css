@@ -1,6 +1,7 @@
 .BaseNode {
   width:200px;
   height:350px;
+  float: left;
   background-color: var(--secondary1-shade0);
   padding: 16px;
   border: 8px solid;

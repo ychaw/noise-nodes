@@ -4,17 +4,9 @@ import '../style/BaseNode.css';
 
 class BaseNode extends React.Component {
 
-  constructor(props, inputs, outputs) {
+  constructor(props) {
       super(props);
-      this.numberOfInputs = inputs;
-      this.numberOfOutputs = outputs;
-      this.state = {
-        type: "base",
-      }
-  }
-
-  updateGraph() {
-    return;
+      this.name = 'BaseNode';
   }
 
   delete() {
@@ -24,10 +16,9 @@ class BaseNode extends React.Component {
   render() {
     return (
       <div className='BaseNode'>
-        <h1>This is a Node!</h1>
-        <p>It's type is {this.state.type}.</p>
-        <p>It's inputs are {this.state.inputs}.</p><Connector type='input'/>
-        <p>It's outputs are {this.state.outputs}.</p><Connector type='output'/>
+        <h1>{this.name}</h1>
+        <Connector type='input' id='input-1' changeConnection={this.props.changeConnection}/>
+        <Connector type='output' id='output-1' changeConnection={this.props.changeConnection}/>
       </div>
     );
   }
