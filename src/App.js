@@ -18,17 +18,21 @@ class App extends Component {
 
   changeConnection = (id) => {
     const {firstSelected, secondSelected} = this.state;
+
     if(!firstSelected) {
-      this.setState({firstSelected: id});
+      this.setState({firstSelected: id}, () => {
+        if(this.state.secondSelected !== undefined) {
+          alert('Connecting ' + this.state.firstSelected + ' to ' + this.state.secondSelected);
+          this.setState({firstSelected: undefined, secondSelected: undefined});
+        }
+      });
     } else if (!secondSelected) {
-      this.setState({secondSelected: id});
-    }
-    if(firstSelected !== undefined && secondSelected !== undefined) {
-      alert('Connecting ' + firstSelected + ' and ' + secondSelected);
-      //make the actual connection
-      this.setState({
-        firstSelected: undefined,
-        secondSelected: undefined});
+      this.setState({secondSelected: id}, () => {
+        if(this.state.firstSelected !== undefined) {
+          alert('Connecting ' + this.state.firstSelected + ' to ' + this.state.secondSelected);
+          this.setState({firstSelected: undefined, secondSelected: undefined});
+        }
+      });
     }
   }
 
