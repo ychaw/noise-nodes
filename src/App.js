@@ -17,19 +17,21 @@ class App extends Component {
     };
   }
 
-  changeConnection = (id) => {
+  changeConnection = (id, type, audioNode) => {
     const {firstSelected, secondSelected} = this.state;
-
+    //console.log('This is ' + id + ". It's a " + type + " and it's dsp is " + audioNode);
     if(!firstSelected) {
-      this.setState({firstSelected: id}, () => {
-        if(this.state.secondSelected !== undefined) {
+      this.setState({
+        firstSelected: id,
+      }, () => {
+        if(secondSelected !== undefined) {
           alert('Connecting ' + this.state.firstSelected + ' to ' + this.state.secondSelected);
           this.setState({firstSelected: undefined, secondSelected: undefined});
         }
       });
     } else if (!secondSelected) {
       this.setState({secondSelected: id}, () => {
-        if(this.state.firstSelected !== undefined) {
+        if(firstSelected !== undefined) {
           alert('Connecting ' + this.state.firstSelected + ' to ' + this.state.secondSelected);
           this.setState({firstSelected: undefined, secondSelected: undefined});
         }
@@ -42,10 +44,10 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <span>Selected: {this.state.firstSelected + ' ' + this.state.secondSelected}</span>
         <Workspace>
-          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection}/>
-          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection}/>
+          <span>Selected: {this.state.firstSelected + ' ' + this.state.secondSelected}</span>
+          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection} deleteNode={this.deleteNode}/>
+          <BaseNode audioContext={this.audioContext} changeConnection={this.changeConnection} deleteNode={this.deleteNode}/>
         </Workspace>
         <Footer />
       </div>

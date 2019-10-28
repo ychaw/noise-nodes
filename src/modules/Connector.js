@@ -10,8 +10,8 @@ class Connector extends React.Component {
   }
 
   render() {
-    const {id, type} = this.props;
-    return <button id='connector-button' onClick={this.props.changeConnection.bind(this, id)}>{type}</button>
+    const {id, type, audioNode} = this.props;
+    return <button id='connector-button' onClick={this.props.changeConnection.bind(this, id, type, audioNode)}>{type}</button>
   }
 }
 
