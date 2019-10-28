@@ -1,5 +1,6 @@
 import React from 'react';
 import Connector from './Connector';
+import Setting from './Setting';
 import '../style/BaseNode.css';
 
 class BaseNode extends React.Component {
@@ -62,13 +63,11 @@ class BaseNode extends React.Component {
     return (
       <div className='BaseNode'>
         <h1>{this.name}</h1>
-        <p>Frequency: {this.state.frequency} Hz</p>
-        <input type='range' min='20' max='2000' step='0.1' value={this.state.frequency} onChange={this.changeFrequency}></input>
-        <p>Gain: {this.state.gain}</p>
-        <input type='range' min='0' max='1' step='0.1' value={this.state.gain} onChange={this.changeGain}></input>
+        <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='20' max='2000' step='0.1' value={this.state.frequency} />
+        <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='input' id='input-1' changeConnection={this.props.changeConnection}/>
-        <Connector type='output' id='output-1' changeConnection={this.props.changeConnection}/>
+        <Connector type='output' id='output-1' audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
+        <button onClick={this.props.deleteNode}>[X]</button>
       </div>
     );
   }
