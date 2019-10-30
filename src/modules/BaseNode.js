@@ -22,20 +22,21 @@ class BaseNode extends React.Component {
   componentDidMount() {
     const {osc, gain} = this.dsp;
     osc.frequency.value = this.state.frequency;
-    gain.gain.value = this.state.gain;
+    gain.gain.value = 0;
     osc.connect(gain);
     gain.connect(this.props.audioContext.destination);
+    osc.start();
   }
 
   // FOR TESTING
   togglePlay = () => {
     const {osc} = this.dsp;
     if(!this.state.isPlaying) {
-      osc.start();
       this.setState({isPlaying: !this.state.isPlaying});
+      this.dsp.gain.gain.value = this.state.gain;
     } else {
-      osc.stop();
       this.setState({isPlaying: !this.state.isPlaying});
+      this.dsp.gain.gain.value = 0;
     }
   }
 
@@ -55,10 +56,6 @@ class BaseNode extends React.Component {
     });
   }
 
-  delete() {
-    return;
-  }
-
   render() {
     return (
       <div className='BaseNode'>
@@ -67,7 +64,7 @@ class BaseNode extends React.Component {
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='output' id='output-1' audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
-        <button onClick={this.props.deleteNode}>[X]</button>
+        <button onClick={this.props.deleteNode.bind(this)}>[X]</button>
       </div>
     );
   }
