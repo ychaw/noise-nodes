@@ -30,7 +30,6 @@ class BaseNode extends React.Component {
 
   // FOR TESTING
   togglePlay = () => {
-    const {osc} = this.dsp;
     if(!this.state.isPlaying) {
       this.setState({isPlaying: !this.state.isPlaying});
       this.dsp.gain.gain.value = this.state.gain;
@@ -64,7 +63,7 @@ class BaseNode extends React.Component {
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='output' id='output-1' audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
-        <button onClick={this.props.deleteNode.bind(this)}>[X]</button>
+        <button onClick={this.props.deleteNode.bind(this, this.props.id)}>[X]</button>
       </div>
     );
   }
