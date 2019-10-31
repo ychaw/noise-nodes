@@ -27,6 +27,10 @@ class BaseNode extends React.Component {
     osc.start();
   }
 
+  componentWillUnmount() {
+    this.dsp.osc.stop();
+  }
+
   // FOR TESTING
   togglePlay = () => {
     if(!this.state.isPlaying) {
