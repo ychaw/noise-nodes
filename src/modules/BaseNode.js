@@ -24,7 +24,6 @@ class BaseNode extends React.Component {
     osc.frequency.value = this.state.frequency;
     gain.gain.value = 0;
     osc.connect(gain);
-    gain.connect(this.props.audioContext.destination);
     osc.start();
   }
 

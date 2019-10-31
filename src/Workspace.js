@@ -1,6 +1,7 @@
 import React from 'react';
 import './style/Workspace.css';
 import BaseNode from './modules/BaseNode';
+import OutputNode from './modules/OutputNode';
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -38,19 +39,38 @@ class Workspace extends React.Component {
   }
 
   makeConnection = () => {
-    alert('Connecting ' + this.state.selection[0] + ' to ' + this.state.selection[1]);
+    //alert('Connecting ' + this.state.selection[0] + ' to ' + this.state.selection[1]);
+    const first = this.state.selection[0],
+          second = this.state.selection[1];
+
+    //make sure no same type connections can be made
+    if (first.type !== second.type) {
+      //connect output to input
+      if(first.type === 'output') {
+        first.audioNode.connect(second.audioNode);
+      } else {
+        second.audioNode.connect(first.audioNode);
+      }
+    } else {
+      alert('I can only connect inputs and outputs');
+    }
     this.setState({selection: [null, null]});
   }
 
   changeConnection = (id, type, audioNode) => {
+    const params = {
+      id: id,
+      type: type,
+      audioNode: audioNode
+    };
     if(this.state.selection[0] === null) {
-      this.setState({selection: this.getUpdatedSelection(0, id)}, () => {
+      this.setState({selection: this.getUpdatedSelection(0, params)}, () => {
         if(this.state.selection[1] !== null) {
           this.makeConnection();
         }
       });
     } else if (this.state.selection[1] === null) {
-      this.setState({selection: this.getUpdatedSelection(1, id)}, () => {
+      this.setState({selection: this.getUpdatedSelection(1, params)}, () => {
         if(this.state.selection[0] !== null) {
           this.makeConnection();
         }
@@ -70,6 +90,7 @@ class Workspace extends React.Component {
       <div className='workspace'>
         <button onClick={this.createNode}>Create node</button>
         {this.state.nodes}
+        <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
     );
   }
