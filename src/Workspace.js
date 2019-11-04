@@ -33,12 +33,24 @@ class Workspace extends React.Component {
     return sameTypeNodes.length;
   }
 
-  createNode = () => {
-      let currentType = 'BaseNode', //should be passed to the function later
-      id = this.getNextFreeId(currentType);
-      let node = (<BaseNode id={id} key={'BaseNode_'+id} audioContext={this.state.audioContext} changeConnection={this.changeConnection} deleteNode={this.deleteNode}/>);
+  createNode = (type) => {
+      let id = this.getNextFreeId(type),
+          newNode;
+      switch (type) {
+        case 'BaseNode':
+          newNode = (<BaseNode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      changeConnection={this.changeConnection}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
+        default:
+
+      }
       this.setState({
-        nodes: [...this.state.nodes, node],
+        nodes: [...this.state.nodes, newNode],
       });
   }
 
@@ -108,7 +120,7 @@ class Workspace extends React.Component {
     // }
     return (
       <div className='workspace'>
-        <button onClick={this.createNode}>Create node</button>
+        <button onClick={this.createNode.bind(this, 'BaseNode')}>Create BaseNode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
