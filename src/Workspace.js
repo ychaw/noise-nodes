@@ -1,5 +1,4 @@
 import React from 'react';
-import './style/Workspace.css';
 import BaseNode from './modules/BaseNode';
 import OutputNode from './modules/OutputNode';
 
@@ -119,13 +118,19 @@ class Workspace extends React.Component {
     //   nodes.push(element);
     // }
     return (
-      <div className='workspace'>
+      <div style={style} className='workspace'>
         <button onClick={this.createNode.bind(this, 'BaseNode')}>Create BaseNode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
     );
   }
+}
+
+const style = {
+  width: 'auto',
+  height: '600px',
+  backgroundColor: 'var(--primary-shade0)',
 }
 
 export default Workspace;

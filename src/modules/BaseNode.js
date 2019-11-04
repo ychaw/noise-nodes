@@ -1,7 +1,6 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
-import '../style/BaseNode.css';
 
 class BaseNode extends React.Component {
 
@@ -60,7 +59,7 @@ class BaseNode extends React.Component {
 
   render() {
     return (
-      <div className='BaseNode'>
+      <div style={style}className='BaseNode'>
         <h1>{this.name}</h1>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='20' max='2000' step='0.1' value={this.state.frequency} />
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
@@ -70,6 +69,16 @@ class BaseNode extends React.Component {
       </div>
     );
   }
+}
+
+const style = {
+  width:'200px',
+  height:'350px',
+  float: 'left',
+  backgroundColor: 'var(--secondary1-shade0)',
+  padding: '16px',
+  border: '8px solid',
+  borderColor: 'var(--secondary1-shade3)',
 }
 
 export default BaseNode;

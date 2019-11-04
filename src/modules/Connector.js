@@ -1,5 +1,4 @@
 import React from 'react';
-import '../style/Connector.css';
 
 class Connector extends React.Component {
   constructor(props) {
@@ -11,8 +10,13 @@ class Connector extends React.Component {
 
   render() {
     const {id, type, audioNode} = this.props;
-    return <button id='connector-button' onClick={this.props.changeConnection.bind(this, id, type, audioNode)}>{type}</button>
+    return <button style={style} id='connector-button' onClick={this.props.changeConnection.bind(this, id, type, audioNode)}>{type}</button>
   }
+}
+
+const style = {
+  padding: '0.7rem',
+  borderRadius: '100%',
 }
 
 export default Connector;
