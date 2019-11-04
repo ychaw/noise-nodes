@@ -77,7 +77,7 @@ class Workspace extends React.Component {
     //make sure no same type connections can be made
     if (first.type !== second.type) {
       //connect output to input
-      if(first.type === 'output') {
+      if(first.type === 'control-output' || first.type === 'audio-output' ) {
         first.audioNode.connect(second.audioNode);
       } else {
         second.audioNode.connect(first.audioNode);

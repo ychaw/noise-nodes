@@ -64,7 +64,7 @@ class BaseNode extends React.Component {
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='20' max='2000' step='0.1' value={this.state.frequency} />
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='output' id={this.name + '_output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
       </div>
     );
