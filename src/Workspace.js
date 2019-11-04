@@ -15,16 +15,36 @@ class Workspace extends React.Component {
     };
   }
 
+  getNextFreeId = (type) => {
+    let sameTypeNodes = this.state.nodes.filter((element) => {return element.type.name === 'BaseNode'});
+    sameTypeNodes.sort((a, b) => a.props.id - b.props.id)
+    // check for holes in the array and try to fill them
+    for (var i = 0; i < sameTypeNodes.length; i++) {
+      if(sameTypeNodes[i].props.id > i) {
+        // if the hole is on index 0, just add a node with id 0
+        if (i === 0) {
+          return 0;
+        } else {
+          return sameTypeNodes[i-1].props.id + 1; //if the hole is somewhere in the middle, place new element after last correctly placed element
+        }
+      }
+    }
+    //no holes found; the new element should be placed at the end
+    return sameTypeNodes.length;
+  }
+
   createNode = () => {
-      let node = (<BaseNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection} deleteNode={this.deleteNode}/>);
+      let currentType = 'BaseNode', //should be passed to the function later
+      id = this.getNextFreeId(currentType);
+      let node = (<BaseNode id={id} key={'BaseNode_'+id} audioContext={this.state.audioContext} changeConnection={this.changeConnection} deleteNode={this.deleteNode}/>);
       this.setState({
         nodes: [...this.state.nodes, node],
       });
   }
 
-  deleteNode = (id) => {
+  deleteNode = (name) => {
     let updatedNodes = this.state.nodes.filter((node) => {
-      return node.props.id !== id;
+      return node.type.name + node.props.id !== name;
     });
     this.setState({
       nodes: [...updatedNodes],
