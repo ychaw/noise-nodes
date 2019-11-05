@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseNode from './modules/BaseNode';
+import OscNode from './modules/OscNode';
 import OutputNode from './modules/OutputNode';
 
 class Workspace extends React.Component {
@@ -15,7 +16,7 @@ class Workspace extends React.Component {
   }
 
   getNextFreeId = (type) => {
-    let sameTypeNodes = this.state.nodes.filter((element) => {return element.type.name === 'BaseNode'});
+    let sameTypeNodes = this.state.nodes.filter((element) => {return element.type.name === type});
     sameTypeNodes.sort((a, b) => a.props.id - b.props.id)
     // check for holes in the array and try to fill them
     for (var i = 0; i < sameTypeNodes.length; i++) {
@@ -38,6 +39,15 @@ class Workspace extends React.Component {
       switch (type) {
         case 'BaseNode':
           newNode = (<BaseNode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      changeConnection={this.changeConnection}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
+        case 'OscNode':
+          newNode = (<OscNode
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
@@ -120,6 +130,7 @@ class Workspace extends React.Component {
     return (
       <div style={style} className='workspace'>
         <button onClick={this.createNode.bind(this, 'BaseNode')}>Create BaseNode</button>
+        <button onClick={this.createNode.bind(this, 'OscNode')}>Create OscNode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
