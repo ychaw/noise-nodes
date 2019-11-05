@@ -2,6 +2,7 @@ import React from 'react';
 import BaseNode from './modules/BaseNode';
 import OscNode from './modules/OscNode';
 import OutputNode from './modules/OutputNode';
+import GainNode from './modules/GainNode';
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -48,6 +49,15 @@ class Workspace extends React.Component {
           break;
         case 'OscNode':
           newNode = (<OscNode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      changeConnection={this.changeConnection}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
+        case 'GainNode':
+          newNode = (<GainNode
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
@@ -129,8 +139,8 @@ class Workspace extends React.Component {
     // }
     return (
       <div style={style} className='workspace'>
-        <button onClick={this.createNode.bind(this, 'BaseNode')}>Create BaseNode</button>
         <button onClick={this.createNode.bind(this, 'OscNode')}>Create OscNode</button>
+        <button onClick={this.createNode.bind(this, 'GainNode')}>Create GainNode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
