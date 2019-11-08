@@ -60,7 +60,6 @@ class OscNode extends React.Component {
   }
 
   changeWaveform = (e) => {
-    console.log('handler in node');
     const {osc} = this.dsp;
     const newValue = e.target.value
     this.setState({waveform: newValue}, () => {
@@ -74,10 +73,12 @@ class OscNode extends React.Component {
         <h1>{this.name}</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='20' max='2000' step='0.1' value={this.state.frequency} />
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.osc.frequency} changeConnection={this.props.changeConnection}/>
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} changeConnection={this.props.changeConnection}/>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
       </div>
     );
   }
