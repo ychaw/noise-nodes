@@ -4,6 +4,7 @@ import OscNode from './modules/OscNode';
 import OutputNode from './modules/OutputNode';
 import GainNode from './modules/GainNode';
 import FilterNode from './modules/FilterNode';
+import LFONode from './modules/LFONode';
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -75,6 +76,15 @@ class Workspace extends React.Component {
                       deleteNode={this.deleteNode}
                     />);
           break;
+        case 'LFONode':
+          newNode = (<LFONode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      changeConnection={this.changeConnection}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
         default:
 
       }
@@ -104,15 +114,19 @@ class Workspace extends React.Component {
     const first = this.state.selection[0],
           second = this.state.selection[1];
 
-    console.log(first, second);
-
     //make sure no same type connections can be made
     if (first.type !== second.type) {
       //connect output to input
       if(first.type === 'control-output' || first.type === 'audio-output' ) {
         first.audioNode.connect(second.audioNode);
       } else {
-        second.audioNode.connect(first.audioNode);
+        if(second.type === 'control-input') {
+          first.audioNode.connect(second.audioNode);
+        } else {
+          console.log("selection: ");
+          console.log(this.state.selection);
+          console.log("connected to: " + second.audioNode.connect(first.audioNode));
+        }
       }
     } else {
       alert('I can only connect inputs and outputs');
@@ -154,6 +168,7 @@ class Workspace extends React.Component {
         <button onClick={this.createNode.bind(this, 'OscNode')}>Create OscNode</button>
         <button onClick={this.createNode.bind(this, 'GainNode')}>Create GainNode</button>
         <button onClick={this.createNode.bind(this, 'FilterNode')}>Create FilterNode</button>
+        <button onClick={this.createNode.bind(this, 'LFONode')}>Create LFONode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>
