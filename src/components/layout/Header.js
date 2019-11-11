@@ -1,4 +1,5 @@
 import React from 'react';
+import Pallet from '../Pallet';
 
 function Header() {
     return (
@@ -6,9 +7,7 @@ function Header() {
             <div style={headerItemStyle}>
                 <h1>NoiseNodes</h1>
             </div>
-            <div style={{...headerItemStyle,...palletStyle}}>
-                <h1 style={palletItemStyle}>+</h1>
-            </div>
+            <Pallet />
             <div style={{...headerItemStyle,...aboutStyle}}>
                 <h2>About</h2>
             </div>
@@ -28,19 +27,6 @@ const headerStyle = {
 const headerItemStyle = {
     flexBasis: '250px',
     background: 'var(--primary-shade4)',
-}
-
-const palletStyle = {
-    display: 'flex',
-    flexGrow: '1',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: 'var(--primary-shade3)',
-}
-
-const palletItemStyle = {
-    flexBasis: '50px',
-    background: 'var(--primary-shade2)',
 }
 
 const aboutStyle = {
