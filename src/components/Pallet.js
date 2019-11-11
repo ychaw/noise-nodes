@@ -12,6 +12,7 @@ class Pallet extends React.Component {
                 <PalletItem type='OSC' />
                 <PalletItem type='GAIN' />
                 <PalletItem type='FILTER' />
+                <PalletItem type='LFO' />
             </div> 
         );
     }
