@@ -8,7 +8,7 @@ function Footer() {
 
 const footerStyle = {
     padding: '5px',
-    background: '#123649',
+    background: 'var(--primary-shade3)',
     textAlign: 'right',
     fontSize: '10px',
     color: 'white'
