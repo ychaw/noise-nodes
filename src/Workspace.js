@@ -4,16 +4,19 @@ import OscNode from './modules/OscNode';
 import OutputNode from './modules/OutputNode';
 import GainNode from './modules/GainNode';
 import FilterNode from './modules/FilterNode';
+import LFONode from './modules/LFONode';
 
 class Workspace extends React.Component {
   constructor(props) {
     super(props);
     let nodes = [],
-        selection = [null, null];
+        selection = [null, null],
+        existingConnections = [];
     this.state = {
       audioContext: new AudioContext(),
       nodes,
       selection,
+      existingConnections,
     };
   }
 
@@ -75,6 +78,15 @@ class Workspace extends React.Component {
                       deleteNode={this.deleteNode}
                     />);
           break;
+        case 'LFONode':
+          newNode = (<LFONode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      changeConnection={this.changeConnection}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
         default:
 
       }
@@ -93,10 +105,34 @@ class Workspace extends React.Component {
   }
 
   //helper for changeConnection to reduce complexity
-  getUpdatedSelection = (index, id) => {
+  getUpdatedSelection = (index, info) => {
     let updatedSelection = [...this.state.selection];
-    updatedSelection[index] = id;
+    updatedSelection[index] = info;
     return updatedSelection;
+  }
+
+  storeConnection = (output, input) => {
+    this.setState({
+      existingConnections: [...this.state.existingConnections, {output: output, input: input}]
+    });
+  }
+
+  removeStoredConnection = (output, input) => {
+    let updatedConnections = this.state.existingConnections.filter((existingConnection) => {
+      return (existingConnection.output !== output) && (existingConnection.input !== input);
+    });
+    this.setState({
+      existingConnections: [...updatedConnections]
+    });
+  }
+
+  connectionExists = (output, input) => {
+    //get the same connections
+    let sameConnections = this.state.existingConnections.filter((existingConnection) => {
+      return (existingConnection.output === output) && (existingConnection.input === input);
+    });
+    //if there are any, return true
+    return sameConnections.length > 0;
   }
 
   makeConnection = () => {
@@ -104,15 +140,35 @@ class Workspace extends React.Component {
     const first = this.state.selection[0],
           second = this.state.selection[1];
 
-    console.log(first, second);
-
-    //make sure no same type connections can be made
+    //make sure no connections from input to input/output to output can be made
     if (first.type !== second.type) {
       //connect output to input
       if(first.type === 'control-output' || first.type === 'audio-output' ) {
-        first.audioNode.connect(second.audioNode);
+        if(this.connectionExists(first.audioNode, second.audioNode)) {
+          first.audioNode.disconnect(second.audioNode);
+          this.removeStoredConnection(first.audioNode, second.audioNode);
+        } else {
+          first.audioNode.connect(second.audioNode);
+          this.storeConnection(first.audioNode, second.audioNode);
+        }
       } else {
-        second.audioNode.connect(first.audioNode);
+        if(second.type === 'control-input') {
+          if(this.connectionExists(first.audioNode, second.audioNode)) {
+            first.audioNode.disconnect(second.audioNode);
+            this.removeStoredConnection(first.audioNode, second.audioNode);
+          } else {
+            first.audioNode.connect(second.audioNode);
+            this.storeConnection(first.audioNode, second.audioNode);
+          }
+        } else {
+          if(this.connectionExists(second.audioNode, first.audioNode)) {
+            second.audioNode.disconnect(first.audioNode);
+            this.removeStoredConnection(second.audioNode, first.audioNode);
+          } else {
+            second.audioNode.connect(first.audioNode);
+            this.storeConnection(second.audioNode, first.audioNode);
+          }
+        }
       }
     } else {
       alert('I can only connect inputs and outputs');
@@ -154,6 +210,7 @@ class Workspace extends React.Component {
         <button onClick={this.createNode.bind(this, 'OscNode')}>Create OscNode</button>
         <button onClick={this.createNode.bind(this, 'GainNode')}>Create GainNode</button>
         <button onClick={this.createNode.bind(this, 'FilterNode')}>Create FilterNode</button>
+        <button onClick={this.createNode.bind(this, 'LFONode')}>Create LFONode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
       </div>

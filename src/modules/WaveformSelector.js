@@ -20,7 +20,7 @@ class WaveformSelector extends React.Component {
           <option value='sine'>Sine</option>
           <option value='triangle'>Triangle</option>
           <option value='square'>Square</option>
-          <option value='saw'>Saw</option>
+          <option value='sawtooth'>Sawtooth</option>
         </select>
       </div>
     )
