@@ -135,66 +135,123 @@ class Workspace extends React.Component {
     return sameConnections.length > 0;
   }
 
-  makeConnection = () => {
-    //alert('Connecting ' + this.state.selection[0] + ' to ' + this.state.selection[1]);
+  // this function assumes that the selection would make a valid connection
+  sortSelection = () => {
     const first = this.state.selection[0],
           second = this.state.selection[1];
 
-    //make sure no connections from input to input/output to output can be made
-    if (first.type !== second.type) {
-      //connect output to input
-      if(first.type === 'control-output' || first.type === 'audio-output' ) {
-        if(this.connectionExists(first.audioNode, second.audioNode)) {
-          first.audioNode.disconnect(second.audioNode);
-          this.removeStoredConnection(first.audioNode, second.audioNode);
-        } else {
-          first.audioNode.connect(second.audioNode);
-          this.storeConnection(first.audioNode, second.audioNode);
-        }
+    let input = (first.type === 'audio-input' || first.type === 'control-input') ? first : second;
+    let output = (first.type === 'audio-output' || first.type === 'control-output') ? first : second;
+
+    return {
+      input: input,
+      output: output,
+    }
+  }
+
+  isSelectionValidConnection = () => {
+    const first = this.state.selection[0],
+          second = this.state.selection[1];
+
+    let isValid = (
+        (first.type === 'control-output' && second.type === 'control-input') ||
+        (second.type === 'control-input' && first.type === 'control-output') ||
+        (first.type === 'audio-output' && second.type === 'audio-input') ||
+        (second.type === 'audio-input' && first.type === 'audio-output')
+      )
+    return isValid;
+  }
+
+  makeConnection = () => {
+    // const first = this.state.selection[0],
+    //       second = this.state.selection[1];
+
+    if(this.isSelectionValidConnection()) {
+      const {input, output} = this.sortSelection();
+      if(this.connectionExists(output, input)) {
+        output.audioNode.disconnect(input.audioNode);
+        this.removeStoredConnection(output.audioNode, input.audioNode);
       } else {
-        if(second.type === 'control-input') {
-          if(this.connectionExists(first.audioNode, second.audioNode)) {
-            first.audioNode.disconnect(second.audioNode);
-            this.removeStoredConnection(first.audioNode, second.audioNode);
-          } else {
-            first.audioNode.connect(second.audioNode);
-            this.storeConnection(first.audioNode, second.audioNode);
-          }
-        } else {
-          if(this.connectionExists(second.audioNode, first.audioNode)) {
-            second.audioNode.disconnect(first.audioNode);
-            this.removeStoredConnection(second.audioNode, first.audioNode);
-          } else {
-            second.audioNode.connect(first.audioNode);
-            this.storeConnection(second.audioNode, first.audioNode);
-          }
-        }
+        output.audioNode.connect(input.audioNode);
+        this.storeConnection(output.audioNode, input.audioNode);
       }
     } else {
-      alert('I can only connect inputs and outputs');
+      alert("I can only connect an input with an output of the same type.");
     }
-    this.setState({selection: [null, null]});
+
+    //make sure no connections from input to input/output to output can be made
+    // if (first.type !== second.type) {
+    //   //connect output to input
+    //   if(first.type === 'control-output' || first.type === 'audio-output' ) {
+    //     if(this.connectionExists(first.audioNode, second.audioNode)) {
+    //       first.audioNode.disconnect(second.audioNode);
+    //       this.removeStoredConnection(first.audioNode, second.audioNode);
+    //     } else {
+    //       first.audioNode.connect(second.audioNode);
+    //       this.storeConnection(first.audioNode, second.audioNode);
+    //     }
+    //   } else {
+    //     if(second.type === 'control-input') {
+    //       if(this.connectionExists(first.audioNode, second.audioNode)) {
+    //         first.audioNode.disconnect(second.audioNode);
+    //         this.removeStoredConnection(first.audioNode, second.audioNode);
+    //       } else {
+    //         first.audioNode.connect(second.audioNode);
+    //         this.storeConnection(first.audioNode, second.audioNode);
+    //       }
+    //     } else {
+    //       if(this.connectionExists(second.audioNode, first.audioNode)) {
+    //         second.audioNode.disconnect(first.audioNode);
+    //         this.removeStoredConnection(second.audioNode, first.audioNode);
+    //       } else {
+    //         second.audioNode.connect(first.audioNode);
+    //         this.storeConnection(second.audioNode, first.audioNode);
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   alert('I can only connect inputs and outputs');
+    // }
   }
 
   changeConnection = (id, type, audioNode) => {
-    const params = {
-      id: id,
-      type: type,
-      audioNode: audioNode
-    };
-    if(this.state.selection[0] === null) {
-      this.setState({selection: this.getUpdatedSelection(0, params)}, () => {
-        if(this.state.selection[1] !== null) {
-          this.makeConnection();
-        }
-      });
-    } else if (this.state.selection[1] === null) {
-      this.setState({selection: this.getUpdatedSelection(1, params)}, () => {
-        if(this.state.selection[0] !== null) {
-          this.makeConnection();
-        }
-      });
-    }
+    // const params = {
+    //   id: id,
+    //   type: type,
+    //   audioNode: audioNode
+    // };
+    let updatedSelection = [...this.state.selection];
+
+    // if bugs with selection occur, check here
+    updatedSelection.some((value, index, _updatedSelection) => {
+      if(value === null) updatedSelection[index] = {
+        id: id,
+        type: type,
+        audioNode: audioNode
+      };
+      return value === null;
+    });
+
+    this.setState({selection: updatedSelection}, () => {
+      if(this.state.selection[0] !== null && this.state.selection[1] !== null) {
+        this.makeConnection();
+        this.setState({selection: [null, null]});
+      }
+    });
+
+    // if(this.state.selection[0] === null) {
+    //   this.setState({selection: this.getUpdatedSelection(0, params)}, () => {
+    //     if(this.state.selection[1] !== null) {
+    //       this.makeConnection();
+    //     }
+    //   });
+    // } else if (this.state.selection[1] === null) {
+    //   this.setState({selection: this.getUpdatedSelection(1, params)}, () => {
+    //     if(this.state.selection[0] !== null) {
+    //       this.makeConnection();
+    //     }
+    //   });
+    // }
   }
 
   render() {
