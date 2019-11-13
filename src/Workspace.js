@@ -47,7 +47,7 @@ class Workspace extends React.Component {
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
-                      changeConnection={this.changeConnection}
+                      select={this.select}
                       deleteNode={this.deleteNode}
                     />);
           break;
@@ -56,7 +56,7 @@ class Workspace extends React.Component {
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
-                      changeConnection={this.changeConnection}
+                      select={this.select}
                       deleteNode={this.deleteNode}
                     />);
           break;
@@ -65,7 +65,7 @@ class Workspace extends React.Component {
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
-                      changeConnection={this.changeConnection}
+                      select={this.select}
                       deleteNode={this.deleteNode}
                     />);
           break;
@@ -74,7 +74,7 @@ class Workspace extends React.Component {
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
-                      changeConnection={this.changeConnection}
+                      select={this.select}
                       deleteNode={this.deleteNode}
                     />);
           break;
@@ -83,7 +83,7 @@ class Workspace extends React.Component {
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
-                      changeConnection={this.changeConnection}
+                      select={this.select}
                       deleteNode={this.deleteNode}
                     />);
           break;
@@ -104,7 +104,7 @@ class Workspace extends React.Component {
     });
   }
 
-  //helper for changeConnection to reduce complexity
+  //helper for select to reduce complexity
   getUpdatedSelection = (index, info) => {
     let updatedSelection = [...this.state.selection];
     updatedSelection[index] = info;
@@ -162,7 +162,7 @@ class Workspace extends React.Component {
     return isValid;
   }
 
-  makeConnection = () => {
+  toggleConnection = () => {
     // const first = this.state.selection[0],
     //       second = this.state.selection[1];
 
@@ -214,7 +214,7 @@ class Workspace extends React.Component {
     // }
   }
 
-  changeConnection = (id, type, audioNode) => {
+  select = (id, type, audioNode) => {
     // const params = {
     //   id: id,
     //   type: type,
@@ -234,7 +234,7 @@ class Workspace extends React.Component {
 
     this.setState({selection: updatedSelection}, () => {
       if(this.state.selection[0] !== null && this.state.selection[1] !== null) {
-        this.makeConnection();
+        this.toggleConnection();
         this.setState({selection: [null, null]});
       }
     });
@@ -269,7 +269,7 @@ class Workspace extends React.Component {
         <button onClick={this.createNode.bind(this, 'FilterNode')}>Create FilterNode</button>
         <button onClick={this.createNode.bind(this, 'LFONode')}>Create LFONode</button>
         {this.state.nodes}
-        <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} changeConnection={this.changeConnection}/>
+        <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
       </div>
     );
   }

@@ -31,7 +31,7 @@ class OutputNode extends React.Component {
       <div>
         <h1>{this.name}</h1>
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );
   }

@@ -28,8 +28,8 @@ class GainNode extends React.Component {
       <div style={style}className='GainNode'>
         <h1>{this.name}</h1>
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
       </div>
     );

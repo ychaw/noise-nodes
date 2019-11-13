@@ -73,11 +73,11 @@ class LFONode extends React.Component {
         <h1>{this.name}</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='0' max='2000' step='0.1' value={this.state.frequency} />
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.osc.frequency} changeConnection={this.props.changeConnection}/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.osc.frequency} select={this.props.select}/>
         <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='2000' step='0.1' value={this.state.gain} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} changeConnection={this.props.changeConnection}/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} changeConnection={this.props.changeConnection}/>
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
       </div>
     );
