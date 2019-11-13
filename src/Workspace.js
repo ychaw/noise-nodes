@@ -155,9 +155,9 @@ class Workspace extends React.Component {
 
     let isValid = (
         (first.type === 'control-output' && second.type === 'control-input') ||
-        (second.type === 'control-input' && first.type === 'control-output') ||
+        (first.type === 'control-input' && second.type === 'control-output') ||
         (first.type === 'audio-output' && second.type === 'audio-input') ||
-        (second.type === 'audio-input' && first.type === 'audio-output')
+        (first.type === 'audio-input' && second.type === 'audio-output')
       )
     return isValid;
   }
