@@ -6,6 +6,7 @@ import GainNode from './modules/GainNode';
 import FilterNode from './modules/FilterNode';
 import LFONode from './modules/LFONode';
 import EnvelopeNode from './modules/EnvelopeNode';
+import SequencerNode from './modules/SequencerNode';
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -90,6 +91,15 @@ class Workspace extends React.Component {
           break;
         case 'EnvelopeNode':
           newNode = (<EnvelopeNode
+                      id={id}
+                      key={type + '_' + id}
+                      audioContext={this.state.audioContext}
+                      select={this.select}
+                      deleteNode={this.deleteNode}
+                    />);
+          break;
+        case 'SequencerNode':
+          newNode = (<SequencerNode
                       id={id}
                       key={type + '_' + id}
                       audioContext={this.state.audioContext}
@@ -279,6 +289,7 @@ class Workspace extends React.Component {
         <button onClick={this.createNode.bind(this, 'FilterNode')}>Create FilterNode</button>
         <button onClick={this.createNode.bind(this, 'LFONode')}>Create LFONode</button>
         <button onClick={this.createNode.bind(this, 'EnvelopeNode')}>Create EnvelopeNode</button>
+        <button onClick={this.createNode.bind(this, 'SequencerNode')}>Create SequencerNode</button>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
       </div>
