@@ -1,4 +1,5 @@
 import React from 'react';
+import Pallet from './components/Pallet';
 import BaseNode from './modules/BaseNode';
 import OscNode from './modules/OscNode';
 import OutputNode from './modules/OutputNode';
@@ -41,78 +42,78 @@ class Workspace extends React.Component {
   }
 
   createNode = (type) => {
-      let id = this.getNextFreeId(type),
-          newNode;
-      switch (type) {
-        case 'BaseNode':
-          newNode = (<BaseNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'OscNode':
-          newNode = (<OscNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'GainNode':
-          newNode = (<GainNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'FilterNode':
-          newNode = (<FilterNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'LFONode':
-          newNode = (<LFONode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'EnvelopeNode':
-          newNode = (<EnvelopeNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        case 'SequencerNode':
-          newNode = (<SequencerNode
-                      id={id}
-                      key={type + '_' + id}
-                      audioContext={this.state.audioContext}
-                      select={this.select}
-                      deleteNode={this.deleteNode}
-                    />);
-          break;
-        default:
+    let id = this.getNextFreeId(type),
+        newNode;
+    switch (type) {
+      case 'BaseNode':
+        newNode = (<BaseNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'OscNode':
+        newNode = (<OscNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'GainNode':
+        newNode = (<GainNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'FilterNode':
+        newNode = (<FilterNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'LFONode':
+        newNode = (<LFONode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'EnvelopeNode':
+        newNode = (<EnvelopeNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      case 'SequencerNode':
+        newNode = (<SequencerNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                  />);
+        break;
+      default:
 
-      }
-      this.setState({
-        nodes: [...this.state.nodes, newNode],
-      });
+    }
+    this.setState({
+      nodes: [...this.state.nodes, newNode],
+    });
   }
 
   deleteNode = (name) => {
@@ -274,6 +275,15 @@ class Workspace extends React.Component {
     // }
   }
 
+  createNodeHandlers = {
+    'OSC': this.createNode.bind(this, 'OscNode'),
+    'GAIN': this.createNode.bind(this, 'GainNode'),
+    'FILTER': this.createNode.bind(this, 'FilterNode'),
+    'LFO': this.createNode.bind(this, 'LFONode'),
+    'ENV': this.createNode.bind(this, 'EnvelopeNode'),
+    'SEQ': this.createNode.bind(this, 'SequencerNode'),
+  };
+
   render() {
     // let {children} = this.props;
     // let nodes = [];
@@ -284,12 +294,7 @@ class Workspace extends React.Component {
     // }
     return (
       <div style={style} className='workspace'>
-        <button onClick={this.createNode.bind(this, 'OscNode')}>Create OscNode</button>
-        <button onClick={this.createNode.bind(this, 'GainNode')}>Create GainNode</button>
-        <button onClick={this.createNode.bind(this, 'FilterNode')}>Create FilterNode</button>
-        <button onClick={this.createNode.bind(this, 'LFONode')}>Create LFONode</button>
-        <button onClick={this.createNode.bind(this, 'EnvelopeNode')}>Create EnvelopeNode</button>
-        <button onClick={this.createNode.bind(this, 'SequencerNode')}>Create SequencerNode</button>
+        <Pallet createNodeHandlers={this.createNodeHandlers}/>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
       </div>

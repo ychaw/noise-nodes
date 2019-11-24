@@ -9,10 +9,12 @@ class Pallet extends React.Component {
     render() {
         return (
             <div style={palletStyle}>
-                <PalletItem type='OSC' />
-                <PalletItem type='GAIN' />
-                <PalletItem type='FILTER' />
-                <PalletItem type='LFO' />
+                <PalletItem type='OSC' createNodeHandlers={this.props.createNodeHandlers}/>
+                <PalletItem type='GAIN' createNodeHandlers={this.props.createNodeHandlers}/>
+                <PalletItem type='FILTER' createNodeHandlers={this.props.createNodeHandlers}/>
+                <PalletItem type='LFO' createNodeHandlers={this.props.createNodeHandlers}/>
+                <PalletItem type='ENV' createNodeHandlers={this.props.createNodeHandlers}/>
+                <PalletItem type='SEQ' createNodeHandlers={this.props.createNodeHandlers}/>
             </div> 
         );
     }
@@ -26,7 +28,7 @@ class PalletItem extends React.Component {
 
     render() {
         return (
-            <button className='palletItemPlaceholder' style={palletItemStyle}>
+            <button onClick={this.props.createNodeHandlers[this.state.type]} style={palletItemStyle}>
                 {this.state.type}
             </button>
         );

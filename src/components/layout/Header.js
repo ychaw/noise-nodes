@@ -1,5 +1,4 @@
 import React from 'react';
-import Pallet from '../Pallet';
 
 function Header() {
     return (
@@ -7,7 +6,6 @@ function Header() {
             <div style={headerItemStyle}>
                 <h1>NoiseNodes</h1>
             </div>
-            <Pallet />
             <div style={{...headerItemStyle,...aboutStyle}}>
                 <h2>About</h2>
             </div>
