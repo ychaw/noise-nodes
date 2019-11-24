@@ -139,7 +139,9 @@ class SequencerNode extends React.Component {
 
     for (var i = 0; i < beats; i++) {
       buttons.push(
-        <button onClick={this.toggleBeat.bind(this, i)}>{activeBeats[i] ? 'X' : 'O'}</button>
+        <button onClick={this.toggleBeat.bind(this, i)} key={i.toString()}>
+          {activeBeats[i] ? 'X' : 'O'}
+        </button>
       );
     }
 
@@ -156,7 +158,7 @@ class SequencerNode extends React.Component {
 
   render() {
     return (
-      <div style={style}className='SequencerNode'>
+      <div style={style} className='SequencerNode'>
         <h1>{this.name}</h1>
         <Setting name='BPM' unit='' changeValue={this.changeBPM} min='1' max='240' step='1' value={this.state.bpm} />
         <Setting name='Beats' unit='' changeValue={this.changeBeats} min='1' max='32' step='1' value={this.state.beats} />
