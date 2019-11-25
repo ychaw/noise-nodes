@@ -12,6 +12,10 @@ class OutputNode extends React.Component {
       this.state = {
         gain: 0.5,
       };
+      this.boundaries = {
+        minGain: 0,
+        maxGain: 1,
+      }
   }
 
   componentDidMount() {
@@ -20,7 +24,7 @@ class OutputNode extends React.Component {
 
   changeGain = (e) => {
     const {gain} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
     this.setState({gain: newValue}, ()=> {
       gain.gain.value = newValue;
     });

@@ -32,6 +32,12 @@ class SequencerNode extends React.Component {
         r: 0.1,
       }
       this.timerID = null;
+      this.boundaries = {
+        minBPM: 10,
+        minBeats: 1,
+        maxBPM: 240,
+        maxBeats: 32,
+      }
   }
 
   componentDidMount() {
@@ -111,13 +117,13 @@ class SequencerNode extends React.Component {
   }
 
   changeBPM = (e) => {
-    const newValue = e.target.value;
+    const newValue = Math.round((this.boundaries.maxBPM - this.boundaries.minBPM) * e.target.value + this.boundaries.minBPM);
     this.setState({bpm: newValue}, ()=> {
     });
   }
 
   changeBeats = (e) => {
-    const newValue = Number(e.target.value);
+    const newValue = Math.round((this.boundaries.maxBeats - this.boundaries.minBeats) * e.target.value + this.boundaries.minBeats);
     let activeBeats = this.state.activeBeats;
 
     // trim the activeBeats array to fit

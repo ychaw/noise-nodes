@@ -19,6 +19,18 @@ class EnvelopeNode extends React.Component {
         sustain:  0.5,
         release: 1,
       }
+      this.boundaries = {
+        minGain: 0,
+        minAttack: 0,
+        minDecay: 0,
+        minSustain:  0,
+        minRelease: 0,
+        maxGain: 1,
+        maxAttack: 1,
+        maxDecay: 1,
+        maxSustain:  1,
+        maxRelease: 1,
+      }
   }
 
   componentDidMount() {
@@ -53,31 +65,35 @@ class EnvelopeNode extends React.Component {
   }
 
   changeGain = (e) => {
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
     this.setState({gain: newValue}, ()=> {
     });
   }
 
   changeAttack = (e) => {
-    this.setState({attack: e.target.value}, () => {
+    const newValue = (this.boundaries.maxAttack - this.boundaries.minAttack) * e.target.value + this.boundaries.minAttack;
+    this.setState({attack: newValue}, () => {
 
     });
   }
 
   changeDecay = (e) => {
-    this.setState({decay: e.target.value}, () => {
+    const newValue = (this.boundaries.maxDecay - this.boundaries.minDecay) * e.target.value + this.boundaries.minDecay;
+    this.setState({decay: newValue}, () => {
 
     });
   }
 
   changeSustain = (e) => {
-    this.setState({sustain: e.target.value}, () => {
+    const newValue = (this.boundaries.maxSustain - this.boundaries.minSustain) * e.target.value + this.boundaries.minSustain;
+    this.setState({sustain: newValue}, () => {
 
     });
   }
 
   changeRelease = (e) => {
-    this.setState({release: e.target.value}, () => {
+    const newValue = (this.boundaries.maxRelease - this.boundaries.minRelease) * e.target.value + this.boundaries.minRelease;
+    this.setState({release: newValue}, () => {
 
     });
   }

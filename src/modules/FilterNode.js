@@ -15,11 +15,17 @@ class FilterNode extends React.Component {
         Q: 0,
         type: 'lowpass',
       }
+      this.boundaries = {
+        minFrequency: 10,
+        minQ: 0.0001,
+        maxFrequency: 20000,
+        maxQ: 1000,
+      }
   }
 
   changeGain = (e) => {
     const {gain} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
     this.setState({gain: newValue}, ()=> {
       gain.gain.value = newValue;
     });
@@ -27,7 +33,7 @@ class FilterNode extends React.Component {
 
   changeFrequency = (e) => {
     const {filter} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxFrequency - this.boundaries.minFrequency) * e.target.value + this.boundaries.minFrequency;
     this.setState({frequency: newValue}, ()=> {
       filter.frequency.value = newValue;
     });
@@ -35,7 +41,7 @@ class FilterNode extends React.Component {
 
   changeQ = (e) => {
     const {filter} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxQ - this.boundaries.minQ) * e.target.value + this.boundaries.minQ;
     this.setState({Q: newValue}, ()=> {
       filter.Q.value = newValue;
     });

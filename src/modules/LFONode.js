@@ -18,6 +18,12 @@ class LFONode extends React.Component {
         frequency: 5,
         gain: 0.5,
       }
+      this.boundaries = {
+        minFrequency: 0.1,
+        minGain: 0,
+        maxFrequency: 2000,
+        maxGain: 1,
+      }
   }
 
   componentDidMount() {
@@ -45,7 +51,7 @@ class LFONode extends React.Component {
 
   changeFrequency = (e) => {
     const {osc} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxFrequency - this.boundaries.minFrequency) * e.target.value + this.boundaries.minFrequency;
     this.setState({frequency: newValue}, () => {
       osc.frequency.value = newValue;
     });
@@ -53,7 +59,7 @@ class LFONode extends React.Component {
 
   changeGain = (e) => {
     const {gain} = this.dsp;
-    const newValue = e.target.value;
+    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
     this.setState({gain: newValue}, ()=> {
       gain.gain.value = newValue;
     });
