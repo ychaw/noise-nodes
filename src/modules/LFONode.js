@@ -19,9 +19,9 @@ class LFONode extends React.Component {
         gain: 0.5,
       }
       this.boundaries = {
-        minFrequency: 0.1,
+        minFrequency: 0.001,
         minGain: 0,
-        maxFrequency: 2000,
+        maxFrequency: 200,
         maxGain: 1,
       }
   }

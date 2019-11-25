@@ -21,7 +21,7 @@ class OscNode extends React.Component {
       this.boundaries = {
         minFrequency: 20,
         minGain: 0,
-        maxFrequency: 20000,
+        maxFrequency: 2000,
         maxGain: 1,
       }
   }
@@ -64,7 +64,7 @@ class OscNode extends React.Component {
       gain.gain.value = newValue;
     });
   }
-  
+
   changeWaveform = (e) => {
     const {osc} = this.dsp;
     const newValue = e.target.value
