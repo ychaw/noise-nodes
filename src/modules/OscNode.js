@@ -11,6 +11,7 @@ class OscNode extends React.Component {
       this.dsp = {
         osc: this.props.audioContext.createOscillator(),
         gain: this.props.audioContext.createGain(),
+        frequencyInput: this.props.audioContext.createGain(),
       }
       this.state = {
         isPlaying: false,
@@ -32,6 +33,13 @@ class OscNode extends React.Component {
     gain.gain.value = 0;
     osc.connect(gain);
     osc.start();
+
+    this.initInputs();
+  }
+
+  initInputs = () => {
+    this.dsp.frequencyInput.gain.value = this.boundaries.maxFrequency;
+    this.dsp.frequencyInput.connect(this.dsp.osc.frequency);
   }
 
   componentWillUnmount() {
@@ -79,7 +87,7 @@ class OscNode extends React.Component {
         <h1>{this.name}</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} value={this.state.frequency} />
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.osc.frequency} select={this.props.select}/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
         <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>

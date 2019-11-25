@@ -9,6 +9,8 @@ class FilterNode extends React.Component {
       this.name = 'FilterNode' + this.props.id;
       this.dsp = {
         filter: this.props.audioContext.createBiquadFilter(),
+        frequencyInput: this.props.audioContext.createGain(),
+        qInput: this.props.audioContext.createGain(),
       }
       this.state = {
         frequency: 2000,
@@ -21,6 +23,18 @@ class FilterNode extends React.Component {
         maxFrequency: 20000,
         maxQ: 1000,
       }
+  }
+
+  componentDidMount() {
+    this.initInputs();
+  }
+
+  initInputs = () => {
+    this.dsp.frequencyInput.gain.value = this.boundaries.maxFrequency;
+    this.dsp.frequencyInput.connect(this.dsp.filter.frequency);
+
+    this.dsp.qInput.gain.value = this.boundaries.maxQ;
+    this.dsp.qInput.connect(this.dsp.filter.Q);
   }
 
   changeGain = (e) => {
@@ -52,9 +66,9 @@ class FilterNode extends React.Component {
       <div style={style}className='FilterNode'>
         <h1>{this.name}</h1>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} value={this.state.frequency} />
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.filter.frequency} select={this.props.select}/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
         <Setting name='Q' unit='' changeValue={this.changeQ} value={this.state.Q} />
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.filter.Q} select={this.props.select}/>
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select}/>
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select}/>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
