@@ -166,8 +166,8 @@ class SequencerNode extends React.Component {
     return (
       <div style={style} className='SequencerNode'>
         <h1>{this.name}</h1>
-        <Setting name='BPM' unit='' changeValue={this.changeBPM} min='1' max='240' step='1' value={this.state.bpm} />
-        <Setting name='Beats' unit='' changeValue={this.changeBeats} min='1' max='32' step='1' value={this.state.beats} />
+        <Setting name='BPM' unit='' changeValue={this.changeBPM} value={this.state.bpm} />
+        <Setting name='Beats' unit='' changeValue={this.changeBeats} value={this.state.beats} />
         {this.renderSequencerButtons()}
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select}/>

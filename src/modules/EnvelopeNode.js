@@ -102,11 +102,11 @@ class EnvelopeNode extends React.Component {
     return (
       <div style={style}className='EnvelopeNode'>
         <h1>{this.name}</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='2000' step='0.1' value={this.state.gain} />
-        <Setting name='Attack' unit='' changeValue={this.changeAttack} min='0' max='1000' step='1' value={this.state.attack} />
-        <Setting name='Decay' unit='' changeValue={this.changeDecay} min='0' max='1000' step='1' value={this.state.decay} />
-        <Setting name='Sustain' unit='' changeValue={this.changeSustain} min='0' max='1000' step='1' value={this.state.sustain} />
-        <Setting name='Release' unit='' changeValue={this.changeRelease} min='0' max='1000' step='1' value={this.state.release} />
+        <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
+        <Setting name='Attack' unit='' changeValue={this.changeAttack} value={this.state.attack} />
+        <Setting name='Decay' unit='' changeValue={this.changeDecay} value={this.state.decay} />
+        <Setting name='Sustain' unit='' changeValue={this.changeSustain} value={this.state.sustain} />
+        <Setting name='Release' unit='' changeValue={this.changeRelease} value={this.state.release} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
