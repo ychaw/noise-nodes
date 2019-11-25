@@ -63,7 +63,9 @@ class OscNode extends React.Component {
     this.setState({gain: newValue}, ()=> {
       gain.gain.value = newValue;
     });
-  } {
+  }
+  
+  changeWaveform = (e) => {
     const {osc} = this.dsp;
     const newValue = e.target.value
     this.setState({waveform: newValue}, () => {
