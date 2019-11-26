@@ -23,10 +23,16 @@ class FilterNode extends React.Component {
         maxFrequency: 20000,
         maxQ: 1000,
       }
+      this.inputs = [this.dsp.frequencyInput, this.dsp.qInput, this.dsp.filter]
+      this.outputs = [this.dsp.filter]
   }
 
   componentDidMount() {
     this.initInputs();
+  }
+
+  componentWillUnmount() {
+    this.props.cleanUp(this.inputs, this.outputs);
   }
 
   initInputs = () => {

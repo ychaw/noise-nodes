@@ -25,6 +25,8 @@ class LFONode extends React.Component {
         maxFrequency: 200,
         maxGain: 1,
       }
+      this.inputs = [this.dsp.frequencyInput, this.dsp.gain.gain];
+      this.outputs = [this.dsp.gain];
   }
 
   componentDidMount() {
@@ -44,6 +46,7 @@ class LFONode extends React.Component {
 
   componentWillUnmount() {
     this.dsp.osc.stop();
+    this.props.cleanUp(this.inputs, this.outputs);
   }
 
   // FOR TESTING

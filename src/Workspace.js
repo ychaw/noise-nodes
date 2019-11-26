@@ -52,6 +52,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'OscNode':
@@ -61,6 +62,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'GainNode':
@@ -70,6 +72,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'FilterNode':
@@ -79,6 +82,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'LFONode':
@@ -88,6 +92,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'EnvelopeNode':
@@ -97,6 +102,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       case 'SequencerNode':
@@ -106,6 +112,7 @@ class Workspace extends React.Component {
                     audioContext={this.state.audioContext}
                     select={this.select}
                     deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
                   />);
         break;
       default:
@@ -283,6 +290,37 @@ class Workspace extends React.Component {
     'ENV': this.createNode.bind(this, 'EnvelopeNode'),
     'SEQ': this.createNode.bind(this, 'SequencerNode'),
   };
+
+  cleanUp = (inputs, outputs) => {
+    console.log("existingConnections at cleanUp start", this.state.existingConnections);
+    // clean up inputs
+    for (let input of inputs) {
+      // get all connections with this input
+      let connections = this.state.existingConnections.filter((existingConnection) => {
+        return (existingConnection.input === input);
+      });
+      // disconnect them
+      for (let connection of connections) {
+        connection.output.disconnect(connection.input);
+        this.removeStoredConnection(connection.output, connection.input);
+      }
+    }
+
+    //clean up outputs
+    for (let output of outputs) {
+      // get all connections with this output
+      let connections = this.state.existingConnections.filter((existingConnection) => {
+        return (existingConnection.output === output);
+      });
+      // disconnect them
+      for (let connection of connections) {
+        connection.output.disconnect(connection.input);
+        this.removeStoredConnection(connection.output, connection.input);
+      }
+    }
+
+    console.log("existingConnections at cleanUp end", this.state.existingConnections);
+  }
 
   render() {
     // let {children} = this.props;

@@ -17,6 +17,12 @@ class GainNode extends React.Component {
         minGain: 0,
         maxGain: 1,
       }
+      this.inputs = [this.dsp.gain];
+      this.outputs = [this.dsp.gain];
+  }
+
+  componentWillUnmount() {
+    this.props.cleanUp(this.inputs, this.outputs);
   }
 
   changeGain = (e) => {

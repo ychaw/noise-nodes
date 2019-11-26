@@ -38,6 +38,8 @@ class SequencerNode extends React.Component {
         maxBPM: 240,
         maxBeats: 32,
       }
+      this.inputs = [];
+      this.outputs = [this.dsp.gate];
   }
 
   componentDidMount() {
@@ -50,6 +52,7 @@ class SequencerNode extends React.Component {
 
   componentWillUnmount() {
     this.dsp.gate.stop();
+    this.props.cleanUp(this.inputs, this.outputs);
   }
 
   initializeActiveBeats = () => {

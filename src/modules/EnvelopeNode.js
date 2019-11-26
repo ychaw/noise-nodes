@@ -31,6 +31,8 @@ class EnvelopeNode extends React.Component {
         maxSustain:  1,
         maxRelease: 1,
       }
+      this.inputs = []
+      this.outputs = [this.dsp.gain]
   }
 
   componentDidMount() {
@@ -42,6 +44,7 @@ class EnvelopeNode extends React.Component {
 
   componentWillUnmount() {
     this.dsp.constantSource.stop();
+    this.props.cleanUp(this.inputs, this.outputs);
   }
 
   // FOR TESTING
