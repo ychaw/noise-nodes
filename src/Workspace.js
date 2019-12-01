@@ -8,6 +8,8 @@ import FilterNode from './modules/FilterNode';
 import LFONode from './modules/LFONode';
 import EnvelopeNode from './modules/EnvelopeNode';
 import SequencerNode from './modules/SequencerNode';
+import LineTo from 'react-lineto';
+import { isEqual } from 'lodash-es';
 
 class Workspace extends React.Component {
   constructor(props) {
@@ -140,8 +142,14 @@ class Workspace extends React.Component {
   }
 
   storeConnection = (output, input) => {
+    const newConnection = {
+      output: output,
+      input: input,
+      component: <LineTo className="line" from={input.id} to={output.id} {...lineStyle} />,
+    };
+    
     this.setState({
-      existingConnections: [...this.state.existingConnections, {output: output, input: input}]
+      existingConnections: [...this.state.existingConnections, newConnection]
     });
   }
 
@@ -198,10 +206,10 @@ class Workspace extends React.Component {
       const {input, output} = this.sortSelection();
       if(this.connectionExists(output, input)) {
         output.audioNode.disconnect(input.audioNode);
-        this.removeStoredConnection(output.audioNode, input.audioNode);
+        this.removeStoredConnection(output, input);
       } else {
         output.audioNode.connect(input.audioNode);
-        this.storeConnection(output.audioNode, input.audioNode);
+        this.storeConnection(output, input);
       }
     } else {
       alert("I can only connect an input with an output of the same type.");
@@ -292,16 +300,15 @@ class Workspace extends React.Component {
   };
 
   cleanUp = (inputs, outputs) => {
-    console.log("existingConnections at cleanUp start", this.state.existingConnections);
     // clean up inputs
     for (let input of inputs) {
       // get all connections with this input
       let connections = this.state.existingConnections.filter((existingConnection) => {
-        return (existingConnection.input === input);
+        return (existingConnection.input.audioNode == input);
       });
       // disconnect them
       for (let connection of connections) {
-        connection.output.disconnect(connection.input);
+        connection.output.audioNode.disconnect(connection.input.audioNode);
         this.removeStoredConnection(connection.output, connection.input);
       }
     }
@@ -310,16 +317,14 @@ class Workspace extends React.Component {
     for (let output of outputs) {
       // get all connections with this output
       let connections = this.state.existingConnections.filter((existingConnection) => {
-        return (existingConnection.output === output);
+        return (existingConnection.output.audioNode === output);
       });
       // disconnect them
       for (let connection of connections) {
-        connection.output.disconnect(connection.input);
+        connection.output.audioNode.disconnect(connection.input.audioNode);
         this.removeStoredConnection(connection.output, connection.input);
       }
     }
-
-    console.log("existingConnections at cleanUp end", this.state.existingConnections);
   }
 
   render() {
@@ -330,11 +335,20 @@ class Workspace extends React.Component {
     //   let element = (<div id={'nodeContainer_'+child.props.id}>{child}</div>);
     //   nodes.push(element);
     // }
+
+    let lineComponents = [];
+    if (this.state.existingConnections.length) {
+      for (const connection of this.state.existingConnections) {
+        lineComponents.push(connection.component); 
+      }
+    }
+
     return (
       <div style={style} className='workspace'>
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
+        {lineComponents}
       </div>
     );
   }
@@ -345,5 +359,15 @@ const style = {
   height: '600px',
   backgroundColor: 'var(--primary-shade0)',
 }
+
+const lineStyle = {
+  // delay: true,
+  borderColor: 'red',
+  borderStyle: 'solid',
+  borderWidth: 5,
+  // orientation: "h",
+  // fromAnchor: "bottom",
+  // toAnchor: "bottom",
+};
 
 export default Workspace;
