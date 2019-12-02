@@ -191,9 +191,6 @@ class Workspace extends React.Component {
   }
 
   toggleConnection = () => {
-    // const first = this.state.selection[0],
-    //       second = this.state.selection[1];
-
     if(this.isSelectionValidConnection()) {
       const {input, output} = this.sortSelection();
       if(this.connectionExists(output, input)) {
@@ -206,48 +203,9 @@ class Workspace extends React.Component {
     } else {
       alert("I can only connect an input with an output of the same type.");
     }
-
-    //make sure no connections from input to input/output to output can be made
-    // if (first.type !== second.type) {
-    //   //connect output to input
-    //   if(first.type === 'control-output' || first.type === 'audio-output' ) {
-    //     if(this.connectionExists(first.audioNode, second.audioNode)) {
-    //       first.audioNode.disconnect(second.audioNode);
-    //       this.removeStoredConnection(first.audioNode, second.audioNode);
-    //     } else {
-    //       first.audioNode.connect(second.audioNode);
-    //       this.storeConnection(first.audioNode, second.audioNode);
-    //     }
-    //   } else {
-    //     if(second.type === 'control-input') {
-    //       if(this.connectionExists(first.audioNode, second.audioNode)) {
-    //         first.audioNode.disconnect(second.audioNode);
-    //         this.removeStoredConnection(first.audioNode, second.audioNode);
-    //       } else {
-    //         first.audioNode.connect(second.audioNode);
-    //         this.storeConnection(first.audioNode, second.audioNode);
-    //       }
-    //     } else {
-    //       if(this.connectionExists(second.audioNode, first.audioNode)) {
-    //         second.audioNode.disconnect(first.audioNode);
-    //         this.removeStoredConnection(second.audioNode, first.audioNode);
-    //       } else {
-    //         second.audioNode.connect(first.audioNode);
-    //         this.storeConnection(second.audioNode, first.audioNode);
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   alert('I can only connect inputs and outputs');
-    // }
   }
 
   select = (id, type, audioNode) => {
-    // const params = {
-    //   id: id,
-    //   type: type,
-    //   audioNode: audioNode
-    // };
     let updatedSelection = [...this.state.selection];
 
     // if bugs with selection occur, check here
@@ -266,20 +224,6 @@ class Workspace extends React.Component {
         this.setState({selection: [null, null]});
       }
     });
-
-    // if(this.state.selection[0] === null) {
-    //   this.setState({selection: this.getUpdatedSelection(0, params)}, () => {
-    //     if(this.state.selection[1] !== null) {
-    //       this.makeConnection();
-    //     }
-    //   });
-    // } else if (this.state.selection[1] === null) {
-    //   this.setState({selection: this.getUpdatedSelection(1, params)}, () => {
-    //     if(this.state.selection[0] !== null) {
-    //       this.makeConnection();
-    //     }
-    //   });
-    // }
   }
 
   createNodeHandlers = {
@@ -323,13 +267,6 @@ class Workspace extends React.Component {
   }
 
   render() {
-    // let {children} = this.props;
-    // let nodes = [];
-    // for(let count = 0; count < children.length; count++) {
-    //   let child = children[count];
-    //   let element = (<div id={'nodeContainer_'+child.props.id}>{child}</div>);
-    //   nodes.push(element);
-    // }
     return (
       <div style={style} className='workspace'>
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
