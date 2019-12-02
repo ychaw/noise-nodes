@@ -104,28 +104,38 @@ class EnvelopeNode extends React.Component {
   render() {
     return (
       <div style={style}className='EnvelopeNode'>
-        <h1>{this.name}</h1>
+        <h1 style={topStyle}>ENV</h1>
         <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
         <Setting name='Attack' unit='' changeValue={this.changeAttack} value={this.state.attack} />
         <Setting name='Decay' unit='' changeValue={this.changeDecay} value={this.state.decay} />
         <Setting name='Sustain' unit='' changeValue={this.changeSustain} value={this.state.sustain} />
         <Setting name='Release' unit='' changeValue={this.changeRelease} value={this.state.release} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );
   }
 }
 
 const style = {
-  width:'200px',
-  height:'350px',
+  width:'250px',
+  height:'450px',
   float: 'left',
   backgroundColor: 'var(--secondary2-shade0)',
-  padding: '16px',
-  border: '8px solid',
-  borderColor: 'var(--secondary2-shade3)',
+}
+
+const topStyle = {
+  display: 'flex',
+  width: '100%',
+  height: '64px',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  margin: '0px',
+  padding: '0px',
+  backgroundColor: 'var(--secondary2-shade3)',
 }
 
 export default EnvelopeNode;

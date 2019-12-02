@@ -87,15 +87,15 @@ class LFONode extends React.Component {
   render() {
     return (
       <div style={style}className='LFONode'>
-        <h1>{this.name}</h1>
+        <h1 style={topStyle}>LFO</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
         <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
         <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
-        <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
+        <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );
   }
@@ -106,9 +106,19 @@ const style = {
   height:'350px',
   float: 'left',
   backgroundColor: 'var(--secondary2-shade0)',
-  padding: '16px',
-  border: '8px solid',
-  borderColor: 'var(--secondary2-shade3)',
+}
+
+const topStyle = {
+  display: 'flex',
+  width: '100%',
+  height: '64px',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  margin: '0px',
+  padding: '0px',
+  backgroundColor: 'var(--secondary2-shade3)',
 }
 
 export default LFONode;

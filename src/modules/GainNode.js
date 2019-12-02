@@ -36,11 +36,11 @@ class GainNode extends React.Component {
   render() {
     return (
       <div style={style}className='GainNode'>
-        <h1>{this.name}</h1>
+        <h1 style={topStyle}>GAIN</h1>
         <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );
   }
@@ -48,12 +48,22 @@ class GainNode extends React.Component {
 
 const style = {
   width:'200px',
-  height:'350px',
+  height:'200px',
   float: 'left',
   backgroundColor: 'var(--secondary1-shade0)',
-  padding: '16px',
-  border: '8px solid',
-  borderColor: 'var(--secondary1-shade3)',
+}
+
+const topStyle = {
+  display: 'flex',
+  width: '100%',
+  height: '64px',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  margin: '0px',
+  padding: '0px',
+  backgroundColor: 'var(--secondary1-shade3)',
 }
 
 export default GainNode;

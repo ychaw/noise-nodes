@@ -168,26 +168,37 @@ class SequencerNode extends React.Component {
   render() {
     return (
       <div style={style} className='SequencerNode'>
-        <h1>{this.name}</h1>
+        <h1 style={topStyle}>SEQ</h1>
         <Setting name='BPM' unit='' changeValue={this.changeBPM} value={this.state.bpm} />
         <Setting name='Beats' unit='' changeValue={this.changeBeats} value={this.state.beats} />
         {this.renderSequencerButtons()}
+        <br></br>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select}/>
       </div>
     );
   }
 }
 
 const style = {
-  width:'200px',
+  width:'300px',
   height:'350px',
   float: 'left',
   backgroundColor: 'var(--secondary2-shade0)',
-  padding: '16px',
-  border: '8px solid',
-  borderColor: 'var(--secondary2-shade3)',
+}
+
+const topStyle = {
+  display: 'flex',
+  width: '100%',
+  height: '64px',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  margin: '0px',
+  padding: '0px',
+  backgroundColor: 'var(--secondary2-shade3)',
 }
 
 export default SequencerNode;

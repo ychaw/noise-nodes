@@ -157,7 +157,7 @@ class Workspace extends React.Component {
             to={input.id}
             {...lineStyle}
         />);
-    
+
     this.setState({
       existingConnections: [...this.state.existingConnections, connection],
       lineComponents: [...this.state.lineComponents, lineComponent],
@@ -168,7 +168,7 @@ class Workspace extends React.Component {
     const updatedConnections = this.state.existingConnections.filter((existingConnection) => {
       return (existingConnection.output.id !== output.id) && (existingConnection.input.id !== input.id);
     });
-    
+
     const lineComponents = this.state.lineComponents.filter((lineComponent) => {
       return ((lineComponent.props.from !== input.id) && (lineComponent.props.to !== output.id));
     });
@@ -287,7 +287,7 @@ class Workspace extends React.Component {
               )
             }
         );
-    
+
     this.setState(
         {existingConnections: nextConnections, lineComponents: nextLineComponents});
   }
@@ -307,7 +307,7 @@ class Workspace extends React.Component {
 const style = {
   width: 'auto',
   height: '600px',
-  backgroundColor: 'var(--primary-shade0)',
+  backgroundColor: 'var(--primary-shade1)',
 }
 
 const lineStyle = {
