@@ -46,7 +46,7 @@ class LFONode extends React.Component {
 
   componentWillUnmount() {
     this.dsp.osc.stop();
-    this.props.cleanUp(this.inputs, this.outputs);
+    this.props.cleanUp(this.name);
   }
 
   // FOR TESTING

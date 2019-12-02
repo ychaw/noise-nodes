@@ -44,7 +44,7 @@ class EnvelopeNode extends React.Component {
 
   componentWillUnmount() {
     this.dsp.constantSource.stop();
-    this.props.cleanUp(this.inputs, this.outputs);
+    this.props.cleanUp(this.name);
   }
 
   // FOR TESTING
