@@ -13,7 +13,11 @@ class Connector extends React.Component {
 
   handleClick = (e) => {
     const {id, type, audioNode} = this.props;
+<<<<<<< HEAD
     this.props.select(id, type, audioNode);
+=======
+    return <button className={this.props.id} style={style} id='connector-button' onClick={this.props.select.bind(this, id, type, audioNode)}>{type}</button>
+>>>>>>> 0ca83b38db9ebbe44c375b1792173c08d8c61d5e
   }
 
   getColors = () => {

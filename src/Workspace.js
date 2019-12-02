@@ -8,18 +8,21 @@ import FilterNode from './modules/FilterNode';
 import LFONode from './modules/LFONode';
 import EnvelopeNode from './modules/EnvelopeNode';
 import SequencerNode from './modules/SequencerNode';
+import LineTo from 'react-lineto';
 
 class Workspace extends React.Component {
   constructor(props) {
     super(props);
     let nodes = [],
         selection = [null, null],
-        existingConnections = [];
+        existingConnections = [],
+        lineComponents = [];
     this.state = {
       audioContext: new AudioContext(),
       nodes,
       selection,
       existingConnections,
+      lineComponents,
     };
   }
 
@@ -140,24 +143,46 @@ class Workspace extends React.Component {
   }
 
   storeConnection = (output, input) => {
+    let type;
+    if ((output.type === "audio-output") && (input.type === "audio-input")) {
+      type = "audio";
+    } else if ((output.type === "control-output") && (input.type === "control-input")) {
+      type = "control";
+    }
+    const connection = {type: type, output: output, input: input};
+    const lineComponent =
+        (<LineTo
+            className="line"
+            from={output.id}
+            to={input.id}
+            {...lineStyle}
+        />);
+    
     this.setState({
-      existingConnections: [...this.state.existingConnections, {output: output, input: input}]
+      existingConnections: [...this.state.existingConnections, connection],
+      lineComponents: [...this.state.lineComponents, lineComponent],
     });
   }
 
   removeStoredConnection = (output, input) => {
-    let updatedConnections = this.state.existingConnections.filter((existingConnection) => {
-      return (existingConnection.output !== output) && (existingConnection.input !== input);
+    const updatedConnections = this.state.existingConnections.filter((existingConnection) => {
+      return (existingConnection.output.id !== output.id) && (existingConnection.input.id !== input.id);
     });
+    
+    const lineComponents = this.state.lineComponents.filter((lineComponent) => {
+      return ((lineComponent.props.from !== input.id) && (lineComponent.props.to !== output.id));
+    });
+
     this.setState({
-      existingConnections: [...updatedConnections]
+      existingConnections: [...updatedConnections],
+      lineComponents : [...lineComponents],
     });
   }
 
   connectionExists = (output, input) => {
     //get the same connections
     let sameConnections = this.state.existingConnections.filter((existingConnection) => {
-      return (existingConnection.output === output) && (existingConnection.input === input);
+      return (existingConnection.output.id === output.id) && (existingConnection.input.id === input.id);
     });
     //if there are any, return true
     return sameConnections.length > 0;
@@ -193,12 +218,12 @@ class Workspace extends React.Component {
   toggleConnection = () => {
     if(this.isSelectionValidConnection()) {
       const {input, output} = this.sortSelection();
-      if(this.connectionExists(output, input)) {
+      if (this.connectionExists(output, input)) {
         output.audioNode.disconnect(input.audioNode);
-        this.removeStoredConnection(output.audioNode, input.audioNode);
+        this.removeStoredConnection(output, input);
       } else {
         output.audioNode.connect(input.audioNode);
-        this.storeConnection(output.audioNode, input.audioNode);
+        this.storeConnection(output, input);
       }
     } else {
       alert("I can only connect an input with an output of the same type.");
@@ -210,11 +235,9 @@ class Workspace extends React.Component {
 
     // if bugs with selection occur, check here
     updatedSelection.some((value, index, _updatedSelection) => {
-      if(value === null) updatedSelection[index] = {
-        id: id,
-        type: type,
-        audioNode: audioNode
-      };
+      if (value === null) {
+        updatedSelection[index] = { id: id, type: type, audioNode: audioNode };
+      }
       return value === null;
     });
 
@@ -235,35 +258,38 @@ class Workspace extends React.Component {
     'SEQ': this.createNode.bind(this, 'SequencerNode'),
   };
 
-  cleanUp = (inputs, outputs) => {
-    console.log("existingConnections at cleanUp start", this.state.existingConnections);
-    // clean up inputs
-    for (let input of inputs) {
-      // get all connections with this input
-      let connections = this.state.existingConnections.filter((existingConnection) => {
-        return (existingConnection.input === input);
-      });
-      // disconnect them
-      for (let connection of connections) {
-        connection.output.disconnect(connection.input);
-        this.removeStoredConnection(connection.output, connection.input);
+  cleanUp = (nodeName) => {
+    for (const connection of this.state.existingConnections) {
+      if (
+          connection.input.id.startsWith(nodeName) ||
+              connection.output.id.startsWith(nodeName)
+      ) {
+        connection.output.audioNode.disconnect(connection.input.audioNode);
       }
     }
 
-    //clean up outputs
-    for (let output of outputs) {
-      // get all connections with this output
-      let connections = this.state.existingConnections.filter((existingConnection) => {
-        return (existingConnection.output === output);
-      });
-      // disconnect them
-      for (let connection of connections) {
-        connection.output.disconnect(connection.input);
-        this.removeStoredConnection(connection.output, connection.input);
-      }
-    }
+    const nextConnections =
+        this.state.existingConnections.filter(
+            (connection) => {
+              return (
+                  !(connection.output.id.startsWith(nodeName) ||
+                      connection.input.id.startsWith(nodeName))
+              );
+            }
+        );
 
-    console.log("existingConnections at cleanUp end", this.state.existingConnections);
+    const nextLineComponents =
+        this.state.lineComponents.filter(
+            (lineComponent) => {
+              return (
+                  !(lineComponent.props.from.startsWith(nodeName) ||
+                      lineComponent.props.to.startsWith(nodeName))
+              )
+            }
+        );
+    
+    this.setState(
+        {existingConnections: nextConnections, lineComponents: nextLineComponents});
   }
 
   render() {
@@ -272,6 +298,7 @@ class Workspace extends React.Component {
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
         {this.state.nodes}
         <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
+        {this.state.lineComponents}
       </div>
     );
   }
@@ -282,5 +309,15 @@ const style = {
   height: '600px',
   backgroundColor: 'var(--primary-shade0)',
 }
+
+const lineStyle = {
+  // delay: true,
+  borderColor: 'red',
+  borderStyle: 'solid',
+  borderWidth: 5,
+  // orientation: "h",
+  // fromAnchor: "bottom",
+  // toAnchor: "bottom",
+};
 
 export default Workspace;
