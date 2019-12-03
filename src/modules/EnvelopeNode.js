@@ -1,6 +1,7 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
+import Param from './Param';
 
 class EnvelopeNode extends React.Component {
 
@@ -13,23 +14,11 @@ class EnvelopeNode extends React.Component {
       }
       this.state = {
         isPlaying: false,
-        gain: 1,
-        attack: 1,
-        decay: 1,
-        sustain:  0.5,
-        release: 1,
-      }
-      this.boundaries = {
-        minGain: 0,
-        minAttack: 0,
-        minDecay: 0,
-        minSustain:  0,
-        minRelease: 0,
-        maxGain: 1,
-        maxAttack: 1,
-        maxDecay: 1,
-        maxSustain:  1,
-        maxRelease: 1,
+        gain: new Param('gain', 1, 0, 1),
+        attack: new Param('attack', 1, 0, 1),
+        decay: new Param('decay', 1, 0, 1),
+        sustain:  new Param('sustain', 0.5, 0, 1),
+        release: new Param('release', 1, 0, 1),
       }
       this.inputs = []
       this.outputs = [this.dsp.gain]
@@ -38,7 +27,7 @@ class EnvelopeNode extends React.Component {
   componentDidMount() {
     const {constantSource, gain} = this.dsp;
     constantSource.connect(gain);
-    gain.gain.setValueAtTime(this.state.gain, this.props.audioContext.currentTime);
+    gain.gain.setValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime);
     constantSource.start();
   }
 
@@ -53,51 +42,25 @@ class EnvelopeNode extends React.Component {
     //cancelAndHold would be nicer, but isn't supported in firefox
     this.dsp.gain.gain.cancelScheduledValues(0);
 
-    const targetGain = this.state.gain > 0 ? this.state.gain : 0.001,
+    const targetGain = this.state.gain.absValue > 0 ? this.state.gain.absValue : 0.001,
           node = this.dsp.gain,
           endTimes = [
-            this.props.audioContext.currentTime + this.state.attack,
-            this.props.audioContext.currentTime + this.state.attack + this.state.decay,
-            this.props.audioContext.currentTime + this.state.attack + this.state.decay + this.state.release,
+            this.props.audioContext.currentTime + this.state.attack.absValue,
+            this.props.audioContext.currentTime + this.state.attack.absValue + this.state.decay.absValue,
+            this.props.audioContext.currentTime + this.state.attack.absValue + this.state.decay.absValue + this.state.release.absValue,
           ];
 
     node.gain.linearRampToValueAtTime(targetGain, endTimes[0]);
-    node.gain.linearRampToValueAtTime(this.state.sustain, endTimes[1]);
+    node.gain.linearRampToValueAtTime(this.state.sustain.absValue, endTimes[1]);
     node.gain.linearRampToValueAtTime(0.001, endTimes[2]);
 
   }
 
-  changeGain = (e) => {
-    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
-    this.setState({gain: newValue}, ()=> {
-    });
-  }
-
-  changeAttack = (e) => {
-    const newValue = (this.boundaries.maxAttack - this.boundaries.minAttack) * e.target.value + this.boundaries.minAttack;
-    this.setState({attack: newValue}, () => {
-
-    });
-  }
-
-  changeDecay = (e) => {
-    const newValue = (this.boundaries.maxDecay - this.boundaries.minDecay) * e.target.value + this.boundaries.minDecay;
-    this.setState({decay: newValue}, () => {
-
-    });
-  }
-
-  changeSustain = (e) => {
-    const newValue = (this.boundaries.maxSustain - this.boundaries.minSustain) * e.target.value + this.boundaries.minSustain;
-    this.setState({sustain: newValue}, () => {
-
-    });
-  }
-
-  changeRelease = (e) => {
-    const newValue = (this.boundaries.maxRelease - this.boundaries.minRelease) * e.target.value + this.boundaries.minRelease;
-    this.setState({release: newValue}, () => {
-
+  changeValue = (e, target, param) => {
+    const relValue = e.target.value;
+    let newObj = this.state[param.tag];
+    newObj.relValue = relValue;
+    this.setState({[param.tag]: newObj}, ()=> {
     });
   }
 
@@ -105,11 +68,11 @@ class EnvelopeNode extends React.Component {
     return (
       <div style={style}className='EnvelopeNode'>
         <h1 style={topStyle}>ENV</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
-        <Setting name='Attack' unit='' changeValue={this.changeAttack} value={this.state.attack} />
-        <Setting name='Decay' unit='' changeValue={this.changeDecay} value={this.state.decay} />
-        <Setting name='Sustain' unit='' changeValue={this.changeSustain} value={this.state.sustain} />
-        <Setting name='Release' unit='' changeValue={this.changeRelease} value={this.state.release} />
+        <Setting name='Gain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.gain} />
+        <Setting name='Attack' unit='' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
+        <Setting name='Decay' unit='' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
+        <Setting name='Sustain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
+        <Setting name='Release' unit='' changeValue={this.changeValue} target={'none'} value={this.state.release} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>

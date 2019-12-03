@@ -1,6 +1,7 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
+import Param from './Param';
 
 class GainNode extends React.Component {
 
@@ -11,11 +12,7 @@ class GainNode extends React.Component {
         gain: this.props.audioContext.createGain(),
       }
       this.state = {
-        gain: 0.5,
-      }
-      this.boundaries = {
-        minGain: 0,
-        maxGain: 1,
+        gain: new Param('gain', 0.5, 0, 1),
       }
       this.inputs = [this.dsp.gain];
       this.outputs = [this.dsp.gain];
@@ -25,11 +22,12 @@ class GainNode extends React.Component {
     this.props.cleanUp(this.name);
   }
 
-  changeGain = (e) => {
-    const {gain} = this.dsp;
-    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
-    this.setState({gain: newValue}, ()=> {
-      gain.gain.value = newValue;
+  changeValue = (e, target, param) => {
+    const relValue = e.target.value;
+    let newObj = this.state[param.tag];
+    newObj.relValue = relValue;
+    this.setState({[param.tag]: newObj}, ()=> {
+      target.value = this.state[param.tag].absValue;
     });
   }
 
@@ -37,7 +35,7 @@ class GainNode extends React.Component {
     return (
       <div style={style}className='GainNode'>
         <h1 style={topStyle}>GAIN</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
+        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
