@@ -40,11 +40,13 @@ class EnvelopeNode extends React.Component {
     constantSource.connect(gain);
     gain.gain.setValueAtTime(this.state.gain, this.props.audioContext.currentTime);
     constantSource.start();
+    this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.dsp.constantSource.stop();
     this.props.cleanUp(this.name);
+    this.props.rebuildLineComponents();
   }
 
   // FOR TESTING

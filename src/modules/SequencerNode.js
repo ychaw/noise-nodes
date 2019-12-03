@@ -47,12 +47,13 @@ class SequencerNode extends React.Component {
     gate.offset.setValueAtTime(0, this.props.audioContext.currentTime);
     gate.start();
     this.initializeActiveBeats();
-
+    this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.dsp.gate.stop();
     this.props.cleanUp(this.name);
+    this.props.rebuildLineComponents();
   }
 
   initializeActiveBeats = () => {

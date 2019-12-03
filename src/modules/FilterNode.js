@@ -29,10 +29,12 @@ class FilterNode extends React.Component {
 
   componentDidMount() {
     this.initInputs();
+    this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.props.cleanUp(this.name);
+    this.props.rebuildLineComponents();
   }
 
   initInputs = () => {

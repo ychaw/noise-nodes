@@ -37,6 +37,7 @@ class OscNode extends React.Component {
     osc.start();
 
     this.initInputs();
+    this.props.rebuildLineComponents();
   }
 
   initInputs = () => {
@@ -47,6 +48,7 @@ class OscNode extends React.Component {
   componentWillUnmount() {
     this.dsp.osc.stop();
     this.props.cleanUp(this.name);
+    this.props.rebuildLineComponents();
   }
 
   // FOR TESTING

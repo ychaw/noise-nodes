@@ -21,8 +21,13 @@ class GainNode extends React.Component {
       this.outputs = [this.dsp.gain];
   }
 
+  componentDidMount() {
+    this.props.buildLineComponents();
+  }
+
   componentWillUnmount() {
     this.props.cleanUp(this.name);
+    this.props.buildLineComponents();
   }
 
   changeGain = (e) => {

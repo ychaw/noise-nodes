@@ -30,10 +30,12 @@ class BaseNode extends React.Component {
     gain.gain.value = 0;
     osc.connect(gain);
     osc.start();
+    this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.dsp.osc.stop();
+    this.props.rebuildLineComponents();
   }
 
   // FOR TESTING

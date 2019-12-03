@@ -59,6 +59,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'OscNode':
@@ -69,6 +70,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'GainNode':
@@ -79,6 +81,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'FilterNode':
@@ -89,6 +92,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'LFONode':
@@ -99,6 +103,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'EnvelopeNode':
@@ -109,6 +114,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       case 'SequencerNode':
@@ -119,6 +125,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
       default:
@@ -259,6 +266,25 @@ class Workspace extends React.Component {
         this.setState({selection: [null, null]});
       }
     });
+  }
+
+  rerebuildLineComponents = function() {
+    this.setState({lineComponents: []});
+
+    let lineComponents = [];
+    
+    for (const connection of this.state.existingConnections) {
+      const lineComponent =
+        (<LineTo
+            className="line"
+            from={connection.output.id}
+            to={connection.input.id}
+            {...lineStyle}
+        />);
+      lineComponents = [...lineComponents, lineComponent];
+    }
+    
+    this.setState({lineComponents: lineComponents});
   }
 
   createNodeHandlers = {
