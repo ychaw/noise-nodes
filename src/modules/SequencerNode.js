@@ -1,6 +1,7 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
+import IntegerParam from './IntegerParam';
 
 // this class mutates its internal state (this.sequencer) a lot, take care when making changes
 
@@ -14,8 +15,8 @@ class SequencerNode extends React.Component {
       }
       this.state = {
         isPlaying: false,
-        bpm: 60,
-        beats: 8,
+        bpm: new IntegerParam('bpm', 60, 10, 240),
+        beats: new IntegerParam('beats', 8, 1, 32),
         activeBeats: [],
         beatOffsets: [],
       }
@@ -32,12 +33,6 @@ class SequencerNode extends React.Component {
         r: 0.1,
       }
       this.timerID = null;
-      this.boundaries = {
-        minBPM: 10,
-        minBeats: 1,
-        maxBPM: 240,
-        maxBeats: 32,
-      }
       this.inputs = [];
       this.outputs = [this.dsp.gate];
   }
@@ -121,25 +116,26 @@ class SequencerNode extends React.Component {
   }
 
   changeBPM = (e) => {
-    const newValue = Math.round((this.boundaries.maxBPM - this.boundaries.minBPM) * e.target.value + this.boundaries.minBPM);
-    this.setState({bpm: newValue}, ()=> {
+    let newObj = this.state.bpm;
+    newObj.relValue = e.target.value;
+    this.setState({bpm: newObj}, ()=> {
     });
   }
 
   changeBeats = (e) => {
-    const newValue = Math.round((this.boundaries.maxBeats - this.boundaries.minBeats) * e.target.value + this.boundaries.minBeats);
-    let activeBeats = this.state.activeBeats;
+    let newObj = this.state.beats;
+    newObj.relValue = e.target.value;
+    this.setState({beats: newObj}, ()=> {
+      let activeBeats = this.state.activeBeats;
 
-    // trim the activeBeats array to fit
-    while(activeBeats.length > newValue) {
+      // trim the activeBeats array to fit
+      while(activeBeats.length > this.state.beats.absValue) {
         activeBeats.pop();
-    }
+      }
 
-    while(activeBeats.length < newValue) {
+      while(activeBeats.length < this.state.beats.absValue) {
         activeBeats.push(false);
-    }
-
-    this.setState({beats: newValue}, ()=> {
+      }
     });
   }
 
@@ -147,7 +143,7 @@ class SequencerNode extends React.Component {
     const {beats, activeBeats} = this.state;
     let buttons = [];
 
-    for (var i = 0; i < beats; i++) {
+    for (var i = 0; i < beats.absValue; i++) {
       buttons.push(
         <button onClick={this.toggleBeat.bind(this, i)} key={i.toString()}>
           {activeBeats[i] ? 'X' : 'O'}

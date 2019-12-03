@@ -1,6 +1,7 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
+import Param from './Param';
 
 class FilterNode extends React.Component {
 
@@ -13,15 +14,9 @@ class FilterNode extends React.Component {
         qInput: this.props.audioContext.createGain(),
       }
       this.state = {
-        frequency: 2000,
-        Q: 0,
+        frequency: new Param('frequency', 2000, 10, 20000),
+        Q: new Param('Q', 0, 0.0001, 1000),
         type: 'lowpass',
-      }
-      this.boundaries = {
-        minFrequency: 10,
-        minQ: 0.0001,
-        maxFrequency: 20000,
-        maxQ: 1000,
       }
       this.inputs = [this.dsp.frequencyInput, this.dsp.qInput, this.dsp.filter]
       this.outputs = [this.dsp.filter]
@@ -38,34 +33,19 @@ class FilterNode extends React.Component {
   }
 
   initInputs = () => {
-    this.dsp.frequencyInput.gain.value = this.boundaries.maxFrequency;
+    this.dsp.frequencyInput.gain.value = this.state.frequency.max;
     this.dsp.frequencyInput.connect(this.dsp.filter.frequency);
 
-    this.dsp.qInput.gain.value = this.boundaries.maxQ;
+    this.dsp.qInput.gain.value = this.state.Q.max;
     this.dsp.qInput.connect(this.dsp.filter.Q);
   }
 
-  changeGain = (e) => {
-    const {gain} = this.dsp;
-    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
-    this.setState({gain: newValue}, ()=> {
-      gain.gain.value = newValue;
-    });
-  }
-
-  changeFrequency = (e) => {
-    const {filter} = this.dsp;
-    const newValue = (this.boundaries.maxFrequency - this.boundaries.minFrequency) * e.target.value + this.boundaries.minFrequency;
-    this.setState({frequency: newValue}, ()=> {
-      filter.frequency.value = newValue;
-    });
-  }
-
-  changeQ = (e) => {
-    const {filter} = this.dsp;
-    const newValue = (this.boundaries.maxQ - this.boundaries.minQ) * e.target.value + this.boundaries.minQ;
-    this.setState({Q: newValue}, ()=> {
-      filter.Q.value = newValue;
+  changeValue = (e, target, param) => {
+    const relValue = e.target.value;
+    let newObj = this.state[param.tag];
+    newObj.relValue = relValue;
+    this.setState({[param.tag]: newObj}, ()=> {
+      target.value = this.state[param.tag].absValue;
     });
   }
 
@@ -73,23 +53,9 @@ class FilterNode extends React.Component {
     return (
       <div style={style}className='FilterNode'>
         <h1 style={topStyle}>FLT</h1>
-        <Setting
-          name='Frequency'
-          unit='Hz'
-          changeValue={this.changeFrequency}
-          value={this.state.frequency}
-          min={this.boundaries.minFrequency}
-          max={this.boundaries.maxFrequency}
-        />
+        <Setting name='Frequency' unit='Hz' changeValue={this.changeValue} target={this.dsp.filter.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting
-          name='Q'
-          unit=''
-          changeValue={this.changeQ}
-          value={this.state.Q}
-          min={this.boundaries.minQ}
-          max={this.boundaries.maxQ}
-        />
+        <Setting name='Q' unit='' changeValue={this.changeValue} target={this.dsp.filter.Q} value={this.state.Q} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select}/>
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>

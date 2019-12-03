@@ -2,6 +2,7 @@ import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
+import Param from './Param';
 
 class LFONode extends React.Component {
 
@@ -16,14 +17,8 @@ class LFONode extends React.Component {
       this.state = {
         isPlaying: false,
         waveform: 'sine',
-        frequency: 5,
-        gain: 0.5,
-      }
-      this.boundaries = {
-        minFrequency: 0.001,
-        minGain: 0,
-        maxFrequency: 200,
-        maxGain: 1,
+        frequency: new Param('frequency', 5, 0.001, 200),
+        gain: new Param('gain', 0.5, 0, 1),
       }
       this.inputs = [this.dsp.frequencyInput, this.dsp.gain.gain];
       this.outputs = [this.dsp.gain];
@@ -31,7 +26,7 @@ class LFONode extends React.Component {
 
   componentDidMount() {
     const {osc, gain} = this.dsp;
-    osc.frequency.value = this.state.frequency;
+    osc.frequency.value = this.state.frequency.absValue;
     gain.gain.value = 0;
     osc.connect(gain);
     osc.start();
@@ -41,7 +36,7 @@ class LFONode extends React.Component {
   }
 
   initInputs = () => {
-    this.dsp.frequencyInput.gain.value = this.boundaries.maxFrequency;
+    this.dsp.frequencyInput.gain.value = this.state.gain.max;
     this.dsp.frequencyInput.connect(this.dsp.osc.frequency);
   }
 
@@ -55,26 +50,19 @@ class LFONode extends React.Component {
   togglePlay = () => {
     if(!this.state.isPlaying) {
       this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.value = this.state.gain;
+      this.dsp.gain.gain.value = this.state.gain.absValue;
     } else {
       this.setState({isPlaying: !this.state.isPlaying});
       this.dsp.gain.gain.value = 0;
     }
   }
 
-  changeFrequency = (e) => {
-    const {osc} = this.dsp;
-    const newValue = (this.boundaries.maxFrequency - this.boundaries.minFrequency) * e.target.value + this.boundaries.minFrequency;
-    this.setState({frequency: newValue}, () => {
-      osc.frequency.value = newValue;
-    });
-  }
-
-  changeGain = (e) => {
-    const {gain} = this.dsp;
-    const newValue = (this.boundaries.maxGain - this.boundaries.minGain) * e.target.value + this.boundaries.minGain;
-    this.setState({gain: newValue}, ()=> {
-      gain.gain.value = newValue;
+  changeValue = (e, target, param) => {
+    const relValue = e.target.value;
+    let newObj = this.state[param.tag];
+    newObj.relValue = relValue;
+    this.setState({[param.tag]: newObj}, ()=> {
+      target.value = this.state[param.tag].absValue;
     });
   }
 
@@ -91,23 +79,9 @@ class LFONode extends React.Component {
       <div style={style}className='LFONode'>
         <h1 style={topStyle}>LFO</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
-        <Setting
-          name='Frequency'
-          unit='Hz'
-          changeValue={this.changeFrequency}
-          value={this.state.frequency}
-          min={this.boundaries.minFrequency}
-          max={this.boundaries.maxFrequency}
-        />
+        <Setting name='Frequency' unit='Hz' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting
-          name='Gain'
-          unit=''
-          changeValue={this.changeGain}
-          value={this.state.gain}
-          min={this.boundaries.minGain}
-          max={this.boundaries.maxGain}
-        />
+        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
