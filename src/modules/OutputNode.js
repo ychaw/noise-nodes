@@ -16,6 +16,7 @@ class OutputNode extends React.Component {
   }
 
   componentDidMount() {
+    this.dsp.gain.gain.value = this.state.gain.absValue;
     this.dsp.gain.connect(this.props.audioContext.destination);
   }
 
