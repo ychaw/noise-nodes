@@ -180,14 +180,14 @@ class Workspace extends React.Component {
   removeStoredConnection = (output, input) => {
     const updatedConnections =
         this.state.existingConnections.filter((existingConnection) => {
-          return (existingConnection.output.id !== output.id) &&
+          return (existingConnection.output.id !== output.id) ||
               (existingConnection.input.id !== input.id);
         });
 
     const lineComponents =
         this.state.lineComponents.filter((lineComponent) => {
-            return (lineComponent.props.from !== input.id) &&
-                (lineComponent.props.to !== output.id);
+            return (lineComponent.props.from !== output.id) ||
+                (lineComponent.props.to !== input.id);
         });
 
     this.setState({
@@ -247,6 +247,7 @@ class Workspace extends React.Component {
     } else {
       alert("I can only connect an input with an output of the same type.");
     }
+    setTimeout(() => console.log('togggleConnection ended', this.state.existingConnections), 2000);
   }
 
   select = (id, type, audioNode) => {
@@ -272,7 +273,7 @@ class Workspace extends React.Component {
     this.setState({lineComponents: []});
 
     let lineComponents = [];
-    
+
     for (const connection of this.state.existingConnections) {
       const lineComponent =
         (<LineTo
@@ -283,7 +284,7 @@ class Workspace extends React.Component {
         />);
       lineComponents = [...lineComponents, lineComponent];
     }
-    
+
     this.setState({lineComponents: lineComponents});
   }
 
