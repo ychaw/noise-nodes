@@ -27,7 +27,10 @@ class Workspace extends React.Component {
   }
 
   getNextFreeId = (type) => {
-    let sameTypeNodes = this.state.nodes.filter((element) => {return element.type.name === type});
+    let sameTypeNodes =
+        this.state.nodes.filter((element) => {
+          return element.type.name === type;
+        });
     sameTypeNodes.sort((a, b) => a.props.id - b.props.id)
     // check for holes in the array and try to fill them
     for (var i = 0; i < sameTypeNodes.length; i++) {
@@ -146,7 +149,10 @@ class Workspace extends React.Component {
     let type;
     if ((output.type === "audio-output") && (input.type === "audio-input")) {
       type = "audio";
-    } else if ((output.type === "control-output") && (input.type === "control-input")) {
+    } else if (
+        (output.type === "control-output") &&
+            (input.type === "control-input")
+    ) {
       type = "control";
     }
     const connection = {type: type, output: output, input: input};
@@ -165,13 +171,17 @@ class Workspace extends React.Component {
   }
 
   removeStoredConnection = (output, input) => {
-    const updatedConnections = this.state.existingConnections.filter((existingConnection) => {
-      return (existingConnection.output.id !== output.id) && (existingConnection.input.id !== input.id);
-    });
+    const updatedConnections =
+        this.state.existingConnections.filter((existingConnection) => {
+          return (existingConnection.output.id !== output.id) &&
+              (existingConnection.input.id !== input.id);
+        });
 
-    const lineComponents = this.state.lineComponents.filter((lineComponent) => {
-      return ((lineComponent.props.from !== input.id) && (lineComponent.props.to !== output.id));
-    });
+    const lineComponents =
+        this.state.lineComponents.filter((lineComponent) => {
+            return (lineComponent.props.from !== input.id) &&
+                (lineComponent.props.to !== output.id);
+        });
 
     this.setState({
       existingConnections: [...updatedConnections],
@@ -181,9 +191,11 @@ class Workspace extends React.Component {
 
   connectionExists = (output, input) => {
     //get the same connections
-    let sameConnections = this.state.existingConnections.filter((existingConnection) => {
-      return (existingConnection.output.id === output.id) && (existingConnection.input.id === input.id);
-    });
+    let sameConnections =
+        this.state.existingConnections.filter((existingConnection) => {
+          return (existingConnection.output.id === output.id) &&
+              (existingConnection.input.id === input.id);
+        });
     //if there are any, return true
     return sameConnections.length > 0;
   }
@@ -288,8 +300,10 @@ class Workspace extends React.Component {
             }
         );
 
-    this.setState(
-        {existingConnections: nextConnections, lineComponents: nextLineComponents});
+    this.setState({
+      existingConnections: nextConnections,
+      lineComponents: nextLineComponents
+    });
   }
 
   render() {
@@ -297,7 +311,11 @@ class Workspace extends React.Component {
       <div style={style} className='workspace'>
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
         {this.state.nodes}
-        <OutputNode id={this.state.nodes.length} audioContext={this.state.audioContext} select={this.select}/>
+        <OutputNode
+          id={this.state.nodes.length}
+          audioContext={this.state.audioContext}
+          select={this.select}
+        />
         {this.state.lineComponents}
       </div>
     );
