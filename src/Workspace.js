@@ -268,7 +268,7 @@ class Workspace extends React.Component {
     });
   }
 
-  rerebuildLineComponents = function() {
+  rebuildLineComponents = function() {
     this.setState({lineComponents: []});
 
     let lineComponents = [];

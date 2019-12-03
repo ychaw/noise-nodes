@@ -19,12 +19,12 @@ class GainNode extends React.Component {
   }
 
   componentDidMount() {
-    this.props.buildLineComponents();
+    this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.props.cleanUp(this.name);
-    this.props.buildLineComponents();
+    this.props.rebuildLineComponents();
   }
 
   changeValue = (e, target, param) => {
