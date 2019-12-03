@@ -247,6 +247,7 @@ class Workspace extends React.Component {
     } else {
       alert("I can only connect an input with an output of the same type.");
     }
+    setTimeout(() => console.log('togggleConnection ended', this.state.existingConnections), 2000);
   }
 
   select = (id, type, audioNode) => {
