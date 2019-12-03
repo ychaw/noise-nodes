@@ -19,6 +19,7 @@ class GainNode extends React.Component {
   }
 
   componentDidMount() {
+    this.dsp.gain.gain.value = this.state.gain.absValue;
     this.props.rebuildLineComponents();
   }
 
