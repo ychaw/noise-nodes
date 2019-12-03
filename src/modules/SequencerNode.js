@@ -53,7 +53,7 @@ class SequencerNode extends React.Component {
 
   initializeActiveBeats = () => {
     let updatedBeats = [];
-    for (var i = 0; i < this.state.beats; i++) {
+    for (var i = 0; i < this.state.beats.absValue; i++) {
       updatedBeats.push(false);
     }
     this.setState({activeBeats: updatedBeats});
@@ -62,10 +62,10 @@ class SequencerNode extends React.Component {
   // scheduling functions taken from https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
 
   nextNote = () => {
-    const secondsPerBeat = 60.0 / this.state.bpm;
+    const secondsPerBeat = 60.0 / this.state.bpm.absValue;
     this.sequencer.nextNoteTime += secondsPerBeat;
     this.sequencer.currentNote++;
-    if(this.sequencer.currentNote === this.state.beats) this.sequencer.currentNote = 0;
+    if(this.sequencer.currentNote === this.state.beats.absValue) this.sequencer.currentNote = 0;
   }
 
   scheduleNote = (beatNumber, time) => {
