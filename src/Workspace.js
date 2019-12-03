@@ -23,7 +23,8 @@ class Workspace extends React.Component {
       selection,
       existingConnections,
       lineComponents,
-    };
+    }
+    this.lastNodeBottom = null;
   }
 
   getNextFreeId = (type) => {
@@ -333,15 +334,21 @@ class Workspace extends React.Component {
     });
   }
 
+  getLastNodeBottom = (lastNodeBottom) => {
+    this.lastNodeBottom = lastNodeBottom;
+  }
+
   render() {
+    let newStyle = {...style, height: this.lastNodeBottom + 300};
     return (
-      <div style={style} className='workspace'>
+      <div style={newStyle} className='workspace'>
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
         {this.state.nodes}
         <OutputNode
           id={this.state.nodes.length}
           audioContext={this.state.audioContext}
           select={this.select}
+          getLastNodeBottom={this.getLastNodeBottom}
         />
         {this.state.lineComponents}
       </div>
@@ -351,7 +358,7 @@ class Workspace extends React.Component {
 
 const style = {
   width: 'auto',
-  height: '600px',
+  minHeight: '87.5vh',
   backgroundColor: 'var(--primary-shade1)',
 }
 

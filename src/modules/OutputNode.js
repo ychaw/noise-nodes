@@ -13,11 +13,16 @@ class OutputNode extends React.Component {
       this.state = {
         gain: new Param('gain', 0.5, 0, 1),
       };
+      this.boundingBox = React.createRef();
   }
 
   componentDidMount() {
     this.dsp.gain.gain.value = this.state.gain.absValue;
     this.dsp.gain.connect(this.props.audioContext.destination);
+  }
+
+  componentDidUpdate() {
+    this.props.getLastNodeBottom(this.boundingBox.current.getBoundingClientRect().bottom);
   }
 
   changeValue = (e, target, param) => {
@@ -31,7 +36,7 @@ class OutputNode extends React.Component {
 
   render () {
     return (
-      <div style={style}>
+      <div style={style} ref={this.boundingBox}>
         <h1 style={topStyle}>OUT</h1>
         <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
