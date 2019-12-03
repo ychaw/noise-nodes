@@ -223,14 +223,15 @@ class Workspace extends React.Component {
 
   isSelectionValidConnection = () => {
     const first = this.state.selection[0],
-          second = this.state.selection[1];
-
+          second = this.state.selection[1],
+          firstNodeName = first.id.slice(0, first.id.indexOf('_')),
+          secondNodeName = second.id.slice(0, second.id.indexOf('_'));
     let isValid = (
         (first.type === 'control-output' && second.type === 'control-input') ||
         (first.type === 'control-input' && second.type === 'control-output') ||
         (first.type === 'audio-output' && second.type === 'audio-input') ||
         (first.type === 'audio-input' && second.type === 'audio-output')
-      )
+      ) && (firstNodeName !== secondNodeName);
     return isValid;
   }
 
@@ -245,7 +246,7 @@ class Workspace extends React.Component {
         this.storeConnection(output, input);
       }
     } else {
-      alert("I can only connect an input with an output of the same type.");
+      alert("I can't make that connection. Only connections with an input and an output of the same type between different nodes are allowed.");
     }
   }
 
