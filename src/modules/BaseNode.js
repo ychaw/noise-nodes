@@ -10,12 +10,18 @@ class BaseNode extends React.Component {
       this.dsp = {
         osc: this.props.audioContext.createOscillator(),
         gain: this.props.audioContext.createGain(),
-      }
+      };
+      this.boundaries = {
+        minFrequency: 20,
+        minGain: 0,
+        maxFrequency: 2000,
+        maxGain: 1,
+      };
       this.state = {
         isPlaying: false,
         frequency: 440,
         gain: 0.5,
-      }
+      };
   }
 
   componentDidMount() {
@@ -61,8 +67,24 @@ class BaseNode extends React.Component {
     return (
       <div style={style}className='BaseNode'>
         <h1>{this.name}</h1>
-        <Setting name='Frequency' unit='Hz' changeValue={this.changeFrequency} min='20' max='2000' step='0.1' value={this.state.frequency} />
-        <Setting name='Gain' unit='' changeValue={this.changeGain} min='0' max='1' step='0.1' value={this.state.gain} />
+        <Setting
+          name='Frequency'
+          unit='Hz'
+          changeValue={this.changeFrequency}
+          step='0.1'
+          value={this.state.frequency}
+          min={this.boundaries.minFrequency}
+          max={this.boundaries.maxFrequency}
+        />
+        <Setting
+          name='Gain'
+          unit=''
+          changeValue={this.changeGain}
+          step='0.1'
+          value={this.state.gain}
+          min={this.boundaries.minGain}
+          max={this.boundaries.maxGain}
+        />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>

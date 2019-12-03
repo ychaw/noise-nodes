@@ -105,11 +105,46 @@ class EnvelopeNode extends React.Component {
     return (
       <div style={style}className='EnvelopeNode'>
         <h1 style={topStyle}>ENV</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeGain} value={this.state.gain} />
-        <Setting name='Attack' unit='' changeValue={this.changeAttack} value={this.state.attack} />
-        <Setting name='Decay' unit='' changeValue={this.changeDecay} value={this.state.decay} />
-        <Setting name='Sustain' unit='' changeValue={this.changeSustain} value={this.state.sustain} />
-        <Setting name='Release' unit='' changeValue={this.changeRelease} value={this.state.release} />
+        <Setting
+          name='Gain'
+          unit=''
+          changeValue={this.changeGain}
+          value={this.state.gain}
+          min={this.boundaries.minGain}
+          max={this.boundaries.maxGain}
+        />
+        <Setting
+          name='Attack'
+          unit='s'
+          changeValue={this.changeAttack}
+          value={this.state.attack}
+          min={this.boundaries.minAttack}
+          max={this.boundaries.maxAttack}
+        />
+        <Setting
+          name='Decay'
+          unit='s'
+          changeValue={this.changeDecay}
+          value={this.state.decay}
+          min={this.boundaries.minDecay}
+          max={this.boundaries.maxDecay}
+        />
+        <Setting
+          name='Sustain'
+          unit=''
+          changeValue={this.changeSustain}
+          value={this.state.sustain}
+          min={this.boundaries.minSustain}
+          max={this.boundaries.maxSustain}
+        />
+        <Setting
+          name='Release'
+          unit='s'
+          changeValue={this.changeRelease}
+          value={this.state.release}
+          min={this.boundaries.minRelease}
+          max={this.boundaries.maxRelease}
+        />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
