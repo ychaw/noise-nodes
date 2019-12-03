@@ -171,16 +171,12 @@ class SequencerNode extends React.Component {
           unit=''
           changeValue={this.changeBPM}
           value={this.state.bpm}
-          min={this.boundaries.minBPM}
-          max={this.boundaries.maxBPM}
         />
         <Setting
           name='Beats'
           unit=''
           changeValue={this.changeBeats}
           value={this.state.beats}
-          min={this.boundaries.minBeats}
-          max={this.boundaries.maxBeats}
         />
         {this.renderSequencerButtons()}
         <br></br>
