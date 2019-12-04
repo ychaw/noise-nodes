@@ -3,6 +3,7 @@ import Connector from './Connector';
 import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
 import Param from './Param';
+import GenericFunctions from './GenericFunctions';
 
 class OscNode extends React.Component {
 
@@ -57,14 +58,7 @@ class OscNode extends React.Component {
     }
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
-    let newObj = this.state[param.tag];
-    newObj.relValue = relValue;
-    this.setState({[param.tag]: newObj}, ()=> {
-      target.value = this.state[param.tag].absValue;
-    });
-  }
+  changeValue = GenericFunctions.changeValue.bind(this);
 
   changeWaveform = (e) => {
     const {osc} = this.dsp;

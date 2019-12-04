@@ -3,6 +3,7 @@ import Connector from './Connector';
 import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
 import Param from './Param';
+import GenericFunctions from './GenericFunctions';
 
 class LFONode extends React.Component {
 
@@ -57,15 +58,6 @@ class LFONode extends React.Component {
     }
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
-    let newObj = this.state[param.tag];
-    newObj.relValue = relValue;
-    this.setState({[param.tag]: newObj}, ()=> {
-      target.value = this.state[param.tag].absValue;
-    });
-  }
-
   changeWaveform = (e) => {
     const {osc} = this.dsp;
     const newValue = e.target.value
@@ -79,9 +71,9 @@ class LFONode extends React.Component {
       <div style={style}className='LFONode'>
         <h1 style={topStyle}>LFO</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
-        <Setting name='Frequency' unit='Hz' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} />
+        <Setting name='Frequency' unit='Hz' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
+        <Setting name='Gain' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>

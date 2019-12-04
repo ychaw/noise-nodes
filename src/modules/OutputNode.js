@@ -2,6 +2,7 @@ import React from 'react';
 import Setting from './Setting';
 import Connector from './Connector';
 import Param from './Param';
+import GenericFunctions from './GenericFunctions';
 
 class OutputNode extends React.Component {
   constructor(props) {
@@ -25,20 +26,11 @@ class OutputNode extends React.Component {
     this.props.getLastNodeBottom(this.boundingBox.current.getBoundingClientRect().bottom);
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
-    let newObj = this.state[param.tag];
-    newObj.relValue = relValue;
-    this.setState({[param.tag]: newObj}, () => {
-      target.value = this.state[param.tag].absValue;
-    });
-  }
-
   render () {
     return (
       <div style={style} ref={this.boundingBox}>
         <h1 style={topStyle}>OUT</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
+        <Setting name='Gain' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );

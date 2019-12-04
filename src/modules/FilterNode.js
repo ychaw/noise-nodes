@@ -2,6 +2,7 @@ import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
 import Param from './Param';
+import GenericFunctions from './GenericFunctions';
 
 class FilterNode extends React.Component {
 
@@ -40,22 +41,13 @@ class FilterNode extends React.Component {
     this.dsp.qInput.connect(this.dsp.filter.Q);
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
-    let newObj = this.state[param.tag];
-    newObj.relValue = relValue;
-    this.setState({[param.tag]: newObj}, ()=> {
-      target.value = this.state[param.tag].absValue;
-    });
-  }
-
   render() {
     return (
       <div style={style}className='FilterNode'>
         <h1 style={topStyle}>FLT</h1>
-        <Setting name='Frequency' unit='Hz' changeValue={this.changeValue} target={this.dsp.filter.frequency} value={this.state.frequency} />
+        <Setting name='Frequency' unit='Hz' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting name='Q' unit='' changeValue={this.changeValue} target={this.dsp.filter.Q} value={this.state.Q} />
+        <Setting name='Q' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select}/>
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>

@@ -2,6 +2,7 @@ import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
 import Param from './Param';
+import GenericFunctions from './GenericFunctions';
 
 class GainNode extends React.Component {
 
@@ -28,20 +29,11 @@ class GainNode extends React.Component {
     this.props.rebuildLineComponents();
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
-    let newObj = this.state[param.tag];
-    newObj.relValue = relValue;
-    this.setState({[param.tag]: newObj}, ()=> {
-      target.value = this.state[param.tag].absValue;
-    });
-  }
-
   render() {
     return (
       <div style={style}className='GainNode'>
         <h1 style={topStyle}>GAIN</h1>
-        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
+        <Setting name='Gain' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
