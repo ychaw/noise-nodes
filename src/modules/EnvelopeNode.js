@@ -74,10 +74,10 @@ class EnvelopeNode extends React.Component {
       <div style={style}className='EnvelopeNode'>
         <h1 style={topStyle}>ENV</h1>
         <Setting name='Gain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.gain} />
-        <Setting name='Attack' unit='' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
-        <Setting name='Decay' unit='' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
+        <Setting name='Attack' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
+        <Setting name='Decay' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
         <Setting name='Sustain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
-        <Setting name='Release' unit='' changeValue={this.changeValue} target={'none'} value={this.state.release} />
+        <Setting name='Release' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.release} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
