@@ -26,8 +26,8 @@ class EnvelopeNode extends React.Component {
 
   componentDidMount() {
     const {constantSource, gain} = this.dsp;
+    this.initParams();
     constantSource.connect(gain);
-    gain.gain.setValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime);
     constantSource.start();
     this.props.rebuildLineComponents();
   }
@@ -38,9 +38,12 @@ class EnvelopeNode extends React.Component {
     this.props.rebuildLineComponents();
   }
 
+  initParams = () => {
+    this.dsp.gain.gain.setValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime);
+  }
+
   // FOR TESTING
   togglePlay = () => {
-
     //cancelAndHold would be nicer, but isn't supported in firefox
     this.dsp.gain.gain.cancelScheduledValues(0);
 

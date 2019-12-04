@@ -26,8 +26,7 @@ class BaseNode extends React.Component {
 
   componentDidMount() {
     const {osc, gain} = this.dsp;
-    osc.frequency.value = this.state.frequency;
-    gain.gain.value = 0;
+    this.initParams();
     osc.connect(gain);
     osc.start();
     this.props.rebuildLineComponents();
@@ -36,6 +35,11 @@ class BaseNode extends React.Component {
   componentWillUnmount() {
     this.dsp.osc.stop();
     this.props.rebuildLineComponents();
+  }
+
+  initParams = () => {
+    this.dsp.osc.frequency.value = this.state.frequency;
+    this.dsp.gain.gain.value = 0;
   }
 
   // FOR TESTING

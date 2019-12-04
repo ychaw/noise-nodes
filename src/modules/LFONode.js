@@ -26,13 +26,17 @@ class LFONode extends React.Component {
 
   componentDidMount() {
     const {osc, gain} = this.dsp;
-    osc.frequency.value = this.state.frequency.absValue;
-    gain.gain.value = 0;
+    this.initParams();
     osc.connect(gain);
     osc.start();
 
     this.initInputs();
     this.props.rebuildLineComponents();
+  }
+
+  initParams = () => {
+    this.dsp.osc.frequency.value = this.state.frequency.absValue;
+    this.dsp.gain.gain.value = 0;
   }
 
   initInputs = () => {
