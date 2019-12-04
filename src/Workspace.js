@@ -164,13 +164,7 @@ class Workspace extends React.Component {
       type = "control";
     }
     const connection = {type: type, output: output, input: input};
-    const lineComponent =
-        (<LineTo
-            className="line"
-            from={output.id}
-            to={input.id}
-            {...lineStyle}
-        />);
+    const lineComponent = this.buildLineComponentFromConnection(connection);
 
     this.setState({
       existingConnections: [...this.state.existingConnections, connection],
@@ -270,19 +264,43 @@ class Workspace extends React.Component {
     });
   }
 
+  getConnectionColor(connection) {
+    let color;
+      switch (connection.type) {
+        case 'audio': {
+          color = 'var(--secondary1-shade3)';
+          break;
+        }
+        case 'control': {
+          color = 'var(--secondary2-shade3)';
+          break;
+        }
+        default: {
+          color = 'red';
+        }
+      }
+    return color;
+  }
+
+  buildLineComponentFromConnection(connection) {
+    const lineComponent =
+        (<LineTo
+            className='line'
+            from={connection.output.id}
+            to={connection.input.id}
+            borderColor={this.getConnectionColor(connection)}
+            {...lineStyle}
+        />);
+      return lineComponent;
+  }
+
   rebuildLineComponents = function() {
     this.setState({lineComponents: []});
 
     let lineComponents = [];
 
     for (const connection of this.state.existingConnections) {
-      const lineComponent =
-        (<LineTo
-            className="line"
-            from={connection.output.id}
-            to={connection.input.id}
-            {...lineStyle}
-        />);
+      const lineComponent = this.buildLineComponentFromConnection(connection);
       lineComponents = [...lineComponents, lineComponent];
     }
 
@@ -363,13 +381,8 @@ const style = {
 }
 
 const lineStyle = {
-  // delay: true,
-  borderColor: 'red',
   borderStyle: 'solid',
   borderWidth: 5,
-  // orientation: "h",
-  // fromAnchor: "bottom",
-  // toAnchor: "bottom",
 };
 
 export default Workspace;
