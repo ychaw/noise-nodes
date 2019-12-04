@@ -4,7 +4,6 @@ import Setting from './Setting';
 import Param from './Param';
 
 class EnvelopeNode extends React.Component {
-
   constructor(props) {
       super(props);
       this.name = 'EnvelopeNode' + this.props.id;
@@ -15,10 +14,10 @@ class EnvelopeNode extends React.Component {
       this.state = {
         isPlaying: false,
         gain: new Param('gain', 1, 0, 1),
-        attack: new Param('attack', 1, 0, 1),
-        decay: new Param('decay', 1, 0, 1),
+        attack: new Param('attack', 0.005, 0, 1),
+        decay: new Param('decay', 0.626, 0, 1),
         sustain:  new Param('sustain', 0.5, 0, 1),
-        release: new Param('release', 1, 0, 1),
+        release: new Param('release', 0.5, 0, 1),
       }
       this.inputs = []
       this.outputs = [this.dsp.gain]
