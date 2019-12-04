@@ -5,7 +5,6 @@ import Param from './Param';
 import GenericFunctions from './GenericFunctions';
 
 class GainNode extends React.Component {
-
   constructor(props) {
       super(props);
       this.name = 'GainNode' + this.props.id;
@@ -20,13 +19,17 @@ class GainNode extends React.Component {
   }
 
   componentDidMount() {
-    this.dsp.gain.gain.value = this.state.gain.absValue;
+    this.initParams();
     this.props.rebuildLineComponents();
   }
 
   componentWillUnmount() {
     this.props.cleanUp(this.name);
     this.props.rebuildLineComponents();
+  }
+
+  initParams = () => {
+    this.dsp.gain.gain.value = this.state.gain.absValue;
   }
 
   render() {

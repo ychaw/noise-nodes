@@ -4,7 +4,6 @@ import Setting from './Setting';
 import Param from './Param';
 
 class EnvelopeNode extends React.Component {
-
   constructor(props) {
       super(props);
       this.name = 'EnvelopeNode' + this.props.id;
@@ -15,10 +14,10 @@ class EnvelopeNode extends React.Component {
       this.state = {
         isPlaying: false,
         gain: new Param('gain', 1, 0, 1),
-        attack: new Param('attack', 1, 0, 1),
-        decay: new Param('decay', 1, 0, 1),
+        attack: new Param('attack', 0.005, 0, 1),
+        decay: new Param('decay', 0.626, 0, 1),
         sustain:  new Param('sustain', 0.5, 0, 1),
-        release: new Param('release', 1, 0, 1),
+        release: new Param('release', 0.5, 0, 1),
       }
       this.inputs = []
       this.outputs = [this.dsp.gain]
@@ -26,8 +25,8 @@ class EnvelopeNode extends React.Component {
 
   componentDidMount() {
     const {constantSource, gain} = this.dsp;
+    this.initParams();
     constantSource.connect(gain);
-    gain.gain.setValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime);
     constantSource.start();
     this.props.rebuildLineComponents();
   }
@@ -38,9 +37,12 @@ class EnvelopeNode extends React.Component {
     this.props.rebuildLineComponents();
   }
 
+  initParams = () => {
+    this.dsp.gain.gain.setValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime);
+  }
+
   // FOR TESTING
   togglePlay = () => {
-
     //cancelAndHold would be nicer, but isn't supported in firefox
     this.dsp.gain.gain.cancelScheduledValues(0);
 
@@ -71,10 +73,10 @@ class EnvelopeNode extends React.Component {
       <div style={style}className='EnvelopeNode'>
         <h1 style={topStyle}>ENV</h1>
         <Setting name='Gain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.gain} />
-        <Setting name='Attack' unit='' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
-        <Setting name='Decay' unit='' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
+        <Setting name='Attack' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
+        <Setting name='Decay' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
         <Setting name='Sustain' unit='' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
-        <Setting name='Release' unit='' changeValue={this.changeValue} target={'none'} value={this.state.release} />
+        <Setting name='Release' unit='s' changeValue={this.changeValue} target={'none'} value={this.state.release} />
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>

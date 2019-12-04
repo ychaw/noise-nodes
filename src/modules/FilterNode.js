@@ -24,6 +24,7 @@ class FilterNode extends React.Component {
   }
 
   componentDidMount() {
+    this.initParams();
     this.initInputs();
     this.props.rebuildLineComponents();
   }
@@ -31,6 +32,11 @@ class FilterNode extends React.Component {
   componentWillUnmount() {
     this.props.cleanUp(this.name);
     this.props.rebuildLineComponents();
+  }
+
+  initParams = () => {
+    this.dsp.filter.frequency.value = this.state.frequency.absValue;
+    this.dsp.filter.Q.value = this.state.Q.absValue;
   }
 
   initInputs = () => {
