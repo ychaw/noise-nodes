@@ -29,6 +29,14 @@ class Connector extends React.Component {
     return RegExp('.-input').test(this.props.type);
   }
 
+  getTranslation = (height, width, dim) => {
+    if (this.isInput()) {
+      return 'translate(x y)'.replace('x',  2 * ( -width + dim)).replace('y', -20);
+    } else {
+      return 'translate(x y)'.replace('x', (dim/3)).replace('y', -20);
+    }
+  }
+
   render() {
     let height = 50,
         width = 50,
@@ -36,10 +44,12 @@ class Connector extends React.Component {
         strokeWidth = dim/3 * 2,
         boundary = dim+strokeWidth,
         colors = this.getColors(),
-        isInput = this.isInput();
+        isInput = this.isInput(),
+        transformToInputPosition = this.getTranslation(height, width, dim);;
     return <svg
       className={this.props.id}
       height={height}
+      transform={transformToInputPosition}
       width={width}>
       <circle
          cx={isInput ? boundary : width - boundary}

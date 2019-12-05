@@ -169,12 +169,14 @@ class SequencerNode extends React.Component {
         <Setting
           name='BPM'
           unit=''
+          type='control'
           changeValue={this.changeBPM}
           value={this.state.bpm}
         />
         <Setting
           name='Beats'
           unit=''
+          type='control'
           changeValue={this.changeBeats}
           value={this.state.beats}
         />

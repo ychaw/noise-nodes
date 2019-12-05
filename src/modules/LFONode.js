@@ -75,9 +75,9 @@ class LFONode extends React.Component {
       <div style={style}className='LFONode'>
         <h1 style={topStyle}>LFO</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
-        <Setting name='Frequency' unit='Hz' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
+        <Setting name='Frequency' unit='Hz' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting name='Gain' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
+        <Setting name='Gain' unit='' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>

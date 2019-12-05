@@ -77,13 +77,15 @@ class OscNode extends React.Component {
       <div style={style}className='OscNode'>
         <h1 style={topStyle}>OSC</h1>
         <WaveformSelector changeWaveform={this.changeWaveform}/>
-        <Setting name='Frequency' unit='Hz' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} />
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting name='Gain' unit='' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
+        <Setting name='Frequency' unit='Hz' type='audio' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency}>
+          <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
+        </Setting>
+        <Setting name='Gain' unit='' type='audio' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain}>
+          <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select}/>
+          <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
+        </Setting>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
       </div>
     );
   }

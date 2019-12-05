@@ -51,9 +51,9 @@ class FilterNode extends React.Component {
     return (
       <div style={style}className='FilterNode'>
         <h1 style={topStyle}>FLT</h1>
-        <Setting name='Frequency' unit='Hz' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
+        <Setting name='Frequency' unit='Hz' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
-        <Setting name='Q' unit='' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} />
+        <Setting name='Q' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} />
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select}/>
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select}/>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
