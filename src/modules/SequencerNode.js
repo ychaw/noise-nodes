@@ -1,6 +1,7 @@
 import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
+import SequencerNodeButtons from './SequencerNodeButtons';
 import IntegerParam from './IntegerParam';
 
 // this class mutates its internal state (this.sequencer) a lot, take care when making changes
@@ -115,16 +116,16 @@ class SequencerNode extends React.Component {
 
   }
 
-  changeBPM = (e) => {
+  changeBPM = (value) => {
     let newObj = this.state.bpm;
-    newObj.relValue = e.target.value;
+    newObj.relValue = value;
     this.setState({bpm: newObj}, ()=> {
     });
   }
 
-  changeBeats = (e) => {
+  changeBeats = (value) => {
     let newObj = this.state.beats;
-    newObj.relValue = e.target.value;
+    newObj.relValue = value;
     this.setState({beats: newObj}, ()=> {
       let activeBeats = this.state.activeBeats;
 
@@ -180,7 +181,10 @@ class SequencerNode extends React.Component {
           changeValue={this.changeBeats}
           value={this.state.beats}
         />
-        {this.renderSequencerButtons()}
+        <SequencerNodeButtons
+          onClick={this.toggleBeat}
+          active={this.state.activeBeats}
+          beats={this.state.beats} />
         <br></br>
         <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
         <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
