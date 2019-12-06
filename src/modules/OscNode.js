@@ -71,7 +71,7 @@ class OscNode extends React.Component {
         let newObj = this.state[param.tag];
         newObj.relValue = relValue;
         this.setState({[param.tag]: newObj}, ()=> {
-          target.value = this.state[param.tag].absValue;
+          target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
         });
     if(!this.state.isPlaying) {
       this.dsp.gain.gain.value = 0;

@@ -4,10 +4,11 @@ export default class GenericFunctions {
       let newObj = this.state[param.tag];
       newObj.relValue = relValue;
       this.setState({[param.tag]: newObj}, ()=> {
-        target.value = this.state[param.tag].absValue;
+         //target.value = this.state[param.tag].absValue;
+         target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
       });
     }
-    
+
   static getColors() {
       if(this.props.type === 'audio') {
         return [
