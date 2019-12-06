@@ -25,29 +25,41 @@ export default class PlayButton extends React.Component {
     this.props.onClick();
   }
 
+  getStartIcon = () => {
+    const {height, width, dim, colors} = this.vis,
+          x = width/2,
+          y = height/2,
+          factor = 0.8;
+    return <polygon
+      points={
+        [x+dim*factor, y] + ", " +
+        [(x-dim/2), y+dim*factor] + ", " +
+        [(x-dim/2), y-dim*factor]
+      }
+      fill={colors[4]}/>;
+  }
+
+  getStopIcon = () => {
+    const {height, width, dim, colors} = this.vis,
+          x = width/2,
+          y = height/2,
+          factor = 1.3;
+    return <rect
+      x={x - dim/2 * factor}
+      y={y - dim/2 * factor}
+      width={dim * factor}
+      height={dim * factor}
+      fill={colors[4]}/>;
+  }
+
   displayIcon = () => {
-    const {height, width, dim, colors} = this.vis;
+    if(this.props.constant) {
+      return this.getStartIcon();
+    }
     if (this.state.isPlaying) {
-      const x = width/2,
-            y = height/2,
-            factor = 1.3;
-      return <rect
-        x={x - dim/2 * factor}
-        y={y - dim/2 * factor}
-        width={dim * factor}
-        height={dim * factor}
-        fill={colors[4]}/>;
+      return this.getStopIcon();
     } else {
-      const x = width/2,
-            y = height/2,
-            factor = 0.8;
-      return <polygon
-        points={
-          [x+dim*factor, y] + ", " +
-          [(x-dim/2), y+dim*factor] + ", " +
-          [(x-dim/2), y-dim*factor]
-        }
-        fill={colors[4]}/>;
+      return this.getStartIcon();
     }
   }
 
