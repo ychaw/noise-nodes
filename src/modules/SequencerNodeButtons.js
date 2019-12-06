@@ -1,9 +1,6 @@
 import React from 'react'
 
 class SequencerNodeButtons extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   getButtons = () => {
     const r = 8,

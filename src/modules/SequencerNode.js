@@ -3,6 +3,8 @@ import Connector from './Connector';
 import Setting from './Setting';
 import SequencerNodeButtons from './SequencerNodeButtons';
 import IntegerParam from './IntegerParam';
+import PlayButton from './PlayButton';
+import DeleteButton from './DeleteButton';
 
 // this class mutates its internal state (this.sequencer) a lot, take care when making changes
 
@@ -166,7 +168,11 @@ class SequencerNode extends React.Component {
   render() {
     return (
       <div style={style} className='SequencerNode'>
-        <h1 style={topStyle}>SEQ</h1>
+        <h1 style={topStyle}>
+          <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
+          <p style={{display: 'inline', gridColumStart: 2}}>SEQ</p>
+          <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+        </h1>
         <Setting
           name='BPM'
           unit=''
@@ -186,9 +192,7 @@ class SequencerNode extends React.Component {
           active={this.state.activeBeats}
           beats={this.state.beats} />
         <br></br>
-        <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select}/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select} coordinates={{x: 115, y: -20}}/>
       </div>
     );
   }
@@ -202,12 +206,14 @@ const style = {
 }
 
 const topStyle = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'auto auto auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
+  alignContent: 'center',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   color: '#fff',
   margin: '0px',
   padding: '0px',

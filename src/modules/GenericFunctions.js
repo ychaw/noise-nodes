@@ -7,4 +7,26 @@ export default class GenericFunctions {
         target.value = this.state[param.tag].absValue;
       });
     }
+    
+  static getColors() {
+      if(this.props.type === 'audio') {
+        return [
+          'var(--secondary1-shade0)',
+          'var(--secondary1-shade1)',
+          'var(--secondary1-shade2)',
+          'var(--secondary1-shade3)',
+          'var(--secondary1-shade4)',
+          'var(--secondary1-shade5)',
+        ]
+      } else if (this.props.type === 'control') {
+        return [
+          'var(--secondary2-shade0)',
+          'var(--secondary2-shade1)',
+          'var(--secondary2-shade2)',
+          'var(--secondary2-shade3)',
+          'var(--secondary2-shade4)',
+          'var(--secondary2-shade5)',
+        ]
+      }
+    }
 }

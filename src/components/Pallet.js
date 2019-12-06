@@ -4,7 +4,7 @@ class Pallet extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-    } 
+    }
 
     render() {
         return (
@@ -15,7 +15,7 @@ class Pallet extends React.Component {
                 <PalletItem type='LFO' createNodeHandlers={this.props.createNodeHandlers}/>
                 <PalletItem type='ENV' createNodeHandlers={this.props.createNodeHandlers}/>
                 <PalletItem type='SEQ' createNodeHandlers={this.props.createNodeHandlers}/>
-            </div> 
+            </div>
         );
     }
 }
@@ -51,6 +51,7 @@ const palletItemStyle = {
     fontSize: '24px',
     fontWeight: 'bold',
     color: 'white',
+    cursor: 'pointer',
 }
 
 export default Pallet;

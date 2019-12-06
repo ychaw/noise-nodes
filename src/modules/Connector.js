@@ -6,6 +6,16 @@ class Connector extends React.Component {
     this.state = {
       selected: false,
     }
+    this.vis = {
+      height: 50,
+      width: 50,
+      dim: 16,
+      colors: this.getColors(),
+      isInput: this.isInput(),
+      transformToInputPosition: 'translate(x y)'.replace('x',  this.props.coordinates.x).replace('y', this.props.coordinates.y),
+    }
+    this.vis.strokeWidth = this.vis.dim/3 * 2;
+    this.vis.boundary = this.vis.dim+this.vis.strokeWidth;
   }
 
   componentDidMount() {
@@ -45,12 +55,14 @@ class Connector extends React.Component {
         boundary = dim+strokeWidth,
         colors = this.getColors(),
         isInput = this.isInput(),
-        transformToInputPosition = this.getTranslation(height, width, dim);;
+        transformToInputPosition = 'translate(x y)'.replace('x',  this.props.coordinates.x).replace('y', this.props.coordinates.y);
     return <svg
       className={this.props.id}
       height={height}
       transform={transformToInputPosition}
-      width={width}>
+      width={width}
+      style={{cursor: 'pointer'}}
+      >
       <circle
          cx={isInput ? boundary : width - boundary}
          cy={dim + strokeWidth}

@@ -3,6 +3,8 @@ import Connector from './Connector';
 import Setting from './Setting';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
+import DeleteButton from './DeleteButton';
+import ProfileSelector from './ProfileSelector';
 
 class FilterNode extends React.Component {
 
@@ -47,34 +49,48 @@ class FilterNode extends React.Component {
     this.dsp.qInput.connect(this.dsp.filter.Q);
   }
 
+  changeProfile = (newProfile) => {
+    const {filter} = this.dsp;
+    this.setState({waveform: newProfile}, () => {
+      filter.type = newProfile;
+    });
+  }
+
   render() {
     return (
       <div style={style}className='FilterNode'>
-        <h1 style={topStyle}>FLT</h1>
+        <h1 style={topStyle}>
+          <p style={{display: 'inline'}}>FLT</p>
+          <DeleteButton type= 'audio' onClick={this.props.deleteNode.bind(this, this.name)} />
+        </h1>
+        <ProfileSelector changeProfile={this.changeProfile} type='audio'/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} coordinates={{x: -20, y: -18}}/>
         <Setting name='Frequency' unit='Hz' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select}/>
+        <br/>
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select} coordinates={{x: -20, y: -18}}/>
         <Setting name='Q' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} />
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select}/>
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select}/>
-        <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select}/>
+        <br/>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select} coordinates={{x: -35, y: 0}}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select} coordinates={{x: 30, y: 0}}/>
       </div>
     );
   }
 }
 
 const style = {
-  width:'200px',
+  width:'180px',
   height:'350px',
   float: 'left',
   backgroundColor: 'var(--secondary1-shade0)',
 }
 
 const topStyle = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: '70% auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
+  alignContent: 'center',
   alignItems: 'center',
   justifyContent: 'center',
   color: '#fff',

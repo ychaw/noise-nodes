@@ -2,6 +2,8 @@ import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
 import Param from './Param';
+import PlayButton from './PlayButton';
+import DeleteButton from './DeleteButton';
 
 class EnvelopeNode extends React.Component {
   constructor(props) {
@@ -60,8 +62,7 @@ class EnvelopeNode extends React.Component {
 
   }
 
-  changeValue = (e, target, param) => {
-    const relValue = e.target.value;
+  changeValue = (relValue, target, param) => {
     let newObj = this.state[param.tag];
     newObj.relValue = relValue;
     this.setState({[param.tag]: newObj}, ()=> {
@@ -71,15 +72,18 @@ class EnvelopeNode extends React.Component {
   render() {
     return (
       <div style={style}className='EnvelopeNode'>
-        <h1 style={topStyle}>ENV</h1>
+        <h1 style={topStyle}>
+          <PlayButton onClick={this.togglePlay} type='control'/>
+          <p>ENV</p>
+          <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+        </h1>
         <Setting name='Gain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.gain} />
         <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
         <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
         <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
         <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} />
-        <button onClick={this.togglePlay}>{this.state.isPlaying ? 'Stop' : 'Start'}</button>
-        <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
+        <br/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: 95, y: -18}}/>
       </div>
     );
   }
@@ -87,18 +91,20 @@ class EnvelopeNode extends React.Component {
 
 const style = {
   width:'250px',
-  height:'450px',
+  height:'250px',
   float: 'left',
   backgroundColor: 'var(--secondary2-shade0)',
 }
 
 const topStyle = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'auto auto auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
+  alignContent: 'center',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   color: '#fff',
   margin: '0px',
   padding: '0px',

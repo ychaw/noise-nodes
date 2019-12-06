@@ -25,6 +25,7 @@ const headerStyle = {
 const headerItemStyle = {
     flexBasis: '250px',
     background: 'var(--primary-shade4)',
+    cursor: 'default',
 }
 
 const aboutStyle = {

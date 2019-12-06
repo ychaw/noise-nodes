@@ -1,11 +1,11 @@
 import React from 'react';
 
-class WaveformSelector extends React.Component {
+class ProfileSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      waveformIndex: 0};
-    this.waveforms = ['sine', 'triangle', 'square', 'sawtooth'];
+      profileIndex: 0};
+    this.profiles = ['lowpass', 'highpass', 'bandpass', 'notch', 'allpass'];
     this.vis = {
       r: 32,
       colors: this.getColors(),
@@ -16,69 +16,72 @@ class WaveformSelector extends React.Component {
 
   handleClick = (e) => {
     e.preventDefault();
-    const newIndex = (this.state.waveformIndex + 1) % this.waveforms.length;
+    const newIndex = (this.state.profileIndex + 1) % this.profiles.length;
     this.setState( (state, props) => {
-      this.props.changeWaveform(this.waveforms[newIndex]);
-      return { waveformIndex: newIndex};
+      this.props.changeProfile(this.profiles[newIndex]);
+      return { profileIndex: newIndex};
     });
   }
 
-  displayWaveform = () => {
+  displayProfile = () => {
     const waveformPaths = {
-        sine: <path
+        lowpass: <path
+          fill={'none'}
+          stroke={'#fff'}
+          strokeWidth={1.5}
+          d="
+            M -30,-8
+            Q 0,-8 0,-8
+            M 0,-8
+            Q 16,-8 28,16
+          "
+          />,
+        highpass: <path
+          fill={'none'}
+          stroke={'#fff'}
+          strokeWidth={1.5}
+          d="
+            M -30,8
+            Q -16,-8 0,-8
+            M 0,-8
+            Q 16,-8 28,-8
+          "
+          />,
+        bandpass: <path
+          fill={'none'}
+          stroke={'#fff'}
+          strokeWidth={1.5}
+          d="
+            M -30,8
+            Q -16,-8 0,-8
+            M 0,-8
+            Q 16,-8 30,8
+          "
+          />,
+        notch: <path
           fill={'none'}
           stroke={'#fff'}
           strokeWidth={1.5}
           d="
             M -32,0
-            Q -16,-32 0,0
-            M 0,0
-            Q 16,32 32,0
+            Q 0,0 0,32
+            M 0,32
+            Q 0,0 32,0
           "
           />,
-        triangle: <path
+        allpass: <path
           fill={'none'}
           stroke={'#fff'}
           strokeWidth={1.5}
           d="
-            M -32,0
-            L -16,-16
-            M -16,-16
-            L 0,0
-            M 0,0
-            L 16,16
-            M 16,16
-            L 32,0
+          M -32,0
+          Q -16,32 0,0
+          M 0,0
+          Q 16,-32 32,0
           "
           />,
-        square: <path
-          fill={'none'}
-          stroke={'#fff'}
-          strokeWidth={1.5}
-          d="
-            M -24,-16
-            L 0,-16
-            M 0,-16
-            L 0,16
-            M 0,16
-            L 24,16
-          "
-          />,
-        sawtooth: <path
-            fill={'none'}
-            stroke={'#fff'}
-            strokeWidth={1.5}
-            d="
-            M -24,0
-            L -24,-16
-            M -24,-16
-            L 24,16
-            M 24,16
-            L 24,0
-            "
-            />,
         };
-    return waveformPaths[this.waveforms[this.state.waveformIndex]];
+    return waveformPaths[this.profiles[this.state.profileIndex]];
   }
 
   getColors = () => {
@@ -106,7 +109,7 @@ class WaveformSelector extends React.Component {
   render () {
     const {width, height, r, colors} = this.vis;
     return (
-      <div id='WaveformSelector'>
+      <div id='profileselector'>
         <svg
           width={width}
           height={height}
@@ -120,7 +123,7 @@ class WaveformSelector extends React.Component {
               style={{fill: colors[1]}}
               r={r}
               />
-            {this.displayWaveform()}
+            {this.displayProfile()}
           </g>
         </svg>
       </div>
@@ -129,4 +132,4 @@ class WaveformSelector extends React.Component {
   }
 }
 
-export default WaveformSelector;
+export default ProfileSelector;

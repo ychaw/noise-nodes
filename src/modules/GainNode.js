@@ -3,6 +3,7 @@ import Connector from './Connector';
 import Setting from './Setting';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
+import DeleteButton from './DeleteButton';
 
 class GainNode extends React.Component {
   constructor(props) {
@@ -35,28 +36,32 @@ class GainNode extends React.Component {
   render() {
     return (
       <div style={style}className='GainNode'>
-        <h1 style={topStyle}>GAIN</h1>
+        <h1 style={topStyle}>
+          <p style={{display: 'inline'}}>GAIN</p>
+          <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
+        </h1>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: 4, y: -18}}/>
         <Setting name='Gain' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select}/>
-        <button onClick={this.props.deleteNode.bind(this, this.name)}>[X]</button>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: -12, y: -18}}/>
       </div>
     );
   }
 }
 
 const style = {
-  width:'200px',
-  height:'200px',
+  width:'180px',
+  height:'150px',
   float: 'left',
   backgroundColor: 'var(--secondary1-shade0)',
 }
 
 const topStyle = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: '70% auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
+  alignContent: 'center',
   alignItems: 'center',
   justifyContent: 'center',
   color: '#fff',
