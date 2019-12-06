@@ -66,6 +66,18 @@ class OscNode extends React.Component {
 
   changeValue = GenericFunctions.changeValue.bind(this);
 
+  changeGain = (value, target, param) => {
+        const relValue = value;
+        let newObj = this.state[param.tag];
+        newObj.relValue = relValue;
+        this.setState({[param.tag]: newObj}, ()=> {
+          target.value = this.state[param.tag].absValue;
+        });
+    if(!this.state.isPlaying) {
+      this.dsp.gain.gain.value = 0;
+    }
+  }
+
   changeWaveform = (newWaveform) => {
     const {osc} = this.dsp;
     this.setState({waveform: newWaveform}, () => {
@@ -86,7 +98,7 @@ class OscNode extends React.Component {
         <Setting name='Frequency' unit='Hz' type='audio' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <br/>
         <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} coordinates={{x: -30, y: -18}}/>
-        <Setting name='Gain' unit='' type='audio' changeValue={this.changeValue} target={this.dsp.gain.gain} value={this.state.gain} />
+        <Setting name='Gain' unit='' type='audio' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} />
         <br/>
         <br/>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: 70, y: -20}}/>
