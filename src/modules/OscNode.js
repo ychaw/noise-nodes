@@ -57,10 +57,10 @@ class OscNode extends React.Component {
   togglePlay = () => {
     if(!this.state.isPlaying) {
       this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.value = this.state.gain.absValue;
+      this.dsp.gain.gain.linearRampToValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime + 0.1);
     } else {
       this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.value = 0;
+      this.dsp.gain.gain.linearRampToValueAtTime(0, this.props.audioContext.currentTime + 0.1);
     }
   }
 
@@ -71,7 +71,7 @@ class OscNode extends React.Component {
         let newObj = this.state[param.tag];
         newObj.relValue = relValue;
         this.setState({[param.tag]: newObj}, ()=> {
-          target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
+          if(this.state.isPlaying) target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
         });
     if(!this.state.isPlaying) {
       this.dsp.gain.gain.value = 0;
