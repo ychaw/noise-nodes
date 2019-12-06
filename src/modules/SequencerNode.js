@@ -2,6 +2,7 @@ import React from 'react';
 import Connector from './Connector';
 import Setting from './Setting';
 import SequencerNodeButtons from './SequencerNodeButtons';
+import Param from './Param';
 import IntegerParam from './IntegerParam';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
@@ -20,6 +21,7 @@ class SequencerNode extends React.Component {
         isPlaying: false,
         bpm: new IntegerParam('bpm', 60, 10, 240),
         beats: new IntegerParam('beats', 8, 1, 32),
+        gain: new Param('gain', 1, 0, 1),
         activeBeats: [],
         beatOffsets: [],
       }
@@ -32,7 +34,7 @@ class SequencerNode extends React.Component {
       }
       this.internalEnvelope = {
         a: 0.1,
-        d: 0.05,
+        d: 0.15,
         r: 0.1,
       }
       this.timerID = null;
@@ -96,9 +98,9 @@ class SequencerNode extends React.Component {
 
   sendSignal = ()  => {
     this.dsp.gate.offset.cancelScheduledValues(this.props.audioContext.currentTime);
-    this.dsp.gate.offset.linearRampToValueAtTime(1, this.props.audioContext.currentTime + this.internalEnvelope.a);
-    this.dsp.gate.offset.linearRampToValueAtTime(1, this.props.audioContext.currentTime + this.internalEnvelope.d);
-    this.dsp.gate.offset.linearRampToValueAtTime(0, this.props.audioContext.currentTime + this.internalEnvelope.r);
+    this.dsp.gate.offset.linearRampToValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime + this.internalEnvelope.a);
+    this.dsp.gate.offset.linearRampToValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime + this.internalEnvelope.a + this.internalEnvelope.d);
+    this.dsp.gate.offset.linearRampToValueAtTime(0, this.props.audioContext.currentTime + this.internalEnvelope.a + this.internalEnvelope.d + this.internalEnvelope.r);
 
   }
 
@@ -115,7 +117,13 @@ class SequencerNode extends React.Component {
         window.clearTimeout(this.timerID);
       }
     });
+  }
 
+  changeValue = (relValue, target, param) => {
+    let newObj = this.state[param.tag];
+    newObj.relValue = relValue;
+    this.setState({[param.tag]: newObj}, ()=> {
+    });
   }
 
   changeBPM = (value) => {
@@ -186,6 +194,14 @@ class SequencerNode extends React.Component {
           type='control'
           changeValue={this.changeBeats}
           value={this.state.beats}
+        />
+        <Setting
+          name='Gain'
+          unit=''
+          type='control'
+          changeValue={this.changeValue}
+          target={'none'}
+          value={this.state.gain}
         />
         <SequencerNodeButtons
           onClick={this.toggleBeat}
