@@ -15,7 +15,7 @@ class EnvelopeNode extends React.Component {
       this.state = {
         isPlaying: false,
         attack: new Param('attack', 0.005, 0, 1),
-        attackGain: new Param('attackGain', 1, 0, 1),
+        aLevel: new Param('aLevel', 1, 0, 1),
         decay: new Param('decay', 0.626, 0, 1),
         sustain:  new Param('sustain', 0.5, 0, 1),
         release: new Param('release', 0.5, 0, 1),
@@ -45,7 +45,7 @@ class EnvelopeNode extends React.Component {
     this.dsp.constantSource.offset.cancelScheduledValues(0);
     console.log('Playing env');
 
-    const targetGain = this.state.attackGain.absValue,
+    const targetGain = this.state.aLevel.absValue,
     node = this.dsp.constantSource,
     endTimes = [
       this.props.audioContext.currentTime + this.state.attack.absValue,
@@ -75,7 +75,7 @@ class EnvelopeNode extends React.Component {
           <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
         </h1>
         <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
-        <Setting name='Gain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attackGain} />
+        <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} />
         <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
         <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
         <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} />
