@@ -64,14 +64,14 @@ class FilterNode extends React.Component {
           <DeleteButton type= 'audio' onClick={this.props.deleteNode.bind(this, this.name)} />
         </h1>
         <ProfileSelector changeProfile={this.changeProfile} type='audio'/>
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} coordinates={{x: -20, y: -18}}/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -20, y: -18}}/>
         <Setting name='Frequency' unit='Hz' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
         <br/>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select} coordinates={{x: -20, y: -18}}/>
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -20, y: -18}}/>
         <Setting name='Q' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} />
         <br/>
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select} coordinates={{x: -35, y: 0}}/>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select} coordinates={{x: 30, y: 0}}/>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -35, y: 0}}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 30, y: 0}}/>
       </div>
     );
   }

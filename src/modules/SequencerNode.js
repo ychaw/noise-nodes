@@ -192,7 +192,7 @@ class SequencerNode extends React.Component {
           active={this.state.activeBeats}
           beats={this.state.beats} />
         <br></br>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select} coordinates={{x: 115, y: -20}}/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 115, y: -20}}/>
       </div>
     );
   }

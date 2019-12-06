@@ -48,6 +48,8 @@ class Workspace extends React.Component {
     return sameTypeNodes.length;
   }
 
+  getSelection = () => this.state.selection;
+
   createNode = (type) => {
     let id = this.getNextFreeId(type),
         newNode;
@@ -60,6 +62,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -71,6 +74,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -82,6 +86,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -93,6 +98,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -104,6 +110,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -115,6 +122,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -126,6 +134,7 @@ class Workspace extends React.Component {
                     select={this.select}
                     deleteNode={this.deleteNode}
                     cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
                   />);
         break;
@@ -262,6 +271,7 @@ class Workspace extends React.Component {
         this.setState({selection: [null, null]});
       }
     });
+
   }
 
   getConnectionColor(connection) {
@@ -367,6 +377,8 @@ class Workspace extends React.Component {
           audioContext={this.state.audioContext}
           select={this.select}
           getLastNodeBottom={this.getLastNodeBottom}
+          selection={this.state.selection}
+          getSelection={this.getSelection}
         />
         {this.state.lineComponents}
       </div>

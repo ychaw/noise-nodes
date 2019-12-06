@@ -92,13 +92,13 @@ class LFONode extends React.Component {
           <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
         </h1>
         <WaveformSelector changeWaveform={this.changeWaveform} type='control'/>
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} coordinates={{x: -30, y: -18}}/>
+        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
         <Setting name='Frequency' unit='Hz' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <br/>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} coordinates={{x: -30, y: -18}}/>
+        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
         <Setting name='Gain' unit='' type='control' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} />
         <br/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: 68, y: -3}}/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 68, y: -3}}/>
       </div>
     );
   }

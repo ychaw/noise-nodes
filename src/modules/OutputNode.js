@@ -43,6 +43,7 @@ class OutputNode extends React.Component {
           id={this.name + '_audio-input-1'}
           audioNode={this.dsp.gain}
           select={this.props.select}
+          getSelection={this.props.getSelection}
           coordinates={{x: -62, y: -72}}/>
       </div>
     );

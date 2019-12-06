@@ -5,6 +5,7 @@ class Connector extends React.Component {
     super(props);
     this.state = {
       selected: false,
+      selection: [null, null],
     }
     this.vis = {
       height: 50,
@@ -16,22 +17,37 @@ class Connector extends React.Component {
     }
     this.vis.strokeWidth = this.vis.dim/3 * 2;
     this.vis.boundary = this.vis.dim+this.vis.strokeWidth;
+    this.timerID = null;
   }
 
   componentDidMount() {
   }
 
+  updatedSelectedState = () => {
+    const isSelected = this.isSelected();
+    this.setState({selected: isSelected})
+    if(!isSelected) {
+      clearInterval(this.timerID);
+    }
+  }
+
   handleClick = (e) => {
     const {id, type, audioNode} = this.props;
     this.props.select(id, type, audioNode);
-    //return <button className={this.props.id} style={style} id='connector-button' onClick={this.props.select.bind(this, id, type, audioNode)}>{type}</button>
+    this.setState( (state, props) => {
+      return {
+        selected: this.isSelected(),
+        selection: this.props.getSelection()
+      }
+    });
+    setInterval(this.updatedSelectedState, 100);
   }
 
   getColors = () => {
     if(RegExp('audio-.*').test(this.props.type)) {
-      return {stroke: 'var(--secondary1-shade1)', fill: 'var(--secondary1-shade0)'}
+      return {stroke: 'var(--secondary1-shade1)', strokeActive: 'var(--secondary1-shade3)', fill: 'var(--secondary1-shade0)', fillActive: 'var(--secondary1-shade1)'}
     } else if(RegExp('control-.*').test(this.props.type)) {
-      return {stroke: 'var(--secondary2-shade1)', fill: 'var(--secondary2-shade0)'}
+      return {stroke: 'var(--secondary2-shade1)', strokeActive: 'var(--secondary2-shade3)', fill: 'var(--secondary2-shade0)', fillActive: 'var(--secondary2-shade1)'}
     }
   }
 
@@ -44,6 +60,15 @@ class Connector extends React.Component {
       return 'translate(x y)'.replace('x',  2 * ( -width + dim)).replace('y', -20);
     } else {
       return 'translate(x y)'.replace('x', (dim/3)).replace('y', -20);
+    }
+  }
+
+  isSelected = () => {
+    const selection = this.props.getSelection();
+    if(typeof selection != undefined) {
+      for (let selected of selection.filter((element) => element !== null)) {
+        return (this.props.id === selected.id) && (this.props.audioNode === selected.audioNode);
+      }
     }
   }
 
@@ -67,9 +92,9 @@ class Connector extends React.Component {
          cx={isInput ? boundary : width - boundary}
          cy={dim + strokeWidth}
          r={dim}
-         stroke={colors.stroke}
+         stroke={this.state.selected ? colors.strokeActive : colors.stroke}
          strokeWidth={strokeWidth}
-         fill={colors.fill}
+         fill={this.state.selected ? colors.fillActive : colors.fill}
          onClick={this.handleClick}
        />
     </svg>

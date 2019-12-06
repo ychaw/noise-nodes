@@ -40,9 +40,9 @@ class GainNode extends React.Component {
           <p style={{display: 'inline'}}>GAIN</p>
           <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
         </h1>
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: 4, y: -18}}/>
+        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 4, y: -18}}/>
         <Setting name='Gain' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} coordinates={{x: -12, y: -18}}/>
+        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -12, y: -18}}/>
       </div>
     );
   }

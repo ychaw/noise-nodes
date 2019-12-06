@@ -80,7 +80,7 @@ class EnvelopeNode extends React.Component {
         <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
         <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} />
         <br/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} coordinates={{x: 95, y: -18}}/>
+        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 95, y: -18}}/>
       </div>
     );
   }
