@@ -52,7 +52,7 @@ class OutputNode extends React.Component {
           audioNode={this.dsp.gain}
           select={this.props.select}
           getSelection={this.props.getSelection}
-          coordinates={{x: -62, y: -72}}/>
+          coordinates={{x: -85, y: -45}}/>
         </div>
       </Draggable>
     );
@@ -62,7 +62,8 @@ class OutputNode extends React.Component {
 const style = {
   width:'170px',
   height:'150px',
-  float: 'left',
+  position: 'absolute',
+  right: '0',
   backgroundColor: 'var(--secondary1-shade0)',
 }
 
