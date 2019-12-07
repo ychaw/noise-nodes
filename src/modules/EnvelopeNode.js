@@ -4,6 +4,7 @@ import Setting from './Setting';
 import Param from './Param';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
+import Draggable from 'react-draggable';
 
 class EnvelopeNode extends React.Component {
   constructor(props) {
@@ -68,12 +69,19 @@ class EnvelopeNode extends React.Component {
 
   render() {
     return (
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
       <div style={style}className='EnvelopeNode'>
-        <h1 style={topStyle}>
-          <PlayButton onClick={this.togglePlay} constant={true} type='control'/>
-          <p>ENV</p>
-          <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
-        </h1>
+        <div className='handle'>
+          <h1 style={topStyle}>
+            <PlayButton onClick={this.togglePlay} constant={true} type='control'/>
+            <p>ENV</p>
+            <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+          </h1>
+        </div>
         <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
         <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} />
         <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
@@ -82,6 +90,7 @@ class EnvelopeNode extends React.Component {
         <br/>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 95, y: -18}}/>
       </div>
+      </Draggable>
     );
   }
 }
@@ -106,6 +115,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary2-shade3)',
+  cursor: 'move',
 }
 
 export default EnvelopeNode;

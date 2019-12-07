@@ -66,8 +66,6 @@ export default class Setting extends React.Component {
   }
 
   render() {
-
-
     const {name, unit, value} = this.props;
     const {cx, cy, r, width, height} = this.vis;
     const rotation = 'rotate(' + this.convertValueToDeg(this.props.value.relValue) + ' ' + cx + ' ' + cy + ')',

@@ -6,6 +6,7 @@ import Param from './Param';
 import GenericFunctions from './GenericFunctions';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
+import Draggable from 'react-draggable';
 
 class OscNode extends React.Component {
 
@@ -87,13 +88,20 @@ class OscNode extends React.Component {
 
   render() {
     return (
-      <div style={style}className='OscNode'>
-        <h1 style={topStyle}>
-          <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='audio'/>
-          <p style={{display: 'inline', gridColumStart: 2}}>OSC</p>
-          <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
-        </h1>
-        <WaveformSelector changeWaveform={this.changeWaveform} type='audio'/>
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style} className='OscNode'>
+          <div className='handle'>
+            <h1 style={topStyle}>
+              <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='audio'/>
+              <p style={{display: 'inline', gridColumStart: 2}}>OSC</p>
+              <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
+            </h1>
+          </div>
+          <WaveformSelector changeWaveform={this.changeWaveform} type='audio'/>
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
         <Setting name='Frequency' unit='Hz' type='audio' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} />
         <br/>
@@ -102,7 +110,8 @@ class OscNode extends React.Component {
         <br/>
         <br/>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 70, y: -20}}/>
-      </div>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -127,6 +136,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary1-shade3)',
+  cursor: 'move',
 }
 
 export default OscNode;

@@ -379,6 +379,7 @@ class Workspace extends React.Component {
           getLastNodeBottom={this.getLastNodeBottom}
           selection={this.state.selection}
           getSelection={this.getSelection}
+          rebuildLineComponents={this.rebuildLineComponents.bind(this)}
         />
         {this.state.lineComponents}
       </div>

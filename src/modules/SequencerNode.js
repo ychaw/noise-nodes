@@ -6,11 +6,11 @@ import Param from './Param';
 import IntegerParam from './IntegerParam';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
+import Draggable from 'react-draggable';
 
 // this class mutates its internal state (this.sequencer) a lot, take care when making changes
 
 class SequencerNode extends React.Component {
-
   constructor(props) {
       super(props);
       this.name = 'SequencerNode' + this.props.id;
@@ -175,41 +175,49 @@ class SequencerNode extends React.Component {
 
   render() {
     return (
-      <div style={style} className='SequencerNode'>
-        <h1 style={topStyle}>
-          <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
-          <p style={{display: 'inline', gridColumStart: 2}}>SEQ</p>
-          <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
-        </h1>
-        <Setting
-          name='BPM'
-          unit=''
-          type='control'
-          changeValue={this.changeBPM}
-          value={this.state.bpm}
-        />
-        <Setting
-          name='Beats'
-          unit=''
-          type='control'
-          changeValue={this.changeBeats}
-          value={this.state.beats}
-        />
-        <Setting
-          name='Gain'
-          unit=''
-          type='control'
-          changeValue={this.changeValue}
-          target={'none'}
-          value={this.state.gain}
-        />
-        <SequencerNodeButtons
-          onClick={this.toggleBeat}
-          active={this.state.activeBeats}
-          beats={this.state.beats} />
-        <br></br>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 115, y: -20}}/>
-      </div>
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style} className='SequencerNode'>
+          <div className='handle'>
+            <h1 style={topStyle}>
+              <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
+              <p style={{display: 'inline', gridColumStart: 2}}>SEQ</p>
+              <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+            </h1>
+          </div>
+          <Setting
+            name='BPM'
+            unit=''
+            type='control'
+            changeValue={this.changeBPM}
+            value={this.state.bpm}
+          />
+          <Setting
+            name='Beats'
+            unit=''
+            type='control'
+            changeValue={this.changeBeats}
+            value={this.state.beats}
+          />
+          <Setting
+            name='Gain'
+            unit=''
+            type='control'
+            changeValue={this.changeValue}
+            target={'none'}
+            value={this.state.gain}
+          />
+          <SequencerNodeButtons
+            onClick={this.toggleBeat}
+            active={this.state.activeBeats}
+            beats={this.state.beats} />
+          <br></br>
+          <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gate} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 115, y: -20}}/>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -234,6 +242,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary2-shade3)',
+  cursor: 'move',
 }
 
 export default SequencerNode;

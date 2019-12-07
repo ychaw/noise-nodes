@@ -5,6 +5,7 @@ import Param from './Param';
 import GenericFunctions from './GenericFunctions';
 import DeleteButton from './DeleteButton';
 import ProfileSelector from './ProfileSelector';
+import Draggable from 'react-draggable';
 
 class FilterNode extends React.Component {
 
@@ -58,12 +59,19 @@ class FilterNode extends React.Component {
 
   render() {
     return (
-      <div style={style}className='FilterNode'>
-        <h1 style={topStyle}>
-          <p style={{display: 'inline'}}>FLT</p>
-          <DeleteButton type= 'audio' onClick={this.props.deleteNode.bind(this, this.name)} />
-        </h1>
-        <ProfileSelector changeProfile={this.changeProfile} type='audio'/>
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style} className='FilterNode'>
+          <div className='handle'>
+            <h1 style={topStyle}>
+              <p style={{display: 'inline'}}>FLT</p>
+              <DeleteButton type= 'audio' onClick={this.props.deleteNode.bind(this, this.name)} />
+            </h1>
+          </div>
+          <ProfileSelector changeProfile={this.changeProfile} type='audio'/>
         <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -20, y: -18}}/>
         <Setting name='Frequency' unit='Hz' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} />
         <br/>
@@ -72,7 +80,8 @@ class FilterNode extends React.Component {
         <br/>
         <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -35, y: 0}}/>
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 30, y: 0}}/>
-      </div>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -97,6 +106,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary1-shade3)',
+  cursor: 'move',
 }
 
 export default FilterNode;

@@ -4,6 +4,7 @@ import Setting from './Setting';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
 import DeleteButton from './DeleteButton';
+import Draggable from 'react-draggable';
 
 class GainNode extends React.Component {
   constructor(props) {
@@ -35,15 +36,23 @@ class GainNode extends React.Component {
 
   render() {
     return (
-      <div style={style}className='GainNode'>
-        <h1 style={topStyle}>
-          <p style={{display: 'inline'}}>GAIN</p>
-          <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
-        </h1>
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 4, y: -18}}/>
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style}className='GainNode'>
+          <div className='handle'>
+            <h1 style={topStyle}>
+              <p style={{display: 'inline'}}>GAIN</p>
+              <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
+            </h1>
+          </div>
+          <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 4, y: -18}}/>
         <Setting name='Gain' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.gain.gain} value={this.state.gain} />
         <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -12, y: -18}}/>
-      </div>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -68,6 +77,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary1-shade3)',
+  cursor: 'move',
 }
 
 export default GainNode;

@@ -6,9 +6,9 @@ import Param from './Param';
 import GenericFunctions from './GenericFunctions';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
+import Draggable from 'react-draggable';
 
 class LFONode extends React.Component {
-
   constructor(props) {
       super(props);
       this.name = 'LFONode' + this.props.id;
@@ -85,21 +85,29 @@ class LFONode extends React.Component {
 
   render() {
     return (
-      <div style={style}className='LFONode'>
-        <h1 style={topStyle}>
-          <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
-          <p style={{display: 'inline', gridColumStart: 2}}>LFO</p>
-          <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
-        </h1>
-        <WaveformSelector changeWaveform={this.changeWaveform} type='control'/>
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-        <Setting name='Frequency' unit='Hz' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
-        <br/>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-        <Setting name='Gain' unit='' type='control' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} />
-        <br/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 68, y: -3}}/>
-      </div>
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style}className='LFONode'>
+        <div className='handle'>
+            <h1 style={topStyle}>
+              <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
+              <p style={{display: 'inline', gridColumStart: 2}}>LFO</p>
+              <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+            </h1>
+          </div>
+          <WaveformSelector changeWaveform={this.changeWaveform} type='control'/>
+          <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
+          <Setting name='Frequency' unit='Hz' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} />
+          <br/>
+          <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
+          <Setting name='Gain' unit='' type='control' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} />
+          <br/>
+          <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 68, y: -3}}/>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -124,6 +132,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary2-shade3)',
+  cursor: 'move',
 }
 
 export default LFONode;

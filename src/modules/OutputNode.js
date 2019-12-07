@@ -3,6 +3,7 @@ import Setting from './Setting';
 import Connector from './Connector';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
+import Draggable from 'react-draggable';
 
 class OutputNode extends React.Component {
   constructor(props) {
@@ -28,9 +29,16 @@ class OutputNode extends React.Component {
 
   render () {
     return (
-      <div style={style} ref={this.boundingBox}>
-        <h1 style={topStyle}>OUT</h1>
-        <Setting
+      <Draggable
+        handle='.handle'
+        bounds='.workspace'
+        onDrag={this.props.rebuildLineComponents}
+      >
+        <div style={style} ref={this.boundingBox}>
+          <div className='handle'>
+            <h1 style={topStyle}>OUT</h1>
+          </div>
+          <Setting
           name='Gain'
           unit=''
           type='audio'
@@ -45,7 +53,8 @@ class OutputNode extends React.Component {
           select={this.props.select}
           getSelection={this.props.getSelection}
           coordinates={{x: -62, y: -72}}/>
-      </div>
+        </div>
+      </Draggable>
     );
   }
 }
@@ -68,6 +77,7 @@ const topStyle = {
   margin: '0px',
   padding: '0px',
   backgroundColor: 'var(--secondary1-shade3)',
+  cursor: 'move',
 }
 
 export default OutputNode;
