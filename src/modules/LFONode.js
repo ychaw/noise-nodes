@@ -4,7 +4,6 @@ import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
-import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
 import Draggable from 'react-draggable';
 
