@@ -7,6 +7,10 @@ function Footer() {
 }
 
 const footerStyle = {
+    width: '100%',
+    position: 'fixed',
+    bottom: '0px',
+    right: '0px',
     padding: '5px',
     background: 'var(--primary-shade3)',
     textAlign: 'right',

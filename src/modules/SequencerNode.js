@@ -228,7 +228,9 @@ class SequencerNode extends React.Component {
 const style = {
   width:'300px',
   height:'350px',
-  float: 'left',
+  position: 'absolute',
+  left: '10vw',
+  top: '20vh',
   backgroundColor: 'var(--secondary2-shade0)',
 }
 

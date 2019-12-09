@@ -102,14 +102,46 @@ class OscNode extends React.Component {
             </h1>
           </div>
           <WaveformSelector changeWaveform={this.changeWaveform} type='audio'/>
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-        <Setting name='Frequency' unit='Hz' type='audio' changeValue={this.changeValue} target={this.dsp.osc.frequency} value={this.state.frequency} readout={this.props.readout}/>
+        <Connector
+          type='control-input'
+          id={this.name + '_control-input-1'}
+          audioNode={this.dsp.frequencyInput}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -10, y: -5}}/>
+        <Setting
+          name='Frequency'
+          unit='Hz'
+          type='audio'
+          changeValue={this.changeValue}
+          target={this.dsp.osc.frequency}
+          value={this.state.frequency}
+          readout={this.props.readout}/>
         <br/>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-        <Setting name='Gain' unit='' type='audio' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} readout={this.props.readout}/>
+        <Connector
+          type='control-input'
+          id={this.name + '_control-input-2'}
+          audioNode={this.dsp.gain.gain}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -10, y: -5}}/>
+        <Setting
+          name='Gain'
+          unit=''
+          type='audio'
+          changeValue={this.changeGain}
+          target={this.dsp.gain.gain}
+          value={this.state.gain}
+          readout={this.props.readout}/>
         <br/>
         <br/>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 70, y: -20}}/>
+        <Connector
+          type='audio-output'
+          id={this.name + '_audio-output-1'}
+          audioNode={this.dsp.gain}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: 70, y: -20}}/>
         </div>
       </Draggable>
     );
@@ -119,7 +151,9 @@ class OscNode extends React.Component {
 const style = {
   width:'200px',
   height:'350px',
-  float: 'left',
+  position: 'absolute',
+  left: '10vw',
+  top: '20vh',
   backgroundColor: 'var(--secondary1-shade0)',
 }
 

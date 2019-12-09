@@ -413,10 +413,12 @@ class Workspace extends React.Component {
 }
 
 const style = {
-  width: 'auto',
-  minHeight: '87.5vh',
+  width: '100%',
+  height: '100%',
   overflow: 'auto',
-  backgroundColor: 'var(--primary-shade1)',
+  zIndex: '-10',
+  position: 'fixed',
+  backgroundColor: 'var(--primary-shade1)'
 }
 
 const lineStyle = {

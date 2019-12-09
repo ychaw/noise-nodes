@@ -98,7 +98,9 @@ class EnvelopeNode extends React.Component {
 const style = {
   width:'250px',
   height:'250px',
-  float: 'left',
+  position: 'absolute',
+  left: '10vw',
+  top: '20vh',
   backgroundColor: 'var(--secondary2-shade0)',
 }
 

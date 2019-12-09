@@ -73,7 +73,7 @@ export default class Setting extends React.Component {
           colors = GenericFunctions.getColors.bind(this)();
     return (
         <svg
-          style={{position: 'inherit', cursor: this.state.dragging ? 'pointer' : 'default'}}
+          style={{position: 'relative', cursor: this.state.dragging ? 'pointer' : 'default'}}
           width={width}
           height={height}
           ref={this.state.boundingBox}>

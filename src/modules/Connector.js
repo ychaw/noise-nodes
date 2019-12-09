@@ -73,20 +73,19 @@ class Connector extends React.Component {
   }
 
   render() {
-    let height = 50,
+    let height = 65,
         width = 50,
         dim = 16,
         strokeWidth = dim/3 * 2,
         boundary = dim+strokeWidth,
         colors = this.getColors(),
-        isInput = this.isInput(),
-        transformToInputPosition = 'translate(x y)'.replace('x',  this.props.coordinates.x).replace('y', this.props.coordinates.y);
+        isInput = this.isInput();
+
     return <svg
       className={this.props.id}
       height={height}
-      transform={transformToInputPosition}
       width={width}
-      style={{cursor: 'pointer'}}
+      style={{cursor: 'pointer', position: 'relative', left: this.props.coordinates.x, top: this.props.coordinates.y}}
       >
       <circle
          cx={isInput ? boundary : width - boundary}

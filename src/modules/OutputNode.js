@@ -33,6 +33,13 @@ class OutputNode extends React.Component {
           <div className='handle'>
             <h1 style={topStyle}>OUT</h1>
           </div>
+          <Connector
+            type='audio-input'
+            id={this.name + '_audio-input-1'}
+            audioNode={this.dsp.gain}
+            select={this.props.select}
+            getSelection={this.props.getSelection}
+            coordinates={{x: 0, y: 0}}/>
           <Setting
           name='Gain'
           unit=''
@@ -42,13 +49,6 @@ class OutputNode extends React.Component {
           target={this.dsp.gain.gain}
           value={this.state.gain}/>
         <br/>
-        <Connector
-          type='audio-input'
-          id={this.name + '_audio-input-1'}
-          audioNode={this.dsp.gain}
-          select={this.props.select}
-          getSelection={this.props.getSelection}
-          coordinates={{x: -62, y: -72}}/>
         </div>
       </Draggable>
     );
@@ -58,7 +58,9 @@ class OutputNode extends React.Component {
 const style = {
   width:'170px',
   height:'150px',
-  float: 'right',
+  position: 'absolute',
+  right: '5vw',
+  bottom: '10vh',
   backgroundColor: 'var(--secondary1-shade0)',
   touchAction: 'none',
 }

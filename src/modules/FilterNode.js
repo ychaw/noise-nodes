@@ -71,15 +71,55 @@ class FilterNode extends React.Component {
               <DeleteButton type= 'audio' onClick={this.props.deleteNode.bind(this, this.name)} />
             </h1>
           </div>
-          <ProfileSelector changeProfile={this.changeProfile} type='audio'/>
-        <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -20, y: -18}}/>
-        <Setting name='Frequency' unit='Hz' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.frequency} value={this.state.frequency} readout={this.props.readout}/>
+          <ProfileSelector
+            changeProfile={this.changeProfile}
+            type='audio'/>
+        <Connector
+          type='control-input'
+          id={this.name + '_control-input-1'}
+          audioNode={this.dsp.frequencyInput}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -20, y: -4}}/>
+        <Setting
+          name='Frequency'
+          unit='Hz'
+          type='audio'
+          changeValue={GenericFunctions.changeValue.bind(this)}
+          target={this.dsp.filter.frequency}
+          value={this.state.frequency}
+          readout={this.props.readout}/>
         <br/>
-        <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.qInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -20, y: -18}}/>
-        <Setting name='Q' unit='' type='audio' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.filter.Q} value={this.state.Q} readout={this.props.readout}/>
+        <Connector
+          type='control-input'
+          id={this.name + '_control-input-2'}
+          audioNode={this.dsp.qInput}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -20, y: -4}}/>
+        <Setting
+          name='Q'
+          unit=''
+          type='audio'
+          changeValue={GenericFunctions.changeValue.bind(this)}
+          target={this.dsp.filter.Q}
+          value={this.state.Q}
+          readout={this.props.readout}/>
         <br/>
-        <Connector type='audio-input' id={this.name + '_audio-input-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -35, y: 0}}/>
-        <Connector type='audio-output' id={this.name + '_audio-output-1'} audioNode={this.dsp.filter} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 30, y: 0}}/>
+        <Connector
+          type='audio-input'
+          id={this.name + '_audio-input-1'}
+          audioNode={this.dsp.filter}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -35, y: 0}}/>
+        <Connector
+          type='audio-output'
+          id={this.name + '_audio-output-1'}
+          audioNode={this.dsp.filter}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: 30, y: 0}}/>
         </div>
       </Draggable>
     );
@@ -89,7 +129,9 @@ class FilterNode extends React.Component {
 const style = {
   width:'180px',
   height:'350px',
-  float: 'left',
+  position: 'absolute',
+  left: '10vw',
+  top: '20vh',
   backgroundColor: 'var(--secondary1-shade0)',
 }
 

@@ -99,13 +99,45 @@ class LFONode extends React.Component {
             </h1>
           </div>
           <WaveformSelector changeWaveform={this.changeWaveform} type='control'/>
-          <Connector type='control-input' id={this.name + '_control-input-1'} audioNode={this.dsp.frequencyInput} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-          <Setting name='Frequency' unit='Hz' type='control' changeValue={GenericFunctions.changeValue.bind(this)} target={this.dsp.osc.frequency} value={this.state.frequency} readout={this.props.readout}/>
+          <Connector
+            type='control-input'
+            id={this.name + '_control-input-1'}
+            audioNode={this.dsp.frequencyInput}
+            select={this.props.select}
+            getSelection={this.props.getSelection}
+            coordinates={{x: -10, y: -4}}/>
+          <Setting
+            name='Frequency'
+            unit='Hz'
+            type='control'
+            changeValue={GenericFunctions.changeValue.bind(this)}
+            target={this.dsp.osc.frequency}
+            value={this.state.frequency}
+            readout={this.props.readout}/>
           <br/>
-          <Connector type='control-input' id={this.name + '_control-input-2'} audioNode={this.dsp.gain.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: -30, y: -18}}/>
-          <Setting name='Gain' unit='' type='control' changeValue={this.changeGain} target={this.dsp.gain.gain} value={this.state.gain} readout={this.props.readout}/>
+          <Connector
+            type='control-input'
+            id={this.name + '_control-input-2'}
+            audioNode={this.dsp.gain.gain}
+            select={this.props.select}
+            getSelection={this.props.getSelection}
+            coordinates={{x: -10, y: -4}}/>
+          <Setting
+            name='Gain'
+            unit=''
+            type='control'
+            changeValue={this.changeGain}
+            target={this.dsp.gain.gain}
+            value={this.state.gain}
+            readout={this.props.readout}/>
           <br/>
-          <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.gain} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 68, y: -3}}/>
+          <Connector
+            type='control-output'
+            id={this.name + '_control-output-1'}
+            audioNode={this.dsp.gain}
+            select={this.props.select}
+            getSelection={this.props.getSelection}
+            coordinates={{x: 68, y: -3}}/>
         </div>
       </Draggable>
     );
@@ -115,7 +147,9 @@ class LFONode extends React.Component {
 const style = {
   width:'200px',
   height:'350px',
-  float: 'left',
+  position: 'absolute',
+  left: '10vw',
+  top: '20vh',
   backgroundColor: 'var(--secondary2-shade0)',
 }
 

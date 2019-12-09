@@ -38,6 +38,11 @@ export default class Header extends React.Component {
 }
 
 const headerStyle = {
+    position: 'fixed',
+    width: '100%',
+    height: '75px',
+    top: '0px',
+    left: '0px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
