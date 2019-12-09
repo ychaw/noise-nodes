@@ -25,6 +25,12 @@ class Workspace extends React.Component {
       lineComponents,
     }
     this.lastNodeBottom = null;
+    this.readoutState = {
+      timer: null,
+      fadeTime: 2000,
+      text: '',
+      hidden: true,
+    }
   }
 
   getNextFreeId = (type) => {
@@ -64,6 +70,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'OscNode':
@@ -76,6 +83,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'GainNode':
@@ -88,6 +96,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'FilterNode':
@@ -100,6 +109,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'LFONode':
@@ -112,6 +122,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'EnvelopeNode':
@@ -124,6 +135,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       case 'SequencerNode':
@@ -136,6 +148,7 @@ class Workspace extends React.Component {
                     cleanUp={this.cleanUp}
                     getSelection={this.getSelection}
                     rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
                   />);
         break;
       default:
@@ -366,8 +379,24 @@ class Workspace extends React.Component {
     this.lastNodeBottom = lastNodeBottom;
   }
 
+  readout = (name, value) => {
+    clearTimeout(this.readoutState.timer);
+    this.readoutState.text = name.concat(': ', Number(value.absValue).toPrecision(2));
+    this.readoutState.hidden = false;
+
+    this.readoutState.timer = setTimeout(()=>{
+      this.readoutState.text = '';
+      this.readoutState.hidden = true;
+      this.forceUpdate();
+    }, this.readoutState.fadeTime);
+
+    this.forceUpdate();
+
+  }
+
   render() {
     let newStyle = {...style, height: this.lastNodeBottom + 300};
+    let newReadoutStyle = {...readoutStyle, visibility: this.readoutState.hidden ? 'hidden' : 'visible'};
     return (
       <div style={newStyle} className='workspace'>
         <Pallet createNodeHandlers={this.createNodeHandlers}/>
@@ -380,8 +409,12 @@ class Workspace extends React.Component {
           selection={this.state.selection}
           getSelection={this.getSelection}
           rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+          readout={this.readout}
         />
         {this.state.lineComponents}
+        <div className='readout' style={newReadoutStyle}>
+          {this.readoutState.text}
+        </div>
       </div>
     );
   }
@@ -397,5 +430,14 @@ const lineStyle = {
   borderStyle: 'solid',
   borderWidth: 5,
 };
+
+const readoutStyle = {
+  position: 'fixed',
+  padding: '0.5em 2em',
+  bottom: '24px',
+  right: '4px',
+  color: '#fff',
+  backgroundColor: 'var(--primary-shade2)',
+}
 
 export default Workspace;

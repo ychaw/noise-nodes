@@ -43,6 +43,7 @@ class OutputNode extends React.Component {
           unit=''
           type='audio'
           changeValue={GenericFunctions.changeValue.bind(this)}
+          readout={this.props.readout}
           target={this.dsp.gain.gain}
           value={this.state.gain}/>
         <br/>

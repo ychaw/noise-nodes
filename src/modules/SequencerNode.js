@@ -194,6 +194,7 @@ class SequencerNode extends React.Component {
             type='control'
             changeValue={this.changeBPM}
             value={this.state.bpm}
+            readout={this.props.readout}
           />
           <Setting
             name='Beats'
@@ -201,6 +202,7 @@ class SequencerNode extends React.Component {
             type='control'
             changeValue={this.changeBeats}
             value={this.state.beats}
+            readout={this.props.readout}
           />
           <Setting
             name='Gain'
@@ -209,6 +211,7 @@ class SequencerNode extends React.Component {
             changeValue={this.changeValue}
             target={'none'}
             value={this.state.gain}
+            readout={this.props.readout}
           />
           <SequencerNodeButtons
             onClick={this.toggleBeat}
