@@ -8,10 +8,10 @@ import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
 import Draggable from 'react-draggable';
 
-class LFONode extends React.Component {
+class FMNode extends React.Component {
   constructor(props) {
       super(props);
-      this.name = 'LFONode' + this.props.id;
+      this.name = 'FMNode' + this.props.id;
       this.dsp = {
         osc: this.props.audioContext.createOscillator(),
         gain: this.props.audioContext.createGain(),
@@ -20,7 +20,7 @@ class LFONode extends React.Component {
       this.state = {
         isPlaying: false,
         waveform: 'sine',
-        frequency: new Param('frequency', 5, 0.001, 20),
+        frequency: new Param('frequency', 5, 0.001, 1000),
         gain: new Param('gain', 0.5, 0, 1),
       }
       this.inputs = [this.dsp.frequencyInput, this.dsp.gain.gain];
@@ -89,11 +89,11 @@ class LFONode extends React.Component {
         handle='.handle'
         onDrag={this.props.rebuildLineComponents}
       >
-        <div style={style}className='LFONode'>
+        <div style={style} className='FMNode'>
         <div className='handle'>
             <h1 style={topStyle}>
               <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
-              <p style={{display: 'inline', gridColumStart: 2}}>LFO</p>
+              <p style={{display: 'inline', gridColumStart: 2}}>FM</p>
               <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
             </h1>
           </div>
@@ -168,4 +168,4 @@ const topStyle = {
   cursor: 'move',
 }
 
-export default LFONode;
+export default FMNode;

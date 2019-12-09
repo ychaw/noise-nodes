@@ -8,6 +8,7 @@ import FilterNode from './modules/FilterNode';
 import LFONode from './modules/LFONode';
 import EnvelopeNode from './modules/EnvelopeNode';
 import SequencerNode from './modules/SequencerNode';
+import FMNode from './modules/FMNode';
 import LineTo from 'react-lineto';
 
 class Workspace extends React.Component {
@@ -139,6 +140,19 @@ class Workspace extends React.Component {
         break;
       case 'SequencerNode':
         newNode = (<SequencerNode
+                    id={id}
+                    key={type + '_' + id}
+                    audioContext={this.state.audioContext}
+                    select={this.select}
+                    deleteNode={this.deleteNode}
+                    cleanUp={this.cleanUp}
+                    getSelection={this.getSelection}
+                    rebuildLineComponents={this.rebuildLineComponents.bind(this)}
+                    readout={this.readout}
+                  />);
+        break;
+      case 'FMNode':
+        newNode = (<FMNode
                     id={id}
                     key={type + '_' + id}
                     audioContext={this.state.audioContext}
@@ -337,6 +351,7 @@ class Workspace extends React.Component {
     'LFO': this.createNode.bind(this, 'LFONode'),
     'ENV': this.createNode.bind(this, 'EnvelopeNode'),
     'SEQ': this.createNode.bind(this, 'SequencerNode'),
+    'FM': this.createNode.bind(this, 'FMNode'),
   };
 
   cleanUp = (nodeName) => {
@@ -389,7 +404,7 @@ class Workspace extends React.Component {
     this.forceUpdate();
   }
 
-  
+
 
   render() {
     let newReadoutStyle = {...readoutStyle, visibility: this.readoutState.hidden ? 'hidden' : 'visible'};

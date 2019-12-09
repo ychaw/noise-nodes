@@ -17,7 +17,7 @@ class Pallet extends React.Component {
     }
 
     render() {
-      const types = ['OSC', 'GAIN', 'FILTER', 'LFO', 'ENV', 'SEQ'],
+      const types = ['OSC', 'GAIN', 'FILTER', 'LFO', 'ENV', 'SEQ', 'FM'],
             palletItems = [];
 
         for (var i = 0; i < types.length; i++) {
