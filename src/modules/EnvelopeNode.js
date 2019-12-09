@@ -82,11 +82,11 @@ class EnvelopeNode extends React.Component {
             <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
           </h1>
         </div>
-        <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} />
-        <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} />
-        <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} />
-        <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} />
-        <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} />
+        <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} readout={this.props.readout} />
+        <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} readout={this.props.readout} />
+        <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} readout={this.props.readout} />
+        <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} readout={this.props.readout} />
+        <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} readout={this.props.readout} />
         <br/>
         <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 95, y: -18}}/>
       </div>

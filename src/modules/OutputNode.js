@@ -34,20 +34,21 @@ class OutputNode extends React.Component {
             <h1 style={topStyle}>OUT</h1>
           </div>
           <Setting
-            name='Gain'
-            unit=''
-            type='audio'
-            changeValue={GenericFunctions.changeValue.bind(this)}
-            target={this.dsp.gain.gain}
-            value={this.state.gain}/>
-          <br/>
-          <Connector
-            type='audio-input'
-            id={this.name + '_audio-input-1'}
-            audioNode={this.dsp.gain}
-            select={this.props.select}
-            getSelection={this.props.getSelection}
-            coordinates={{x: -62, y: -72}}/>
+          name='Gain'
+          unit=''
+          type='audio'
+          changeValue={GenericFunctions.changeValue.bind(this)}
+          readout={this.props.readout}
+          target={this.dsp.gain.gain}
+          value={this.state.gain}/>
+        <br/>
+        <Connector
+          type='audio-input'
+          id={this.name + '_audio-input-1'}
+          audioNode={this.dsp.gain}
+          select={this.props.select}
+          getSelection={this.props.getSelection}
+          coordinates={{x: -62, y: -72}}/>
         </div>
       </Draggable>
     );

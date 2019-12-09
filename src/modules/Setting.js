@@ -52,6 +52,7 @@ export default class Setting extends React.Component {
               mouseX = e.clientX - boundingRect.left,
               relValue = this.clampValue(factor * mouseX / boundingRect.width - offset); // clamp value
       this.props.changeValue(relValue, this.props.target, this.props.value);
+      this.props.readout(this.props.name, this.props.value)
     }
   }
 
@@ -66,7 +67,7 @@ export default class Setting extends React.Component {
   }
 
   render() {
-    const {name, unit, value} = this.props;
+    const {name} = this.props;
     const {cx, cy, r, width, height} = this.vis;
     const rotation = 'rotate(' + this.convertValueToDeg(this.props.value.relValue) + ' ' + cx + ' ' + cy + ')',
           colors = GenericFunctions.getColors.bind(this)();
