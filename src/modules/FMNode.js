@@ -136,7 +136,7 @@ const style = {
 
 const topStyle = {
   display: 'grid',
-  gridTemplateColumns: 'auto auto auto',
+  gridTemplateColumns: '70% auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
