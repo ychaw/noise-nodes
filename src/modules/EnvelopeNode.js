@@ -5,6 +5,7 @@ import Param from './Param';
 import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
 import Draggable from 'react-draggable';
+import KeyHandler, { KEYPRESS } from 'react-key-handler';
 
 class EnvelopeNode extends React.Component {
   constructor(props) {
@@ -41,7 +42,11 @@ class EnvelopeNode extends React.Component {
 
 
   // FOR TESTING
-  togglePlay = () => {
+  toggleIsPlaying = () => {
+    this.setState({isPlaying: !this.state.isPlaying});
+  }
+
+  triggerEnvelope = () => {
     //cancelAndHold would be nicer, but isn't supported in firefox
     this.dsp.constantSource.offset.cancelScheduledValues(0);
     console.log('Playing env');
@@ -57,7 +62,6 @@ class EnvelopeNode extends React.Component {
     node.offset.linearRampToValueAtTime(targetGain, endTimes[0]);
     node.offset.linearRampToValueAtTime(this.state.sustain.absValue, endTimes[1]);
     node.offset.linearRampToValueAtTime(0, endTimes[2])
-
   }
 
   changeValue = (relValue, target, param) => {
@@ -67,30 +71,49 @@ class EnvelopeNode extends React.Component {
     });
   }
 
+  keyHandlerComponents = [
+    <KeyHandler keyEventName={KEYPRESS} keyValue="a" onKeyHandle={this.triggerEnvelope} key="a"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="w" onKeyHandle={this.triggerEnvelope} key="w"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="s" onKeyHandle={this.triggerEnvelope} key="s"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="e" onKeyHandle={this.triggerEnvelope} key="e"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="d" onKeyHandle={this.triggerEnvelope} key="d"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="f" onKeyHandle={this.triggerEnvelope} key="f"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="t" onKeyHandle={this.triggerEnvelope} key="t"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="g" onKeyHandle={this.triggerEnvelope} key="g"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="y" onKeyHandle={this.triggerEnvelope} key="y"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="h" onKeyHandle={this.triggerEnvelope} key="h"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="u" onKeyHandle={this.triggerEnvelope} key="u"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="j" onKeyHandle={this.triggerEnvelope} key="j"/>,
+    <KeyHandler keyEventName={KEYPRESS} keyValue="k" onKeyHandle={this.triggerEnvelope} key="k"/>,
+  ];
+
   render() {
     return (
-      <Draggable
-        handle='.handle'
-        bounds='.workspace'
-        onDrag={this.props.rebuildLineComponents}
-      >
-      <div style={style}className='EnvelopeNode'>
-        <div className='handle'>
-          <h1 style={topStyle}>
-            <PlayButton onClick={this.togglePlay} constant={true} type='control'/>
-            <p>ENV</p>
-            <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
-          </h1>
-        </div>
-        <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} readout={this.props.readout} />
-        <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} readout={this.props.readout} />
-        <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} readout={this.props.readout} />
-        <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} readout={this.props.readout} />
-        <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} readout={this.props.readout} />
-        <br/>
-        <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 95, y: -18}}/>
-      </div>
-      </Draggable>
+      <React.Fragment>
+        {this.state.isPlaying && [...this.keyHandlerComponents]}
+        <Draggable
+          handle='.handle'
+          bounds='.workspace'
+          onDrag={this.props.rebuildLineComponents}
+        >
+          <div style={style}className='EnvelopeNode'>
+            <div className='handle'>
+              <h1 style={topStyle}>
+                <PlayButton onClick={this.toggleIsPlaying} constant={true} type='control'/>
+                <p>ENV</p>
+                <DeleteButton onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+              </h1>
+            </div>
+            <Setting name='Attack' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.attack} readout={this.props.readout} />
+            <Setting name='aLevel' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.aLevel} readout={this.props.readout} />
+            <Setting name='Decay' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.decay} readout={this.props.readout} />
+            <Setting name='Sustain' unit='' type='control' changeValue={this.changeValue} target={'none'} value={this.state.sustain} readout={this.props.readout} />
+            <Setting name='Release' unit='s' type='control' changeValue={this.changeValue} target={'none'} value={this.state.release} readout={this.props.readout} />
+            <br/>
+            <Connector type='control-output' id={this.name + '_control-output-1'} audioNode={this.dsp.constantSource} select={this.props.select} getSelection={this.props.getSelection} coordinates={{x: 95, y: -18}}/>
+          </div>
+        </Draggable>
+      </React.Fragment>
     );
   }
 }
