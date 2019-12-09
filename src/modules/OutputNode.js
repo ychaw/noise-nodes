@@ -23,36 +23,31 @@ class OutputNode extends React.Component {
     this.dsp.gain.connect(this.props.audioContext.destination);
   }
 
-  componentDidUpdate() {
-    this.props.getLastNodeBottom(this.boundingBox.current.getBoundingClientRect().bottom);
-  }
-
   render () {
     return (
       <Draggable
         handle='.handle'
-        bounds='.workspace'
         onDrag={this.props.rebuildLineComponents}
       >
-        <div style={style} ref={this.boundingBox}>
+        <div style={style}>
           <div className='handle'>
             <h1 style={topStyle}>OUT</h1>
           </div>
           <Setting
-          name='Gain'
-          unit=''
-          type='audio'
-          changeValue={GenericFunctions.changeValue.bind(this)}
-          target={this.dsp.gain.gain}
-          value={this.state.gain}/>
-        <br/>
-        <Connector
-          type='audio-input'
-          id={this.name + '_audio-input-1'}
-          audioNode={this.dsp.gain}
-          select={this.props.select}
-          getSelection={this.props.getSelection}
-          coordinates={{x: -85, y: -45}}/>
+            name='Gain'
+            unit=''
+            type='audio'
+            changeValue={GenericFunctions.changeValue.bind(this)}
+            target={this.dsp.gain.gain}
+            value={this.state.gain}/>
+          <br/>
+          <Connector
+            type='audio-input'
+            id={this.name + '_audio-input-1'}
+            audioNode={this.dsp.gain}
+            select={this.props.select}
+            getSelection={this.props.getSelection}
+            coordinates={{x: -62, y: -72}}/>
         </div>
       </Draggable>
     );
@@ -62,9 +57,9 @@ class OutputNode extends React.Component {
 const style = {
   width:'170px',
   height:'150px',
-  position: 'absolute',
-  right: '0',
+  float: 'right',
   backgroundColor: 'var(--secondary1-shade0)',
+  touchAction: 'none',
 }
 
 const topStyle = {
