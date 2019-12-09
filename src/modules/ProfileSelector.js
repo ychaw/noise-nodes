@@ -5,7 +5,7 @@ class ProfileSelector extends React.Component {
     super(props);
     this.state = {
       profileIndex: 0};
-    this.profiles = ['lowpass', 'highpass', 'bandpass', 'notch', 'allpass'];
+    this.profiles = ['lowpass', 'highpass', 'bandpass'];
     this.vis = {
       r: 32,
       colors: this.getColors(),
