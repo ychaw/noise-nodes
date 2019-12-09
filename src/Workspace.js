@@ -409,7 +409,11 @@ class Workspace extends React.Component {
   render() {
     let newReadoutStyle = {...readoutStyle, visibility: this.readoutState.hidden ? 'hidden' : 'visible'};
     return (
-      <div className='workspace' style={style}>
+      <div
+        className='workspace'
+        style={style}
+        onScroll={this.rebuildLineComponents.bind(this)}
+        >
         <Pallet createNodeHandlers={this.createNodeHandlers} />
         {this.state.nodes}
         <OutputNode
