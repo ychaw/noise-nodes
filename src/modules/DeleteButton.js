@@ -8,7 +8,7 @@ export default class PlayButton extends React.Component {
       dim: 12,
       colors: GenericFunctions.getColors.bind(this)(),
     };
-    this.vis.strokeWidth= this.vis.dim/3 * 2;
+    this.vis.strokeWidth= this.vis.dim/3 * 1.5;
     this.vis.boundary= this.vis.dim+this.vis.strokeWidth;
     this.vis.height = this.vis.dim*3;
     this.vis.width =  this.vis.dim*3;
@@ -25,16 +25,28 @@ export default class PlayButton extends React.Component {
           y = height/2,
           factor = 1.5,
           offset = (2.2 - factor) * dim;
-    return <path
-      d={
-        'M' + [x-offset, y-offset] + ", " +
-        'L' + [x+offset, y+offset] + ", " +
-        'M' + [x+offset, y-offset] + ", " +
-        'L' + [x-offset, y+offset]
+    return <polygon
+      points={
+        [x-offset, y-offset] + " " +
+        [x-offset+strokeWidth/2, y-offset] + " " +
+        [x, y-strokeWidth/3]  + " " +
+        [x+offset-strokeWidth/2, y-offset] + " " +
+        [x+offset, y-offset] + " " +
+        [x+strokeWidth/3, y]  + " " +
+        [x+offset, y+offset] + " " +
+        [x+offset-strokeWidth/2, y+offset] + " " +
+        [x, y+strokeWidth/3]  + " " +
+        [x-offset+strokeWidth/2, y+offset] + " " +
+        [x-offset, y+offset] + " " +
+        [x-offset, y+offset] + " " +
+        [x-strokeWidth/3, y]
       }
+      fill={colors[4]}
       stroke={colors[4]}
-      strokeWidth={strokeWidth/2}/>;
+      strokeWidth={strokeWidth/4}
+      />;
   }
+
 
   render () {
     const {height, width, dim, strokeWidth, colors} = this.vis;
