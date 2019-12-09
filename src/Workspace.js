@@ -304,11 +304,11 @@ class Workspace extends React.Component {
     let color;
       switch (connection.type) {
         case 'audio': {
-          color = 'var(--secondary1-shade3)';
+          color = 'var(--secondary1-shade0)';
           break;
         }
         case 'control': {
-          color = 'var(--secondary2-shade3)';
+          color = 'var(--secondary2-shade0)';
           break;
         }
         default: {
