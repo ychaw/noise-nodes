@@ -54,8 +54,9 @@ export default class PlayButton extends React.Component {
       height={height}
       width={width}
       style={{cursor: 'pointer'}}
+      onClick={this.handleClick}
       >
-      <g onClick={this.handleClick}>
+      <g>
         <circle
           cx={width/2}
           cy={height/2}
