@@ -93,7 +93,6 @@ class EnvelopeNode extends React.Component {
         {this.state.isPlaying && [...this.keyHandlerComponents]}
         <Draggable
           handle='.handle'
-          bounds='.workspace'
           onDrag={this.props.rebuildLineComponents}
         >
           <div style={style}className='EnvelopeNode'>

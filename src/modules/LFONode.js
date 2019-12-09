@@ -87,7 +87,6 @@ class LFONode extends React.Component {
     return (
       <Draggable
         handle='.handle'
-        bounds='.workspace'
         onDrag={this.props.rebuildLineComponents}
       >
         <div style={style}className='LFONode'>
