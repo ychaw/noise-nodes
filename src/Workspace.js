@@ -311,6 +311,7 @@ class Workspace extends React.Component {
             from={connection.output.id}
             to={connection.input.id}
             borderColor={this.getConnectionColor(connection)}
+            key={connection.output.id + '_' + connection.input.id}
             {...lineStyle}
         />);
       return lineComponent;
@@ -387,6 +388,8 @@ class Workspace extends React.Component {
 
     this.forceUpdate();
   }
+
+  
 
   render() {
     let newReadoutStyle = {...readoutStyle, visibility: this.readoutState.hidden ? 'hidden' : 'visible'};
