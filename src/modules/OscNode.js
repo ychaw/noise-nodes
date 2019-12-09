@@ -4,7 +4,6 @@ import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
-import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
 import Draggable from 'react-draggable';
 import KeyHandler, { KEYPRESS } from 'react-key-handler';
@@ -67,7 +66,6 @@ class OscNode extends React.Component {
       this.minFreq = 20;
       this.maxFreq = 2000;
       this.state = {
-        isPlaying: false,
         waveform: 'sine',
         frequency: new Param('frequency', 440, this.minFreq, this.maxFreq),
         gain:  new Param('gain', 0.5, 0, 1),
@@ -89,7 +87,6 @@ class OscNode extends React.Component {
 
   initParams = () => {
     this.dsp.osc.frequency.value = this.state.frequency.absValue;
-    this.dsp.gain.gain.value = 0;
   }
 
   initInputs = () => {
@@ -103,17 +100,6 @@ class OscNode extends React.Component {
     this.props.rebuildLineComponents();
   }
 
-  // FOR TESTING
-  togglePlay = () => {
-    if(!this.state.isPlaying) {
-      this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.linearRampToValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime + 0.1);
-    } else {
-      this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.linearRampToValueAtTime(0, this.props.audioContext.currentTime + 0.1);
-    }
-  }
-
   changeValue = GenericFunctions.changeValue.bind(this);
 
   changeGain = (value, target, param) => {
@@ -121,11 +107,8 @@ class OscNode extends React.Component {
         let newObj = this.state[param.tag];
         newObj.relValue = relValue;
         this.setState({[param.tag]: newObj}, () => {
-          if(this.state.isPlaying) target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
+          target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
         });
-    if(!this.state.isPlaying) {
-      this.dsp.gain.gain.value = 0;
-    }
   }
 
   changeWaveform = (newWaveform) => {
@@ -199,7 +182,7 @@ class OscNode extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.isPlaying && [...this.keyHandlerComponents]}
+        {[...this.keyHandlerComponents]}
         <Draggable
           handle='.handle'
           onDrag={this.props.rebuildLineComponents}
@@ -207,9 +190,8 @@ class OscNode extends React.Component {
           <div style={style} className='OscNode'>
             <div className='handle'>
               <h1 style={topStyle}>
-                <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='audio'/>
-                <p style={{display: 'inline', gridColumStart: 2}}>OSC</p>
-                <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
+                <p style={{display: 'inline', gridColumStart: 1}}>OSC</p>
+                <DeleteButton style={{gridColumStart: 2}} onClick={this.props.deleteNode.bind(this, this.name)} type='audio'/>
               </h1>
             </div>
             <WaveformSelector changeWaveform={this.changeWaveform} type='audio'/>
@@ -219,7 +201,7 @@ class OscNode extends React.Component {
               audioNode={this.dsp.frequencyInput}
               select={this.props.select}
               getSelection={this.props.getSelection}
-              coordinates={{x: -30, y: -18}}
+              coordinates={{x: -10, y: -4}}
             />
             <Setting
               name='Frequency'
@@ -237,7 +219,7 @@ class OscNode extends React.Component {
               audioNode={this.dsp.gain.gain}
               select={this.props.select}
               getSelection={this.props.getSelection}
-              coordinates={{x: -30, y: -18}}
+              coordinates={{x: -10, y: -4}}
             />
             <Setting
               name='Gain'
@@ -275,13 +257,13 @@ const style = {
 
 const topStyle = {
   display: 'grid',
-  gridTemplateColumns: 'auto auto auto',
+  gridTemplateColumns: '70% auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
   alignContent: 'center',
   alignItems: 'center',
-  justifyContent: 'space-evenly',
+  justifyContent: 'center',
   color: '#fff',
   margin: '0px',
   padding: '0px',
