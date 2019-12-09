@@ -10,7 +10,6 @@ class Pallet extends React.Component {
 
     toggleNodeHandlerDisplay = (e) => {
       e.preventDefault();
-      console.log('Clicked');
       this.setState({
         displaying: !this.state.displaying,
       });
