@@ -219,7 +219,7 @@ class OscNode extends React.Component {
               audioNode={this.dsp.frequencyInput}
               select={this.props.select}
               getSelection={this.props.getSelection}
-              coordinates={{x: -30, y: -18}}
+              coordinates={{x: -10, y: -4}}
             />
             <Setting
               name='Frequency'
@@ -237,7 +237,7 @@ class OscNode extends React.Component {
               audioNode={this.dsp.gain.gain}
               select={this.props.select}
               getSelection={this.props.getSelection}
-              coordinates={{x: -30, y: -18}}
+              coordinates={{x: -10, y: -4}}
             />
             <Setting
               name='Gain'
