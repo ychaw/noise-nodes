@@ -19,7 +19,7 @@ class FilterNode extends React.Component {
       }
       this.state = {
         frequency: new Param('frequency', 2000, 10, 20000),
-        Q: new Param('Q', 0, 0.0001, 1000),
+        Q: new Param('Q', 0, 0.0001, 10),
         type: 'lowpass',
       }
       this.inputs = [this.dsp.frequencyInput, this.dsp.qInput, this.dsp.filter]
