@@ -4,7 +4,6 @@ import Setting from './Setting';
 import WaveformSelector from './WaveformSelector';
 import Param from './Param';
 import GenericFunctions from './GenericFunctions';
-import PlayButton from './PlayButton';
 import DeleteButton from './DeleteButton';
 import Draggable from 'react-draggable';
 
@@ -18,7 +17,6 @@ class FMNode extends React.Component {
         frequencyInput: this.props.audioContext.createGain(),
       }
       this.state = {
-        isPlaying: false,
         waveform: 'sine',
         frequency: new Param('frequency', 5, 0.001, 1000),
         gain: new Param('gain', 0.5, 0, 1),
@@ -39,7 +37,6 @@ class FMNode extends React.Component {
 
   initParams = () => {
     this.dsp.osc.frequency.value = this.state.frequency.absValue;
-    this.dsp.gain.gain.value = 0;
   }
 
   initInputs = () => {
@@ -51,17 +48,6 @@ class FMNode extends React.Component {
     this.dsp.osc.stop();
     this.props.cleanUp(this.name);
     this.props.rebuildLineComponents();
-  }
-
-  // FOR TESTING
-  togglePlay = () => {
-    if(!this.state.isPlaying) {
-      this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.linearRampToValueAtTime(this.state.gain.absValue, this.props.audioContext.currentTime + 0.1);
-    } else {
-      this.setState({isPlaying: !this.state.isPlaying});
-      this.dsp.gain.gain.linearRampToValueAtTime(0, this.props.audioContext.currentTime + 0.1);
-    }
   }
 
   changeWaveform = (newWaveform) => {
@@ -76,11 +62,8 @@ class FMNode extends React.Component {
         let newObj = this.state[param.tag];
         newObj.relValue = relValue;
         this.setState({[param.tag]: newObj}, ()=> {
-          if(this.state.isPlaying) target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
+          target.linearRampToValueAtTime(this.state[param.tag].absValue, this.props.audioContext.currentTime + 0.1);
         });
-    if(!this.state.isPlaying) {
-      this.dsp.gain.gain.value = 0;
-    }
   }
 
   render() {
@@ -92,9 +75,8 @@ class FMNode extends React.Component {
         <div style={style} className='FMNode'>
         <div className='handle'>
             <h1 style={topStyle}>
-              <PlayButton style={{gridColumStart: 1}} onClick={this.togglePlay} isPlaying={this.state.isPlaying} type='control'/>
-              <p style={{display: 'inline', gridColumStart: 2}}>FM</p>
-              <DeleteButton style={{gridColumStart: 3}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
+              <p style={{display: 'inline', gridColumStart: 1}}>FM</p>
+              <DeleteButton style={{gridColumStart: 2}} onClick={this.props.deleteNode.bind(this, this.name)} type='control'/>
             </h1>
           </div>
           <WaveformSelector changeWaveform={this.changeWaveform} type='control'/>
@@ -154,13 +136,13 @@ const style = {
 
 const topStyle = {
   display: 'grid',
-  gridTemplateColumns: 'auto auto auto',
+  gridTemplateColumns: '70% auto',
   width: '100%',
   height: '64px',
   flexDirection: 'row',
   alignContent: 'center',
   alignItems: 'center',
-  justifyContent: 'space-evenly',
+  justifyContent: 'center',
   color: '#fff',
   margin: '0px',
   padding: '0px',
